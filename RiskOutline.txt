@@ -1,0 +1,63 @@
+Planning risk
+Main question:
+How to display board
+(Lots of ascii???)
+Options menu - how distribute 
+countries e.g. Random or snake pick (optional)
+Help command @ any time
+User inputs (feed into global inputParser)
+Optional features:
+Save
+World attributes:
+Game phase: 
+Start - run all turns repeatedly to reinforce countries
+Mid game - normal
+Battle - given countryIDs, simulate once, track locally. Once defeat or retreat; pass info back to main world
+Endgame - celebrate
+TurnID:
+PlayerId of person going
+Classes
+User - 
+Attributes:
+phase: 
+-0 inactive (not turn)
+-1 reinforce
+-2 attack
+-3 final reinforce
+-4 exchangeCard
+ID
+color (name)
+Methods:
+getReinforcements() - return reinforcement count
+placeReinforce(tarID)
+For cards:
+tradeAdd(countryName)
+tradeIn()
+Country - 
+Attributes:
+ID - organize by continent for later check
+Name
+Current possession (int - playerID)
+Current troop count 
+Shape (for close up battles)
+Have dice framed inside country ascii outline
+Methods:
+moveTroops(int, tarCountryID) - don't forget to check adjacency, if tarCountry in possession
+attack(tarCountryID) - check numTroops
+Change global game phase with stats
+setTroops()
+subtractTroops()
+addTroops()
+setPossession(user ID)
+Continent - 
+Attributes:
+Name
+holds countries in array - used for territory bonus
+Alternative: store an idLow and idHigh
+Perform check at end of every turn (which continents owned)
+Check based on countries owned
+Cards -
+Attributes:
+Country (by Id)
+Type
+State (by user ID or 0)
