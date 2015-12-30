@@ -1,0 +1,15 @@
+To Do: 
+Random Country Assignment - Also make sure no one starts with a continent.
+Design a board.
+Almost everything...
+Battle Mechanism
+AI
+
+Optional Addons:
+Number of players < 6
+Wildcards in card deck (2)
+Saving
+Alliances with AI
+Snake Pick, Ordered Pick
+Card Trade in caps reinforcements (see rules)
+Multi-pronged attacks (deluxe, non-classic)

@@ -81,6 +81,11 @@ public class Risk{
 		for (int i = 0; i < numCountries; i++)
 			Country[i] = new Country(idCount, countries[i], allBorders[i]);	
 
+		//At this point, presume the map is loaded.
+		System.out.println("Rules documentation is located in 'Rules.txt'.");
+		System.out.println("Detailed controls are in 'Controls.txt'.");
+		System.out.println("Type 'quit' at any time to exit the game.");
+		
 		
 	}
 }
