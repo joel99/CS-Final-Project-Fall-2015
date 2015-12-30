@@ -8,6 +8,7 @@ Help command @ any time
 User inputs (feed into global inputParser)
 Optional features:
 Save
+AI alliances
 World attributes:
 Game phase: 
 Start - run all turns repeatedly to reinforce countries

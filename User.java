@@ -6,6 +6,7 @@ public class User{
 
 	public int id;
 	private Cards[] cards;
+	private String name;
 
 
 }
