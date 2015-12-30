@@ -7,6 +7,13 @@ public class Continent{
 	private String name;
 	private int bonus;
 	private int idLow;
-	private int idHigh;
+	private int idHigh; //Stores highest ID + 1. LIKE AN ARRAY!
+	
+	public Continent(String name, int bonus, int idLow, int idHigh){
+		this.name = name;
+		this.bonus = bonus;
+		this.idLow = idLow;
+		this.idHigh = idHigh;
+	}
 
 }
