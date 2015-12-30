@@ -30,7 +30,7 @@ public class Country{
 		this.name = name;
 	}
 	*/
-	public setOwner(int newOwner){
+	public void setOwner(int newOwner){
 		ownerId = newOwner;
 	}
 	

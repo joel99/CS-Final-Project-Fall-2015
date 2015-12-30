@@ -1,42 +1,42 @@
-###Alaska 2 6 36
-Alberta 1 6 7 9
-Central America 4 9 13
-Eastern United States 3 9 7 8
-Greenland 6 7 8 21
-Northwest Territory 1 2 7 5
-Ontario 6 2 9 4 8 5
-Quebec 5 7 4
-Western United States 2 7 4 3
-###Argentina 11 12
-Brazil 10 12 13 18
-Peru 10 11 13
-Venezuela 3 11 12
-###Congo 15 18 19
-East Africa 37 16 18 14 19 17
-Egypt 24 37 18 15
-Madagascar 15 19
-North Africa 11 26 24 16 15 14
-South Africa 14 15 17
-###Great Britain 21 23 22 26
-Iceland 5 23 20
-Northern Europe 25 24 26 20 23
-Scandinavia 25 22 20 21
-Southern Europe 37 16 18 26 22 25
-Ukraine 23 22 24 41 31 37
-Western Europe 20 22 24 18
-###Eastern Australia 29 30
-Indonesia 39 29 30
-New Guinea 27 28 30
-Western Australia 27 28 29
-###Afghanistan 25 41 32 33
-China 31 41 40 38 39 33
-India 37 31 32 39
-Irkutsk 40 42 36 38
-Japan 36 38 
-Kamchatka 1 42 34 38 35
-Middle East 15 16 24 25 31 33
-Mongolia 40 34 36 35 32
-Siam 32 33 28
-Siberia 41 42 34 38 32
-Ural 25 31 32 40
-Yakutsk 40 34 36
+Alaska_2_6_36
+Alberta_1_6_7_9
+Central America_4_9_13
+Eastern United States_3_9_7_8
+Greenland_6_7_8_21
+Northwest Territory_1_2_7_5
+Ontario_6_2_9_4_8_5
+Quebec_5_7_4
+Western United States_2_7_4_3
+Argentina_11_12
+Brazil_10_12_13_18
+Peru_10_11_13
+Venezuela_3_11_12
+Congo_15_18_19
+East Africa_37_16_18_14_19_17
+Egypt_24_37_18_15
+Madagascar_15_19
+North Africa_11_26_24_16_15_14
+South Africa_14_15_17
+Great Britain_21_23_22_26
+Iceland_5_23_20
+Northern Europe_25_24_26_20_23
+Scandinavia_25_22_20_21
+Southern Europe_37_16_18_26_22_25
+Ukraine_23_22_24_41_31_37
+Western Europe_20_22_24_18
+Eastern Australia_29_30
+Indonesia_39_29_30
+New Guinea_27_28_30
+Western Australia_27_28_29
+Afghanistan_25_41_32_33
+China_31_41_40_38_39_33
+India_37_31_32_39
+Irkutsk_40_42_36_38
+Japan_36_38_
+Kamchatka_1_42_34_38_35
+Middle East_15_16_24_25_31_33
+Mongolia_40_34_36_35_32
+Siam_32_33_28
+Siberia_41_42_34_38_32
+Ural_25_31_32_40
+Yakutsk_40_34_36
