@@ -28,12 +28,12 @@ public class Risk{
 		
 		//Loading of Continents and Countries show 2 different methods of mass-object creation, I guess...
 		
-		Continent nAm = new Continent("North America", 5, 0, 9);
-		Continent sAm = new Continent ("South America", 2, 9, 13);
-		Continent africa...
-		Continent europe...
-		Continent australia...
-		Continent asia...
+		Continent nAm = new Continent("North America", 5, 1, 10);
+		Continent sAm = new Continent ("South America", 2, 10, 14);
+		Continent africa = new Continent("Africa", 3, 14, 20);
+		Continent europe = new Continent("Europe", 5, 20, 27);
+		Continent australia = new Continent("Australia", 2, 27, 31);
+		Continent asia = new Continent("Asia", 7, 31, 43);
 
 		public Continent[] continents = {nAm, sAm, africa, europe, australia, asia};
 		
@@ -60,7 +60,7 @@ public class Risk{
 				input = line.split();
 				countries[ctr] = input[0];
 				for (int i = 1; i < input.length; i++)
-					allBorders[ctr][i-1] = Integer.parseInt(input[i]); 
+					allBorders[ctr][i-1] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
 				ctr ++;
 			}
             bufferedReader.close();         
