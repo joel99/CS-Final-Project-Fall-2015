@@ -8,6 +8,9 @@ public class Country{
 	private int id;
 	private String name;
 	private int ownerId;
+	
+	private User owner;
+	
 	private int troops;
 	private int borders[];	//holds ids of bordering countries
 	
@@ -21,18 +24,37 @@ public class Country{
 		this.name = name;
 		this.borders = borders;
 		ownerId = 0;
+		owner = null;
 		troops = 0;
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public String toString(){
+		return name;
+	}
+	
+	public int getOwnerId(){
+		return ownerId;
+	}
+	
 	/*
-	//Should only be used @ intialization.
-	public setName(String name){
-		this.name = name;
+	public User getOwner(){
+		return owner;
 	}
+	
+	public User setOwner(User newOwner){
+		User temp = owner;
+		owner = newOwner;
+		return temp;
+	}	
 	*/
-	public void setOwner(int newOwner){
-		ownerId = newOwner;
+	
+	public int setOwnerId(int newOwnerId){
+		int temp = ownerId;
+		ownerId = newOwnerId;
+		return temp;
 	}
-	
-	
 }

@@ -1,8 +1,9 @@
 /**********************
  Class Card
  **********************/
-
-public class Card{
+ 
+public class Card //implements Ownable
+{
 	
 	private int countryID;
 	private int type; //soldier, horse, cannnon - 0, 1, 2

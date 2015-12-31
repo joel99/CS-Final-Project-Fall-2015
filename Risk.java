@@ -18,6 +18,21 @@ public class Risk{
 	//Wait function, for that authentic feel.
 	public static void wait(int ms){try {Thread.sleep(ms);} catch (InterruptedException ie) {}}
 	
+	//@William - it'd be nice to make this generic, but I'm not sure how
+	private static void swap( int i, int j , Country[] arr) {
+		Country temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+    }
+	
+	public static void shuffle(Country[] arr) {
+		int len = arr.length;
+		//len - i. Elements to choose from.
+		for (int i = 0; i < len; i++){
+			swap(i, i + (int)(Math.random()*(len-i)), arr);
+		}
+    }
+	
 	public static void main(String[] args){	
 	
 		//LOADING COUNTRIES
@@ -80,7 +95,7 @@ public class Risk{
 		//{
 		System.out.println("Now loading..." );
 		System.out.println("\n    _______      _          __\n   |_   __ \\    (_)        [  |  _\n    | |__) |   __   .--.   | | / ]\n    |  __ /   [  | ( (`\\]  | '' < \n   _| |  \\ \\_  | |  `'.'.  | |`\\ \\\n  |____| |___|[___][\\__) )[__|  \\_]\n ");
-		wait(3000);
+		for (int i = 0; i < 3; i++) {wait(1000); System.out.print(".");}
 		System.out.println("\n\n");
 		System.out.println("Welcome to Risk");
 		//}
@@ -89,6 +104,31 @@ public class Risk{
 		System.out.println("Rules documentation is located in 'Rules.txt'.");
 		System.out.println("Detailed controls are in 'Controls.txt'.");
 		System.out.println("Type 'quit' at any time to exit the game.");
+		
+		//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
+		User p1 = new Player(0);
+		User p2 = new Player(1);
+		User p3 = new Player(2);
+		User p4 = new Player(3);
+		User p5 = new Player(4);
+		User p6 = new Player(5);
+		
+		User[] users = {p1,p2,p3,p4,p5,p6};
+		
+		shuffle(countries);
+
+		for (int i = 0; i < 6; i++)
+			for (int j = 0; j < 7; j++){
+				countries[i * 7 + j].setOwnerId(i);
+				users[i].add(countries[i*7+j]);
+			}	
+			
+		//Check for anyone owns continent.
+		for (int i = 0; i < 42; i++){
+			System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
+		}
+		
+		
 		
 		
 	}
