@@ -83,7 +83,8 @@ cardBonus - this is incremented. we'll check that later
 	int numCountries = 42;
 	String fileName = "countries.txt";
         String[] countriesIn = new String[numCountries];
-		
+	
+	//int[][] allMapLoc = new int[numCountries][2];
 	int[][] allBorders = new int[numCountries][6];//max border count is 6
 	/*
 	  It's also valid to just use allBorders and the indices to
@@ -101,8 +102,9 @@ cardBonus - this is incremented. we'll check that later
 		input = line.split("_");
 				
 		countriesIn[ctr] = input[0];
-		for (int i = 1; i < input.length; i++)
-		    allBorders[ctr][i-1] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
+		//allMapLoc[ctr][0] = input[1]; allMapLoc[ctr][1] = input[2];
+		for (int i = 1; i < input.length; i++)    
+			allBorders[ctr][i-1] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
 		ctr++;
 	    }
             bufferedReader.close();         

@@ -13,16 +13,17 @@ public class Country{
 	
 	private int troops;
 	private int borders[];	//holds ids of bordering countries
+	private int[] mapLoc = new int[2];
 	
 	/*
 	public Country(int id){
 		this.id = id;
 	}
 	*/
-	public Country(int id, String name, int[] borders){
+	public Country(int id, String name, int[] borders, int[] mapLoc){
 		this.id = id;
 		this.name = name;
-		this.borders = borders;
+		this.borders = borders; 
 		ownerId = 0;
 		owner = null;
 		troops = 0;
