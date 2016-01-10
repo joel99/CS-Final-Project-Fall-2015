@@ -1,6 +1,7 @@
 public class Test{
 	public static void main(String[] args){
-	System.out.println("\r\n" +
+		//Note: each row is 302 char long. 
+	String map = 
 "                                                                                                   MMMMMMMMMMMMM                                                                                                                                                                                            \r\n" +
 "                                                                                                MMM             MM   MM                                                                                                                                                                                     \r\n" +
 "                                                                                              MMM              MMMMMMMMM                                                                                              MMMMMMM                                                                               \r\n" +
@@ -121,6 +122,9 @@ public class Test{
 "                                                                          MM     MMM                                                                            MM  MMMMM                                                                                                                     MM            \r\n" +
 "                                                                            MM       MM                                                                          MM                                                                                                                                         \r\n" +
 "                                                                              MMMM   MM                                                                                                                                                                                                                     \r\n" +
-"                                                                                  MMM                                                                                                                                                                                                                       \r\n");
+"                                                                                  MMM                                                                                                                                                                                                                       \r\n";
+	for (int i = 0; i < map.length(); i++)
+		if (i % 302 > 150)
+			System.out.print(map.substring(i,i+1));
 	}
 }
