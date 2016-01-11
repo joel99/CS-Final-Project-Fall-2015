@@ -2,9 +2,9 @@
 Risk (Terminal) - Joel Ye and William Xiang
 To launch the program, make sure you are in the same directory as Risk.java.
 Type the following commands:
-javac Risk.java
-then 
-java Risk
+<br>$ javac Risk.java
+<br>$ java Risk
+<br><br>
 The program should then run, and you will be guided from there. There will 
 be a short rules rundown within the game itself, but for detailed rules, read
 the Rules.txt file. 
