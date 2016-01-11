@@ -1,7 +1,4 @@
-public class Test{
-	public static void main(String[] args){
-		//Note: each row is 302 char long. 
-	String map = 
+MAP = '''
 "                                                                                                   MMMMMMMMMMMMM                                                                                                                                                                                            \r\n" +
 "                                                                                                MMM             MM   MM                                                                                                                                                                                     \r\n" +
 "                                                                                              MMM              MMMMMMMMM                                                                                              MMMMMMM                                                                               \r\n" +
@@ -122,9 +119,23 @@ public class Test{
 "                                                                          MM     MMM                                                                            MM  MMMMM                                                                                                                     MM,           \r\n" +
 "                                                                            MM       MM                                                                          MM                                                                                                                                         \r\n" +
 "                                                                              MMMM   MM                                                                                                                                                                                                                     \r\n" +
-"                                                                                  MMM                                                                                                                                                                                                                       \r\n";
-	for (int i = 0; i < map.length(); i++)
-		if (i % 302 > 150)
-			System.out.print(map.substring(i,i+1));
-	}
-}
+"                                                                                  MMM                                                                                                                                                                                                                       \r\n"
+'''
+MAP = MAP.replace("\"","")
+MAP = MAP.replace("\r\n +","")
+MAP = MAP.replace("\r","")
+MAP = MAP.split("\n")
+
+'''
+ret = []
+for line in MAP:
+    array = []
+    for char in line:
+        array.append("%s" % char)
+    ret.append(array)
+'''
+fyle = open('map.txt','w')
+for line in MAP:
+    fyle.write(str(line) + "\n")
+fyle.close()
+
