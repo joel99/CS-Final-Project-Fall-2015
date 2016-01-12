@@ -6,6 +6,7 @@
 //They allow the enclosed content to be collapsed for my own readability.
 
 import java.io.*;
+import java.util.Scanner;
  
 public class Risk{
 	
@@ -65,6 +66,54 @@ cardBonus - this is incremented. we'll check that later
 	}
     }
 	
+
+    public static char[][] readMap(String fileName){
+	char[][] map = new char[125][302];
+	
+	String line = null;
+
+	try {
+	    FileReader fileReader = new FileReader(fileName);
+	    BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+	    int linectr = 0; //couldn't use for loop with readLine()
+	    
+	    while((line = bufferedReader.readLine()) != null) {
+                char[] charArr = line.toCharArray(); //convert to array of chars
+		for (int i = 0; i < charArr.length; i++) {
+		    map[linectr][i] = charArr[i]; //copy over to map
+		}		
+		linectr++; //increment line counter
+	    }
+	    bufferedReader.close();
+	}
+
+	catch(FileNotFoundException ex) {
+	    System.out.println("Unable to open file '" + fileName + "'");
+	}
+	catch(IOException ex) {
+	    System.out.println("Error reading file '" + fileName + "'");
+	}
+
+	return map;
+    }
+
+    //printMap - presume map is loaded, print top left (loX,loY) to bottom right (hiX,hiY). 
+    public static String printMap(int loX, int loY, int hiX, int hiY){
+	String retStr = "";
+	
+	for (int lineNum = 0; lineNum < map.length; lineNum++) {
+	    for (int chNum = 0; chNum < map[lineNum].length; chNum++) {
+		if ((lineNum < 30) && (chNum < 80)) {
+		    retStr += map[lineNum][chNum];
+		}
+	    }
+	    retStr += "\n";
+	}
+	
+	return retStr;
+    } 
+
     public static void main(String[] args){	
 	
 	//LOADING COUNTRIES
@@ -128,6 +177,12 @@ cardBonus - this is incremented. we'll check that later
 	
 	//{
 	System.out.println("Now loading..." );
+	
+	//System.out.println("Do you use Windows?");
+
+
+
+
 	System.out.println("\n    _______      _          __\n   |_   __ \\    (_)        [  |  _\n    | |__) |   __   .--.   | | / ]\n    |  __ /   [  | ( (`\\]  | '' < \n   _| |  \\ \\_  | |  `'.'.  | |`\\ \\\n  |____| |___|[___][\\__) )[__|  \\_]\n ");
 	for (int i = 0; i < 3; i++) {wait(1000); System.out.print(".");}
 	System.out.println("\n\n");
@@ -164,7 +219,10 @@ cardBonus - this is incremented. we'll check that later
 	    System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
 	}
 
-		
+	//Load map
+	readMap("map.txt");
+
+	
 	turn = (int)(Math.random()*6)+1;
 		
 	while (turn != 0){
