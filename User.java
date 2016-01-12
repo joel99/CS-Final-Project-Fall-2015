@@ -2,6 +2,8 @@
  Class User - Superclass for players and ai
 **********************/ 
 
+import java.util.ArrayList;
+
 public class User{
 
     public int id;
