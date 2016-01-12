@@ -8,9 +8,11 @@ public class User{
 	private ArrayList <Card> cards;
 	private ArrayList <Country> userCountries;
 	private String name;
+	private char nickname;
 
 	public User(int id){
 		name = Integer.toString(id);
+		nickname = name.substring(0,1);
 		this.id = id;
 	}
 	
@@ -25,7 +27,12 @@ public class User{
 	public void add(Card c){
 		cards.add(c);
 	}
+	
 	public void add(Country c){
 		countries.add(c);
+	}
+	
+	public ArrayList<Country> getCountries(){
+		return userCountries;
 	}
 }

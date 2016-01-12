@@ -114,6 +114,19 @@ cardBonus - this is incremented. we'll check that later
 	return retStr;
     } 
 
+	//assume no wrapping problems (b/c we're good with this stuff right :))
+	public static void update(char[][] world, Country c){
+		int[] coords = c.getMapLoc();
+		int y = coords[0]; //x,y are inverted, but let's not get bogged down...;
+		int x = coords[1];
+		String stat = c.status();
+		//REMEMBER TO UPDATE w/ NICKNAME!!!
+		for (int i = 0; i < stat.length; i++)
+			world[y][x++] = stat.substring(i,i+1);
+		//first char is userId, convert to user info. Track owner or ownerId????
+	}
+	
+	
     public static void main(String[] args){	
 	
 	//LOADING COUNTRIES
@@ -133,7 +146,7 @@ cardBonus - this is incremented. we'll check that later
 	String fileName = "countries.txt";
         String[] countriesIn = new String[numCountries];
 	
-	//int[][] allMapLoc = new int[numCountries][2];
+	int[][] allMapLoc = new int[numCountries][2];
 	int[][] allBorders = new int[numCountries][6];//max border count is 6
 	/*
 	  It's also valid to just use allBorders and the indices to
@@ -151,8 +164,8 @@ cardBonus - this is incremented. we'll check that later
 		input = line.split("_");
 				
 		countriesIn[ctr] = input[0];
-		//allMapLoc[ctr][0] = input[1]; allMapLoc[ctr][1] = input[2];
-		for (int i = 1; i < input.length; i++)    
+		allMapLoc[ctr][0] = input[1]; allMapLoc[ctr][1] = input[2];
+		for (int i = 3; i < input.length; i++)    
 			allBorders[ctr][i-1] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
 		ctr++;
 	    }
@@ -205,23 +218,28 @@ cardBonus - this is incremented. we'll check that later
 	User p6 = new Player(5);
 		
 	User[] users = {p1,p2,p3,p4,p5,p6};
-		
+	
+	//Load map
+	char[][] map = readMap("map.txt");
+
+	//assign countries
 	shuffle(countries);
 
 	for (int i = 0; i < 6; i++)
 	    for (int j = 0; j < 7; j++){
 		countries[i * 7 + j].setOwnerId(i);
+		countries[i * 7 + j].addTroops(1);
+		update(map, countries[i*7+j]);
+		countries[i*7+j].getMapLoc();
 		users[i].add(countries[i*7+j]);
 	    }	
 			
 	//Check for anyone owns continent.
-	for (int i = 0; i < 42; i++){
-	    System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
-	}
+	//for (int i = 0; i < 42; i++){
+	//    System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
+	//}
 
-	//Load map
-	readMap("map.txt");
-
+	
 	
 	turn = (int)(Math.random()*6)+1;
 		

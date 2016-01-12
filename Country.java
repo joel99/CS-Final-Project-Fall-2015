@@ -13,7 +13,7 @@ public class Country{
 	
 	private int troops;
 	private int borders[];	//holds ids of bordering countries
-	private int[] mapLoc = new int[2];
+	private int[] mapLoc;
 	
 	/*
 	public Country(int id){
@@ -24,6 +24,7 @@ public class Country{
 		this.id = id;
 		this.name = name;
 		this.borders = borders; 
+		this.mapLoc = mapLoc;
 		ownerId = 0;
 		owner = null;
 		troops = 0;
@@ -58,4 +59,26 @@ public class Country{
 		ownerId = newOwnerId;
 		return temp;
 	}
+	
+	
+	
+	public void addTroops(int num){
+		troops += num;
+	}
+	
+	
+	public int getTroops(){
+		return troops;
+	}
+	
+	//map updating done in global b/c map is a global kinda thing???
+	public int[] getMapLoc(){
+		return mapLoc;
+	}
+	
+	//for update function
+	public String status(){
+		return Integer.toString(ownerId) + Integer.toString(getTroops());
+	}
+	
 }
