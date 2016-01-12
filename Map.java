@@ -2,7 +2,7 @@ import java.io.*;
 
 public class Map{
     
-    public static void main(String[] args){
+    public static void printMap(String[] args){
 	String fileName = "map.txt";
 	//Note: each row is 302 char long.
 

@@ -6,12 +6,25 @@
 //They allow the enclosed content to be collapsed for my own readability.
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
  
 public class Risk{
 	
     //Player IDs will go from 0 to 5
     
+    public int numPlayers = 6;
+
+    private static User p1 = new Player(0);
+    private static User p2 = new Player(1);
+    private static User p3 = new Player(2);
+    private static User p4 = new Player(3);
+    private static User p5 = new Player(4);
+    private static User p6 = new Player(5);
+		
+    private static User[] users = {p1,p2,p3,p4,p5,p6};
+
+
     /****************
      phase - int describing game state.
         -1 - exit (to break out of while loop).
@@ -27,12 +40,12 @@ public class Risk{
              Save Game
              Exit
     ****************/
-    private int phase = 0; 
+    private static int phase = 0; 
     
     /****************
      turn - tracks player turn if phase is 1
     *****************/
-    private int turn = -1;
+    private static int turn = -1;
     
     /****************
      turnState - more fine status on turnState.
@@ -41,12 +54,12 @@ public class Risk{
                      set turnState to 0.
          2 - fortify
     *****************/
-    private int turnState = 0;
+    private static int turnState = 0;
 
     /****************
 cardBonus - this is incremented. we'll check that later
     *****************/
-    private int cardBonus = 0;
+    private static int cardBonus = 0;
 
     //Wait function, for that authentic feel.
     public static void wait(int ms){try {Thread.sleep(ms);} catch (InterruptedException ie) {}}
@@ -115,14 +128,17 @@ cardBonus - this is incremented. we'll check that later
     } 
 
 	//assume no wrapping problems (b/c we're good with this stuff right :))
-	public static void update(char[][] world, Country c){
+    public static void update(char[][] world, Country c){
 		int[] coords = c.getMapLoc();
 		int y = coords[0]; //x,y are inverted, but let's not get bogged down...;
 		int x = coords[1];
 		String stat = c.status();
 		//REMEMBER TO UPDATE w/ NICKNAME!!!
-		for (int i = 0; i < stat.length; i++)
-			world[y][x++] = stat.substring(i,i+1);
+		//User id here:
+		world[y][x++] = users[Integer.parseInt(stat.substring(0,1))].getNick();
+		x++;
+		for (int i = 1; i < stat.length(); i++)
+		    world[y][x++] = stat.charAt(i);
 		//first char is userId, convert to user info. Track owner or ownerId????
 	}
 	
@@ -164,7 +180,8 @@ cardBonus - this is incremented. we'll check that later
 		input = line.split("_");
 				
 		countriesIn[ctr] = input[0];
-		allMapLoc[ctr][0] = input[1]; allMapLoc[ctr][1] = input[2];
+		allMapLoc[ctr][0] = Integer.parseInt(input[1]); 
+		allMapLoc[ctr][1] = Integer.parseInt(input[2]);
 		for (int i = 3; i < input.length; i++)    
 			allBorders[ctr][i-1] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
 		ctr++;
@@ -185,7 +202,7 @@ cardBonus - this is incremented. we'll check that later
 	Country[] countries = new Country[numCountries];
 		
 	for (int i = 0; i < numCountries; i++)
-	    countries[i] = new Country(i, countriesIn[i], allBorders[i]);	
+	    countries[i] = new Country(i, countriesIn[i], allBorders[i], allMapLoc[i]);	
 	//}
 	
 	//{
@@ -208,17 +225,7 @@ cardBonus - this is incremented. we'll check that later
 	System.out.println("Type 'quit' at any time to exit the game.");
 		
 	//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
-	int numPlayers = 0;
-
-	User p1 = new Player(0);
-	User p2 = new Player(1);
-	User p3 = new Player(2);
-	User p4 = new Player(3);
-	User p5 = new Player(4);
-	User p6 = new Player(5);
 		
-	User[] users = {p1,p2,p3,p4,p5,p6};
-	
 	//Load map
 	char[][] map = readMap("map.txt");
 
@@ -230,7 +237,6 @@ cardBonus - this is incremented. we'll check that later
 		countries[i * 7 + j].setOwnerId(i);
 		countries[i * 7 + j].addTroops(1);
 		update(map, countries[i*7+j]);
-		countries[i*7+j].getMapLoc();
 		users[i].add(countries[i*7+j]);
 	    }	
 			
