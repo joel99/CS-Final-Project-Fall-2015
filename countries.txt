@@ -1,12 +1,12 @@
-Alaska_2_6_36
-Alberta_1_6_7_9
-Central America_4_9_13
-Eastern United States_3_9_7_8
-Greenland_6_7_8_21
-Northwest Territory_1_2_7_5
-Ontario_6_2_9_4_8_5
-Quebec_5_7_4
-Western United States_2_7_4_3
+Alaska_14_13_2_6_36
+Alberta_22_39_1_6_7_9
+Central America_47_42_4_9_13
+Eastern United States_38_63_3_9_7_8
+Greenland_8_96_6_7_8_21
+Northwest Territory_13_42_1_2_7_5
+Ontario_24_59_6_2_9_4_8_5
+Quebec_25_82_5_7_4
+Western United States_33_41_2_7_4_3
 Argentina_11_12
 Brazil_10_12_13_18
 Peru_10_11_13
