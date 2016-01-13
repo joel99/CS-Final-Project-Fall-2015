@@ -15,6 +15,8 @@ public class User{
     public User(int id){
 	name = Integer.toString(id);
 	nickname = name.charAt(0);
+	cards = new ArrayList<>();
+	userCountries = new ArrayList<>();
 	this.id = id;
     }
 	
@@ -31,7 +33,7 @@ public class User{
     }
 	
     public void add(Country c){
-	countries.add(c);
+	userCountries.add(c);
     }
 	
     public ArrayList<Country> getCountries(){

@@ -61,6 +61,9 @@ cardBonus - this is incremented. we'll check that later
     *****************/
     private static int cardBonus = 0;
 
+	private static char[][] map;
+	
+	
     //Wait function, for that authentic feel.
     public static void wait(int ms){try {Thread.sleep(ms);} catch (InterruptedException ie) {}}
 	
@@ -81,7 +84,7 @@ cardBonus - this is incremented. we'll check that later
 	
 
     public static char[][] readMap(String fileName){
-	char[][] map = new char[125][302];
+	map = new char[102][302];
 	
 	String line = null;
 
@@ -92,10 +95,9 @@ cardBonus - this is incremented. we'll check that later
 	    int linectr = 0; //couldn't use for loop with readLine()
 	    
 	    while((line = bufferedReader.readLine()) != null) {
-                char[] charArr = line.toCharArray(); //convert to array of chars
-		for (int i = 0; i < charArr.length; i++) {
-		    map[linectr][i] = charArr[i]; //copy over to map
-		}		
+            char[] charArr = line.toCharArray(); //convert to array of chars
+		for (int i = 0; i < charArr.length; i++) 
+		    map[linectr][i] = charArr[i]; //copy over to map		
 		linectr++; //increment line counter
 	    }
 	    bufferedReader.close();
@@ -115,12 +117,9 @@ cardBonus - this is incremented. we'll check that later
     public static String printMap(int loX, int loY, int hiX, int hiY){
 	String retStr = "";
 	
-	for (int lineNum = 0; lineNum < map.length; lineNum++) {
-	    for (int chNum = 0; chNum < map[lineNum].length; chNum++) {
-		if ((lineNum < 30) && (chNum < 80)) {
+	for (int lineNum = loY; lineNum < hiY; lineNum++) {
+	    for (int chNum = loX; chNum < hiX; chNum++) 
 		    retStr += map[lineNum][chNum];
-		}
-	    }
 	    retStr += "\n";
 	}
 	
@@ -128,17 +127,17 @@ cardBonus - this is incremented. we'll check that later
     } 
 
 	//assume no wrapping problems (b/c we're good with this stuff right :))
-    public static void update(char[][] world, Country c){
+    public static void update(Country c){
 		int[] coords = c.getMapLoc();
 		int y = coords[0]; //x,y are inverted, but let's not get bogged down...;
 		int x = coords[1];
 		String stat = c.status();
 		//REMEMBER TO UPDATE w/ NICKNAME!!!
 		//User id here:
-		world[y][x++] = users[Integer.parseInt(stat.substring(0,1))].getNick();
+		map[y][x++] = users[Integer.parseInt(stat.substring(0,1))].getNick();
 		x++;
 		for (int i = 1; i < stat.length(); i++)
-		    world[y][x++] = stat.charAt(i);
+		    map[y][x++] = stat.charAt(i);
 		//first char is userId, convert to user info. Track owner or ownerId????
 	}
 	
@@ -231,15 +230,16 @@ cardBonus - this is incremented. we'll check that later
 
 	//assign countries
 	shuffle(countries);
-
+	
 	for (int i = 0; i < 6; i++)
 	    for (int j = 0; j < 7; j++){
 		countries[i * 7 + j].setOwnerId(i);
 		countries[i * 7 + j].addTroops(1);
-		update(map, countries[i*7+j]);
+		//update(countries[i*7+j]);
 		users[i].add(countries[i*7+j]);
 	    }	
 			
+	System.out.println(printMap(50,50,200,200));                         
 	//Check for anyone owns continent.
 	//for (int i = 0; i < 42; i++){
 	//    System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
