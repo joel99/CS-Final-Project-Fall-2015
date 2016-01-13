@@ -16,8 +16,8 @@
 > Parsed ASCII map into Java 2D Array (William)
 
 
-=== 1//16 ===
-
+=== 1/12/16 ===
+> Buggin out, Map ready for country data -> Todo: Update countries.txt! (Joel)
 
 
 === 1//16 ===
