@@ -1,14 +1,16 @@
-To Do: 
-William: Update countries.txt with the data locations and continent boundaries (a global variable) update ownable.java
-Battle Mechanism
-AI
+=== To Do === 
+> Update countries.txt with the data locations and continent boundaries (a global variable)
+> Battle Mechanism for troop v. troop battle
+> Start and Game Menu
+> 
 
-Optional Addons:
-Number of players < 6
-Wildcards in card deck (2)
-Saving
-Alliances with AI
-Snake Pick, Ordered Pick
-Card Trade in caps reinforcements (see rules)
-Multi-pronged attacks (deluxe, non-classic)
-Map wrapping
+
+=== Optional Addons ===
+> AI that you can play against or ally with
+> Play when # of players < 6
+> Wildcards in card deck (2)
+> Saving game and writing data to a txt file
+> Snake Pick or Ordered Pick as opposed to random pick
+> Card Trade in caps reinforcements (see rules)
+> Multi-pronged attacks (deluxe, non-classic)
+> Map wrapping
