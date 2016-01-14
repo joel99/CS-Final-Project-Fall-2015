@@ -6,17 +6,17 @@ import java.util.ArrayList;
 
 public class User{
 
-    public int id;
+    private id;
     private ArrayList <Card> cards;
-    private ArrayList <Country> userCountries;
+    private ArrayList <Country> countriesOwned;
     private String name;
     private char nickname;
 
     public User(int id){
 	name = Integer.toString(id);
 	nickname = name.charAt(0);
-	cards = new ArrayList<>();
-	userCountries = new ArrayList<>();
+	cards = new ArrayList<Card>();
+	countriesOwned = new ArrayList<Country>();
 	this.id = id;
     }
 	
@@ -27,17 +27,21 @@ public class User{
     public String getName(){
 	return name;
     }
+    
+    public int getID() {
+    	return id;
+    }
 	
     public void add(Card c){
 	cards.add(c);
     }
 	
     public void add(Country c){
-	userCountries.add(c);
+	countriesOwned.add(c);
     }
 	
     public ArrayList<Country> getCountries(){
-	return userCountries;
+	return countriesOwned;
     }
 
     public char getNick(){
