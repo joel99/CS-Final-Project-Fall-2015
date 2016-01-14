@@ -14,7 +14,7 @@ public class Risk{
     //Player IDs will go from 0 to 5
     
     public int numPlayers = 6;
-
+    
     private static User p1 = new Player(0);
     private static User p2 = new Player(1);
     private static User p3 = new Player(2);
@@ -23,7 +23,11 @@ public class Risk{
     private static User p6 = new Player(5);
 		
     private static User[] users = {p1,p2,p3,p4,p5,p6};
-
+    
+    /****************
+     boundaries - holds default map bounds in form loX, loY, hiX, hiY
+    *****************/
+    private static int[] boundaries = {0, 0, 149, 99}; //even amount of spots pls tyvm 
 
     /****************
      phase - int describing game state.
@@ -34,8 +38,9 @@ public class Risk{
              Load Game
              Settings
              Exit
-         1 - playing game
-         2 - in-game paused (settings)
+         1 - game start
+		 2 - game midgame
+         3 - in-game paused (settings)
          settings desc:
              Save Game
              Exit
@@ -113,16 +118,17 @@ cardBonus - this is incremented. we'll check that later
 	return map;
     }
 
-    //printMap - presume map is loaded, print top left (loX,loY) to bottom right (hiX,hiY). 
-    public static String printMap(int loX, int loY, int hiX, int hiY){
+    //printMap - presume map is loaded, print top left to bottom right of boundaries. 
+    public static String printMap(){
 	String retStr = "";
-	
-	for (int lineNum = loY; lineNum < hiY; lineNum++) {
-	    for (int chNum = loX; chNum < hiX; chNum++) 
+	int max1 = Math.max(boundaries[3], map.length);
+	int max2 = Math.max(boundaries[2], map.length);
+	for (int lineNum = Math.min(boundaries[1], 0); lineNum < max1; lineNum++) {
+	    for (int chNum = Math.min(boundaries[0], 0); chNum < max2; chNum++) 
 		    retStr += map[lineNum][chNum];
 	    retStr += "\n";
 	}
-	
+	System.out.println(retStr);
 	return retStr;
     } 
 
@@ -141,6 +147,43 @@ cardBonus - this is incremented. we'll check that later
 		//first char is userId, convert to user info. Track owner or ownerId????
 	}
 	
+
+    //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
+    public static void zoom(int in){
+	boundaries[0] += 5 * in;
+	boundaries[1] += 5 * in;
+	boundaries[2] -= 5 * in;
+	boundaries[3] -= 5 * in;
+    }
+
+    //pans boundaries. takes half of old map, half of new direction. -2 - down, -1 - left, 1 - right, 2 - up
+    //DEFAULT SPACING OF BOUNDARY SHOULD BE EVEN!!! -loY and hiY are opposite parity
+	//-2 - down -1 - left 1 - right 2 - up
+	public static void pan(int dir){
+		
+		switch(dir){
+			case -2://e.g. 1,4 as Y's become 3,6 
+			boundaries[1] =  (boundaries[3] + boundaries[1]) / 2 + 1;
+			boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+			break;
+			case 2://e.g. 3,6 as Y's become 1,4
+			boundaries[3] = (boundaries[3] + boundaries[1]) / 2;
+			boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
+			break;
+			case -1://same as case 2 for x.
+			boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
+			boundaries[0] -= (boundaries[2] - boundaries[0]) + 1;
+			break;
+			case 1:
+			boundaries[0] = (boundaries[2] + boundaries[0]) / 2 + 1;
+			boundaries[2] += (boundaries[2] - boundaries[0]) + 1;
+			break;	
+			default:
+			System.out.println("Invalid pan");
+			break;
+		}
+		
+	}
 	
     public static void main(String[] args){	
 	
@@ -239,22 +282,45 @@ cardBonus - this is incremented. we'll check that later
 		users[i].add(countries[i*7+j]);
 	    }	
 			
-	System.out.println(printMap(50,50,200,200));                         
+	printMap();                         
 	//Check for anyone owns continent.
 	//for (int i = 0; i < 42; i++){
 	//    System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
 	//}
 
-	
-	
-	turn = (int)(Math.random()*6)+1;
+	Scanner in = new Scanner(System.in());
+	while(phase != -1){
+		switch(in.nextLine().substring(0,1)){
+			
+			//"e": exit
+			case "e": System.out.println("Now exiting Risk.");
+			break;
+			
+			//"o": options
+			case "o":
+			break;
+			
+			//"s": start game
+			case "s":
+			turn = (int)(Math.random()*6)+1;
 		
-	while (turn != 0){
-
-
+			while (turn != -1){
+				turnState = 0;
+				switch(in.nextLine().substring(0,1)){
+				case "e":
+					turn = -1;
+					break;
+			
+			
+			
+			}
+			break;
+			
+			
+		}
 	}
 		
-		
+	}	
 		
     }
 }
