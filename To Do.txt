@@ -5,7 +5,7 @@ ETD: Estimated time of delivery
 > Battle Mechanism for troop v. troop battle : ETD - 1-20
 > Start and Game Menu : ETD - 1-17
 > Actual Gameplay
-  >> Reinforcements Phase : ETD - 1-19
+  >> Reinforcements Phase (Includes calculating reinforcements): ETD - 1-19
   >> Battle Phase : ETD - 1-21
   >> Fortify Phase : ETD - 1-22
 > Card Trade-Ins: ETD - 1-22
