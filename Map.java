@@ -4,6 +4,16 @@ import java.util.Scanner;
 
 public class Map{
     
+    public Map(String filename){
+	map = readMap(filename);
+    } 
+
+    /****************
+     boundaries - holds default map bounds in form loX, loY, hiX, hiY
+    *****************/
+    private int[] boundaries = {0, 0, 149, 99};
+    private char[][] map = new char[102][302];
+
     public static char[][] readMap(String fileName) {
 	map = new char[102][302];
 
@@ -44,5 +54,41 @@ public class Map{
 	System.out.println(retStr);
 	return retStr;
     }
- 
+    
+    //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
+    public static void zoom(int in){
+	boundaries[0] += 5 * in;
+	boundaries[1] += 5 * in;
+	boundaries[2] -= 5 * in;
+	boundaries[3] -= 5 * in;
+    }
+
+    //pans boundaries. takes half of old map, half of new direction. -2 - down, -1 - left, 1 - right, 2 - up
+    //DEFAULT SPACING OF BOUNDARY SHOULD BE EVEN!!! -loY and hiY are opposite parity
+	//-2 - down -1 - left 1 - right 2 - up
+	public static void pan(int dir){
+		
+		switch(dir){
+			case -2://e.g. 1,4 as Y's become 3,6 
+			boundaries[1] =  (boundaries[3] + boundaries[1]) / 2 + 1;
+			boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+			break;
+			case 2://e.g. 3,6 as Y's become 1,4
+			boundaries[3] = (boundaries[3] + boundaries[1]) / 2;
+			boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
+			break;
+			case -1://same as case 2 for x.
+			boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
+			boundaries[0] -= (boundaries[2] - boundaries[0]) + 1;
+			break;
+			case 1:
+			boundaries[0] = (boundaries[2] + boundaries[0]) / 2 + 1;
+			boundaries[2] += (boundaries[2] - boundaries[0]) + 1;
+			break;	
+			default:
+			System.out.println("Invalid pan");
+			break;
+		}
+		
+	}
 }
