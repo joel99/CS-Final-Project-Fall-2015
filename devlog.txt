@@ -20,7 +20,8 @@
 > Buggin out, Map ready for country data -> Todo: Update countries.txt! (Joel)
 
 
-=== 1//16 ===
+=== 1/15/16 ===
+> Update countries.txt with input location data.
 
 
 
