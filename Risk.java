@@ -60,17 +60,7 @@ public class Risk{
          2 - fortify
     *****************/
     private static int turnState = 0;
-
-    /****************
-cardBonus - this is incremented. we'll check that later
-    *****************/
-    private static int cardBonus = 0;
-
-	private static char[][] map;
-	
-	
-    //Wait function, for that authentic feel.
-    public static void wait(int ms){try {Thread.sleep(ms);} catch (InterruptedException ie) {}}
+        \
 	
     //@William - it'd be nice to make this generic, but I'm not sure how
     private static void swap( int i, int j , Country[] arr) {
