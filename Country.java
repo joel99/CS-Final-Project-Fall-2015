@@ -13,7 +13,7 @@ public class Country{
 	
 	private int troops;
 	private int borders[];	//holds ids of bordering countries
-	private int[] mapLoc;
+	private int[] mapLoc; 	//stored in proper y,x format.
 	
 	/*
 	public Country(int id){

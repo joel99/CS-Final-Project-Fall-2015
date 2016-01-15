@@ -222,7 +222,7 @@ cardBonus - this is incremented. we'll check that later
 		input = line.split("_");
 				
 		countriesIn[ctr] = input[0];
-		allMapLoc[ctr][0] = Integer.parseInt(input[1]); 
+		allMapLoc[ctr][0] = Integer.parseInt(input[1]);
 		allMapLoc[ctr][1] = Integer.parseInt(input[2]);
 		for (int i = 3; i < input.length; i++)    
 			allBorders[ctr][i-1] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
