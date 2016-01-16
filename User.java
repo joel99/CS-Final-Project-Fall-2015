@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class User{
 
-    private id;
+    private int id;
     private ArrayList <Card> cards;
     private ArrayList <Country> countriesOwned;
     private String name;

@@ -2,17 +2,9 @@
  class Game - stores all game data. Can be saved to txt
 *********************/
 public class Game{
-    private int numPlayers = 6;
-    
-    private User[] users = new User[6];
-    for (int i = 0; i < users.length; i++) {
-	users[i] = new Player(i);
-    }
 
-    /****************
-     boundaries - holds default map bounds in form loX, loY, hiX, hiY
-    *****************/
-    private int[] boundaries = {0, 0, 149, 99}; //even amount of spots pls tyvm 
+
+	public static String[] turnStateNames = {"Reinforce","Attack", "Fortify"};
 
     /****************
      phase - int describing game state.
@@ -30,12 +22,12 @@ public class Game{
              Save Game
              Exit
     ****************/
-    private static int phase = 0; 
+    private static int phase; 
     
     /****************
      turn - tracks player turn if phase is 1
     *****************/
-    private static int turn = -1;
+    private static int turn;
     
     /****************
      turnState - more fine status on turnState.
@@ -44,8 +36,81 @@ public class Game{
                      set turnState to 0.
          2 - fortify
     *****************/
-    private static int turnState = 0;
+    private static int turnState;
 
-
+	    
+	private User[] users;
+	private Map map;
+	
+    
+	public Game(int numPlayers, String filename){
+	users = new User[numPlayers]; 
+	for (int i = 0; i < numPlayers; i++) 
+		users[i] = new Player(i);
+	map = new Map(filename);
+	phase = 0;
+	turn = -1;
+	turnState = 0;
+	}
+	
+	public int getPhase(){
+		return phase;
+	}
+	
+	public int getTurn(){
+		return turn;
+	}
+	
+	public int getTurnState(){
+		return turnState;
+	}
+	
+	public User[] getUsers(){
+		return users;
+	}
+	
+	public void setTurn(int newTurn){
+		turn = newTurn;
+	}
+	
+	public int nextTurn(){
+		if (turn == users.length - 1)
+			turn = 0;
+		else
+			turn++;
+		return turn;
+	}
+	
+	public int setPhase(int newPhase){
+		phase = newPhase;
+		return phase;
+	}
+	
+	public int nextTurnState(){
+		if (turnState == 2)
+			turnState = 0;
+		else
+			turnState++;
+		return turnState;
+	}
+	
+	//assume no wrapping problems (b/c we're good with this stuff right :))
+    public void update(Country c){
+		int[] coords = c.getMapLoc();
+		int y = coords[0]; //x,y are inverted, but let's not get bogged down...;
+		int x = coords[1];
+		String stat = c.status();
+		//REMEMBER TO UPDATE w/ NICKNAME!!!
+		//User id here:
+		map.set(x++,y, users[Integer.parseInt(stat.substring(0,1))].getNick());
+		x++; //for the space
+		for (int i = 1; i < stat.length(); i++)
+		    map.set(x++,y, stat.charAt(i));
+		//first char is userId, convert to user info. Track owner or ownerId????
+	}
+	
+	public String printMap(){
+		return map.printMap();
+	}
 
 }

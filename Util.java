@@ -5,11 +5,11 @@
 
 public class Util{
     
-    public static int[] cardBonus = [4, 6, 8, 10, 12, 15];
+    public final int[] cardBonus = {4, 6, 8, 10, 12, 15};
 
     public int cardBonusCtr = 0; //num sets traded in so far
 
-    public static int getCardReinforce(){
+    public int getCardReinforce(){
 	cardBonusCtr++;
 	if (cardBonusCtr > cardBonus.length)
 	    return (cardBonusCtr - cardBonus.length) * 5 + cardBonus[cardBonus.length - 1];
