@@ -9,7 +9,7 @@ public class Map{
     /****************
      boundaries - holds default map bounds in form loX, loY, hiX, hiY
     *****************/
-    private int[] boundaries = {0, 0, 149, 99};
+    private int[] boundaries = {0, 0, 70, 30};
     private char[][] map;
 	
     public char[][] readMap(String fileName) {
@@ -41,22 +41,18 @@ public class Map{
 	return map;
     }
 
-    public String printMap(){
+    public String toString(){
 	String retStr = "";
-	int max1 = Math.max(boundaries[3], map.length);
-	int max2 = Math.max(boundaries[2], map.length);
+	int max1 = Math.min(boundaries[3], map.length);
+	int max2 = Math.min(boundaries[2], map[0].length);
 	for (int lineNum = Math.min(boundaries[1], 0); lineNum < max1; lineNum++) {
-	    for (int chNum = Math.min(boundaries[0], 0); chNum < max2; chNum++) 
+	    for (int chNum = Math.min(boundaries[0], 0); chNum < max2; chNum++) {
 		retStr += map[lineNum][chNum];
+	    }		
 	    retStr += "\n";
 	}
-	System.out.println(retStr);
 	return retStr;
     }
-	
-	public void set(int x, int y, char newVal){
-		map[y][x] = newVal;
-	}
 	
 	
     
@@ -70,31 +66,31 @@ public class Map{
 
     //pans boundaries. takes half of old map, half of new direction. -2 - down, -1 - left, 1 - right, 2 - up
     //DEFAULT SPACING OF BOUNDARY SHOULD BE EVEN!!! -loY and hiY are opposite parity
-	//-2 - down -1 - left 1 - right 2 - up
-	public void pan(int dir){
+    //-2 - down -1 - left 1 - right 2 - up
+    public void pan(int dir){
 		
-		switch(dir){
-			case -2://e.g. 1,4 as Y's become 3,6 
-			boundaries[1] =  (boundaries[3] + boundaries[1]) / 2 + 1;
-			boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
-			break;
-			case 2://e.g. 3,6 as Y's become 1,4
-			boundaries[3] = (boundaries[3] + boundaries[1]) / 2;
-			boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
-			break;
-			case -1://same as case 2 for x.
-			boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
-			boundaries[0] -= (boundaries[2] - boundaries[0]) + 1;
-			break;
-			case 1:
-			boundaries[0] = (boundaries[2] + boundaries[0]) / 2 + 1;
-			boundaries[2] += (boundaries[2] - boundaries[0]) + 1;
-			break;	
-			default:
-			System.out.println("Invalid pan");
-			break;
-		}
-		
+	switch(dir){
+	case -2://e.g. 1,4 as Y's become 3,6 
+	    boundaries[1] =  (boundaries[3] + boundaries[1]) / 2 + 1;
+	    boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+	    break;
+	case 2://e.g. 3,6 as Y's become 1,4
+	    boundaries[3] = (boundaries[3] + boundaries[1]) / 2;
+	    boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
+	    break;
+	case -1://same as case 2 for x.
+	    boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
+	    boundaries[0] -= (boundaries[2] - boundaries[0]) + 1;
+	    break;
+	case 1:
+	    boundaries[0] = (boundaries[2] + boundaries[0]) / 2 + 1;
+	    boundaries[2] += (boundaries[2] - boundaries[0]) + 1;
+	    break;	
+	default:
+	    System.out.println("Invalid pan");
+	    break;
 	}
+		
+    }
 
 }
