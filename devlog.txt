@@ -23,3 +23,6 @@
 
 === 1/17/16 ===
 > Added structure for calculating number of reinforcements player gets at beginning of a turn. (Joel)
+
+=== 1/18/16 === 
+> Reinforcements overarching command flow complete. (Joel)
