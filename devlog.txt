@@ -23,6 +23,8 @@
 
 === 1/17/16 ===
 > Added structure for calculating number of reinforcements player gets at beginning of a turn. (Joel)
+> Implemented system to distribute countries at start of reinforcements phase (William)
+> Added primitive system of saving a game (William)
 
 === 1/18/16 === 
 > Reinforcements overarching command flow complete. (Joel)
