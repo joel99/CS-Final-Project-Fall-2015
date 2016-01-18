@@ -91,4 +91,9 @@ public class Country {
 		return id - other.getId();
 	}
 	
+	public boolean equals(String str){
+		return name.toLowerCase().equals(str.toLowerCase());
+	}
+	
+	
 }

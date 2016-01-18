@@ -127,25 +127,65 @@ public class Risk{
 	    case "s":
 		game.setTurn((int)(Math.random()*6)+1);
 		
+		//Initial reinforcement phase
+		//blahblah something similar to case 0, skipping others.
+		
+		game.setPhase(1);
+		
+		while(game.getReinforcements() > 0) {
+			
+				//snake pick...
+					
+					System.out.println("Please select a country.");
+					
+				    game.parse(in.nextLine()); //user-entered country
+				    
+					boolean countryAdded = false; //used to tell user country is invalid
+
+				    for (Country c : countries) { //for every country in country array
+					if (c.getName().equals(countryStr)) { //linear search
+
+					    game.getCurrentUser().add(c);
+						
+					    countryAdded = true;
+						System.out.println(");
+						
+					    game.useReinforcement();
+					    break;
+					}
+			}
+		}
+		
+		
+		//Game looping
+		
+		game.setPhase(2);
+		
 		while (game.getTurn() != -1){
 		    switch(game.getTurnState()){
 		    case 0: //REINFORCE
 			while(game.getTurn() <= game.getUsers().length){ //do for every player
 			    //don't want to refill troops if process is cut off
-			    if (game.getReinforcements() == 0) { 
-				game.calcReinforce();
-			    }
+			    if (game.getReinforcements() == 0)
+					game.calcReinforce();
 			    
 			    while(game.getReinforcements() > 0) {
-				//distribute country
-				
-				    String countryStr = in.nextLine(); //user-entered country
-				    boolean countryAdded = false; //used to tell user country is invalid
+				//distribute given reinforcements among user owned countries.
+					
+					System.out.println("Please select a country to reinforce.");
+					
+				    game.parse(in.nextLine()); //user-entered country
+				    
+					boolean countrySelected = false; //used to tell user country is invalid
 
 				    for (Country c : countries) { //for every country in country array
-					if (c.getName().equals(countryStr)) { //linear search
-					    game.getCurrentUser().add(c);
-					    countryAdded = true;
+					if (c.equals(countryStr)) { //linear search
+						game.logBoundaries();
+						game.zoom(c);
+					    countrySelected = true;
+						System.out.println("How many troops do you want to add?");
+						if ()
+						
 					    game.useReinforcement();
 					    break;
 					}

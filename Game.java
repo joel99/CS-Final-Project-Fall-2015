@@ -130,9 +130,12 @@ public class Game{
 	reinforcements = getCurrentUser().calcReinforcements();
     }
 
-    public void useReinforcement() {
-	reinforcements--;
+    public void useReinforcement(int num) {
+		reinforcements -= num;
     }
+	public void useReinforcement(){
+		reinforcements--;
+	}
 
     public void writeSave() {
 	try {
@@ -151,6 +154,17 @@ public class Game{
     public int calcNumSaves() {
 	return 0;
     }
+	
+	public String parse(String str){//takes actions, but returns String for explicit commands
+		if (str == "exit" || "e")
+			return "QUIT"
+		if (phase == 2)
+			if (turnState == 0){
+				
+			}
+				
+	}
+	
 	
 
 }
