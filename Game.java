@@ -41,6 +41,7 @@ public class Game{
 	    
     private User[] users;
     private Map map;
+	private int reinforcements;
 	
     
     public Game(int numPlayers, String filename){
@@ -112,5 +113,15 @@ public class Game{
     public void printMap(){
 	System.out.println(map);
     }
+	
+	public int getReinforcements(){
+		return reinforcements;
+	}
+	
+	public void calcReinforce(){
+		reinforcements = users[turn].calcReinforcements();
+	}
+	
+	
 
 }

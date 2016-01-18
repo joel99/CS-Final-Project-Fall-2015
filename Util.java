@@ -5,6 +5,16 @@
 
 public class Util{
     
+	public static final Continent nAm = new Continent("North America", 5, 1, 10);
+	public static final Continent sAm = new Continent ("South America", 2, 10, 14);
+	public static final Continent africa = new Continent("Africa", 3, 14, 20);
+	public static final Continent europe = new Continent("Europe", 5, 20, 27);
+	public static final Continent australia = new Continent("Australia", 2, 27, 31);
+	public static final Continent asia = new Continent("Asia", 7, 31, 43);
+
+	public static final Continent[] continents = {nAm, sAm, africa, europe, australia, asia};
+	
+	
     public final int[] cardBonus = {4, 6, 8, 10, 12, 15};
 
     public int cardBonusCtr = 0; //num sets traded in so far

@@ -15,5 +15,21 @@ public class Continent{
 		this.idLow = idLow;
 		this.idHigh = idHigh;
 	}
+	
+	public String toString(){
+		return name;
+	}
+	
+	public int getIdLow(){
+		return idLow;
+	}
+	
+	public int getIdHigh(){
+		return idHigh;
+	}
+	
+	public int getBonus(){
+		return bonus;
+	}
 
 }

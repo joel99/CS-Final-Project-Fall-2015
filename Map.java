@@ -92,5 +92,15 @@ public class Map{
 	}
 		
     }
+	
+	public char get(int x, int y){
+		return map[y][x];
+	}
+	
+	public char set(int x, int y, char c){
+		char temp = get(x,y);
+		map[y][x] = c;
+		return temp;
+	}
 
 }

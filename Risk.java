@@ -16,14 +16,6 @@ public class Risk{
 	//LOADING COUNTRIES
 	//Loading of Continents and Countries show 2 different methods of mass-object creation, I guess...
 	//{
-	Continent nAm = new Continent("North America", 5, 1, 10);
-	Continent sAm = new Continent ("South America", 2, 10, 14);
-	Continent africa = new Continent("Africa", 3, 14, 20);
-	Continent europe = new Continent("Europe", 5, 20, 27);
-	Continent australia = new Continent("Australia", 2, 27, 31);
-	Continent asia = new Continent("Asia", 7, 31, 43);
-
-	Continent[] continents = {nAm, sAm, africa, europe, australia, asia};
 		
 	//Example of file parsing
 	int numCountries = 42;
@@ -131,14 +123,36 @@ public class Risk{
 			game.setTurn((int)(Math.random()*6)+1);
 		
 			while (game.getTurn() != -1){
+				switch(game.getTurnState()){
+					case 0: //REINFORCE
+					game.calcReinforce();
+					while(game.getReinforcements() > 0){
+						
+					}
+					break;
+					case 1: //ATTACK
+					while(in.nextLine().substring(0,1) != "e"){
+						
+					}
+					break;
+					case 2: //FORTIFY
+					while(in.nextLine().substring(0,1) != "e"){
+						
+					}
+					break;
+				}
 				//game.nextTurnState();
 				switch(in.nextLine().substring(0,1)){
 				case "e":
 					game.setTurn(-1);
 					break;
-			
-			
-			
+				
+				
+				
+				
+				
+				}
+				game.nextTurn();
 			}
 			break;
 			
@@ -148,5 +162,4 @@ public class Risk{
 		
 	}	
 		
-    }
 }

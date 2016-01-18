@@ -2,7 +2,7 @@
  Class Country
  **********************/ 
 
-public class Country{
+public class Country {
 
 	//no need to store continents, tracked in id.
 	private int id;
@@ -42,6 +42,10 @@ public class Country{
 		return ownerId;
 	}
 	
+	public int getId(){
+		return id;
+	}
+	
 	/*
 	public User getOwner(){
 		return owner;
@@ -79,6 +83,12 @@ public class Country{
 	//for update function
 	public String status(){
 		return Integer.toString(ownerId) + Integer.toString(getTroops());
+	}
+	
+	public int compareTo(Country other){ //not actually a comparable class :)
+		if (other == null)
+			throw new NullPointerException();
+		return id - other.getId();
 	}
 	
 }
