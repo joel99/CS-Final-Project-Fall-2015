@@ -173,19 +173,32 @@ public class Risk{
 				//distribute given reinforcements among user owned countries.
 					
 					System.out.println("Please select a country to reinforce.");
+					boolean validInput = false;
 					
-				    game.parse(in.nextLine()); //user-entered country
-				    
-					boolean countrySelected = false; //used to tell user country is invalid
-
-				    for (Country c : countries) { //for every country in country array
-					if (c.equals(countryStr)) { //linear search
-						game.logBoundaries();
-						game.zoom(c);
-					    countrySelected = true;
-						System.out.println("How many troops do you want to add?");
-						if ()
+					while (!validInput){	//validInput condition: input country is valid.
+						try{
+							Country c = countryIdentify(game.parse(in.nextLine()));
+							validInput = true;
+						}
+						catch{
+							System.out.println("Invalid country.");
+						}
+					}
+					
+					game.logBoundaries();
+					game.zoom(c);
 						
+					System.out.println("How many troops do you want to add?");
+					validInput = false;
+					
+					while (!validInput){ //validInput condition: input is a number <= reinforcements.
+						try{
+							int num = Integer.parseInt(in.nextLine());
+							if ( num > game.getReinforcements())
+							.addTroopsreinforce()
+						}
+					}
+					
 					    game.useReinforcement();
 					    break;
 					}

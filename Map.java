@@ -54,6 +54,18 @@ public class Map{
 	return retStr;
     }
 	
+	public void logBoundaries(){
+		
+	}
+	
+	public void zoom(Country c){
+		
+	}
+	
+	public zoom(Country c1, Country c2){
+		
+	}
+	
 	
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)

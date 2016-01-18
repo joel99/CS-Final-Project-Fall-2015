@@ -158,12 +158,27 @@ public class Game{
 	public String parse(String str){//takes actions, but returns String for explicit commands
 		if (str == "exit" || "e")
 			return "QUIT"
-		if (phase == 2)
-			if (turnState == 0){
-				
-			}
+		return str;
+		//if (phase == 2)
+			//if (turnState == 0){
+			//	
+			//}
 				
 	}
+	
+	public Country countryIdentify(String str){
+		//do something with id's or shortened name here.
+		try(){
+		}
+		catch{
+			
+		}
+		
+		//linear search mechanism
+		//but where's countries :(
+		
+	}
+	
 	
 	
 
