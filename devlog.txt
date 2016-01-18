@@ -1,31 +1,25 @@
 === 12/28/15 ===
 > Added skeleton files (Joel)
 
-
 === 12/30/15 ===
 > Added country data (names, adjacent countries, etc.) (William) 
 > Added txt file containing Risk rules (Joel)
-
 
 === 1/9/16 ===
 > Started developing system to display Risk map (Joel)
 > Added txt file of ASCII map (Joel)
 
-
 === 1/10/16 ===
 > Parsed ASCII map into Java 2D Array (William)
-
 
 === 1/12/16 ===
 > Buggin out, Map ready for country data -> Todo: Update countries.txt! (Joel)
 
-
 === 1/15/16 ===
 > Update countries.txt with input location data.
-
-
 
 === 1/16/16 ===
 > Risk.java split to Map.java, Util.java, Game.java
 
-
+=== 1/17/16 ===
+> Added structure for calculating number of reinforcements player gets at beginning of a turn. (Joel)
