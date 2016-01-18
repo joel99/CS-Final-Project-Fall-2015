@@ -10,6 +10,7 @@ public class Map{
      boundaries - holds default map bounds in form loX, loY, hiX, hiY
     *****************/
     private int[] boundaries = {0, 0, 70, 30};
+	private int[] tempBoundaries = {0, 0, 70, 30};
     private char[][] map;
 	
     public char[][] readMap(String fileName) {
@@ -54,16 +55,33 @@ public class Map{
 	return retStr;
     }
 	
+	
+	//hard copy - otherwise if we just set tempBoundaries to Boundaries, it'll be same pointer
+	//i.e. changing one will change the other...
 	public void logBoundaries(){
-		
+		for (int i = 0; i < 4; i++)
+			tempBoundaries[i] = boundaries[i];
 	}
 	
-	public void zoom(Country c){
-		
+	public void resetZoom(){
+		for (int i = 0; i < 4; i++)
+			boundaries[i] = tempBoundaries[i];
 	}
 	
-	public zoom(Country c1, Country c2){
-		
+	//makes a square zoom around w/e.
+	public void zoom(int[] coords, int lvl){
+		boundaries[0] = coords[1] - 10 * lvl;
+		boundaries[1] = coords[0] - 10 * lvl;
+		boundaries[2] = coords[1] + 10 * lvl;
+		boundaries[3] = coords[0] + 10 * lvl;
+	}
+	
+	public void zoom(Country c, int lvl){//lvl - 1 for closest, 2 for reasonable distance
+		zoom(c.getMapLoc(), lvl);
+	}
+	
+	public void zoom(Country c1, Country c2){
+		zoom(Util.average(c1.getMapLoc(),c2.getMapLoc()), 3);
 	}
 	
 	

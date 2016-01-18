@@ -44,4 +44,11 @@ public class Util{
 	}
     }
 
+	//assuming same length;
+	public static int[] average(int[] i1, int[] i2){
+		int[] ret = new int[i1.length];
+		for (int i = 0; i < i1.length; i++)
+			ret[i] = (i1[i] + i2[i])/2;
+		return ret;
+	}
 }

@@ -13,6 +13,8 @@ public class Risk{
 	
     public static void main(String[] args){	
 	
+	boolean validInput; //Used for all sorts of control flow.
+	
 	//LOADING COUNTRIES
 	//Loading of Continents and Countries show 2 different methods of mass-object creation, I guess...
 	//{
@@ -131,7 +133,7 @@ public class Risk{
 		//blahblah something similar to case 0, skipping others.
 		
 		game.setPhase(1);
-		
+		/*
 		while(game.getReinforcements() > 0) {
 			
 				//snake pick...
@@ -155,75 +157,102 @@ public class Risk{
 					}
 			}
 		}
-		
+		*/
 		
 		//Game looping
 		
 		game.setPhase(2);
 		
 		while (game.getTurn() != -1){
+			
+			game.setConquered(false); //Don't set in reinforce in case of card bonus.
+			//CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
+			
 		    switch(game.getTurnState()){
+				
 		    case 0: //REINFORCE
-			while(game.getTurn() <= game.getUsers().length){ //do for every player
-			    //don't want to refill troops if process is cut off
+			
 			    if (game.getReinforcements() == 0)
 					game.calcReinforce();
-			    
+				
 			    while(game.getReinforcements() > 0) {
 				//distribute given reinforcements among user owned countries.
-					
+				
+				//lmao no panning while zoomed.
+					game.printMap();
 					System.out.println("Please select a country to reinforce.");
-					boolean validInput = false;
+					Country c = countries[0]; //for initialization fears...
+					validInput = false;
 					
 					while (!validInput){	//validInput condition: input country is valid.
-						try{
-							Country c = countryIdentify(game.parse(in.nextLine()));
-							validInput = true;
-						}
-						catch{
-							System.out.println("Invalid country.");
+						String input = in.nextLine();
+						if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+							try{
+								c = game.countryIdentify(input);
+								if (game.getCurrentUser().owns(c.getId())){
+									validInput = true;
+								}
+								else
+									System.out.println("You do not own " + c + ".");
+							}
+							catch(Exception e){
+								System.out.println("Error: Invalid country '" + input + "'.");
+							}
 						}
 					}
-					
-					game.logBoundaries();
-					game.zoom(c);
 						
+					game.getMap().logBoundaries();
+					game.getMap().zoom(c, 1);
+					game.printMap();
+					
 					System.out.println("How many troops do you want to add?");
 					validInput = false;
 					
 					while (!validInput){ //validInput condition: input is a number <= reinforcements.
-						try{
+						try{//consider breaking in a do/while loop??? I unno how to use that.
 							int num = Integer.parseInt(in.nextLine());
-							if ( num > game.getReinforcements())
-							.addTroopsreinforce()
+							if (num > game.getReinforcements())
+								System.out.println("The amount specified is more than you have.");
+							else if (num <= 0)
+								System.out.println("Please specify a positive amount.");
+							else{
+								c.addTroops(num);
+								game.update(c);
+								game.useReinforcements(num);
+								game.getMap().resetZoom();
+							}
+						}
+						catch(Exception e){
+							System.out.println("Invalid number.");
 						}
 					}
-					
-					    game.useReinforcement();
-					    break;
-					}
-				    }
-				    
-				    if (!countryAdded) { //if the linear search failed
-					System.out.println("Error: Invalid country '" + countryStr + "'");
-				    }
-			    }
-			    game.nextTurn();
-			}
+				
+				} 
+				
+				
+			    game.nextTurnState();
 			      
 			break;
 		    case 1: //ATTACK
-			while(in.nextLine().substring(0,1) != "e"){
-						
-			}
+				while(in.nextLine().substring(0,1) != "e"){
+							
+				}
 			break;
 		    case 2: //FORTIFY
-			while(in.nextLine().substring(0,1) != "e"){
-						
-			}
-			break;
+				boolean end = false;
+				
+				while(!end){
+					
+					System.out.println("Select a country to fortify from");
+					validInput = false;
+				
+				
+				}
+				
+				game.nextTurnState();
+				game.nextTurn();
+		    break;
 		    }
-		    //game.nextTurnState();
 		    switch(in.nextLine().substring(0,1)){
 		    case "e":
 			game.setTurn(-1);

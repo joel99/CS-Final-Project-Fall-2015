@@ -46,7 +46,7 @@ public class Game{
     private User[] users;
     private Map map;
     private int reinforcements;
-	
+	private boolean conqueredAny;
     
     public Game(int numPlayers, String filename){
 	users = new User[numPlayers]; 
@@ -117,6 +117,11 @@ public class Game{
     public void printMap(){
 	System.out.println(map);
     }
+	
+	public Map getMap(){
+		return map;
+	}
+	
 
     public User getCurrentUser() {
 	return users[turn];
@@ -130,10 +135,10 @@ public class Game{
 	reinforcements = getCurrentUser().calcReinforcements();
     }
 
-    public void useReinforcement(int num) {
+    public void useReinforcements(int num) {
 		reinforcements -= num;
     }
-	public void useReinforcement(){
+	public void useReinforcements(){
 		reinforcements--;
 	}
 
@@ -155,30 +160,56 @@ public class Game{
 	return 0;
     }
 	
+	//checks for generic commands
 	public String parse(String str){//takes actions, but returns String for explicit commands
-		if (str == "exit" || "e")
-			return "QUIT"
-		return str;
-		//if (phase == 2)
-			//if (turnState == 0){
-			//	
-			//}
-				
+		String ret = "";
+		switch(str){
+			case "exit": case "e":
+				ret = "QUIT";
+			break;
+			case "j":
+				map.pan(-1);
+				ret = "Panned.";
+			break;
+			case "k":
+				map.pan(-2);
+				ret = "Panned.";
+			break;
+			case "l":
+				map.pan(1);
+				ret = "Panned.";
+			break;
+			case "i":
+				map.pan(2);
+				ret = "Panned.";
+			break;
+			default:
+				ret = str;
+			break;
+		}	
+		return ret;
 	}
 	
 	public Country countryIdentify(String str){
 		//do something with id's or shortened name here.
-		try(){
+		try{
 		}
-		catch{
+		catch(Exception e){
 			
 		}
 		
 		//linear search mechanism
 		//but where's countries :(
-		
+		return ??
 	}
 	
+	public boolean conqueredAny(){
+		return conqueredAny;
+	}
+	
+	public void setConquered(boolean b){
+		conqueredAny = b;
+	}
 	
 	
 
