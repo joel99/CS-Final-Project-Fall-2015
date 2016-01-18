@@ -1,11 +1,15 @@
 /*********************
  class Game - stores all game data. Can be saved to txt
 *********************/
+
+import java.io.*;
+
 public class Game{
-
-
+    
     public static String[] turnStateNames = {"Reinforce","Attack", "Fortify"};
 
+    private String saveFileName = "saves/game1.rdat";
+    
     /****************
      phase - int describing game state.
         -1 - exit (to break out of while loop).
@@ -130,7 +134,23 @@ public class Game{
 	reinforcements--;
     }
 
-    
+    public void writeSave() {
+	try {
+	    FileWriter fileWriter = new FileWriter(saveFileName);
+	    BufferedWriter saveFile = new BufferedWriter(fileWriter);
+
+	    saveFile.write("test");
+
+	    saveFile.close();
+	}
+	catch(IOException ex) {
+            System.out.println("Error writing to file '" + saveFileName + "'");
+        }
+    }
+
+    public int calcNumSaves() {
+	return 0;
+    }
 	
 
 }

@@ -101,6 +101,9 @@ public class Risk{
 			
 	game.printMap();
 
+	//TEST
+	game.writeSave();
+
 	
 	
 	//Check for anyone owns continent.
