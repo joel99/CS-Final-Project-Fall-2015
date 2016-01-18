@@ -37,12 +37,12 @@ public class User{
     }
 	
     public void add(Country c){ //Add in order so that we can check continent ownership easier
-		for (int i = 0; i < countriesOwned.size(); i++)
-			if (c.compareTo(countriesOwned.get(i)) < 0){
-				countriesOwned.add(i,c);
-				return;
-			}
-		countriesOwned.add(c);	//if input country has highest id.
+	for (int i = 0; i < countriesOwned.size(); i++)
+	    if (c.compareTo(countriesOwned.get(i)) < 0){
+		countriesOwned.add(i,c);
+		return;
+	    }
+	countriesOwned.add(c);	//if input country has highest id.
     }
 	
     public ArrayList<Country> getCountries(){
@@ -53,35 +53,35 @@ public class User{
 	return nickname;
     }
 	
-	public int numTroops(){
-		int n = 0;
-		for (Country c: countriesOwned)
-			n += c.getTroops();
-		return n;
-	}
+    public int numTroops(){
+	int n = 0;
+	for (Country c: countriesOwned)
+	    n += c.getTroops();
+	return n;
+    }
   
-	public boolean owns(int id){//check if own a certain country.
-		for (Country c: countriesOwned)
-			if (c.getId() == id)
-				return true;
-		return false;
-	}
-	public int calcReinforcements(){//aw, who needs .contains anyways...
-		//calculate number of continents owned
-		int continentBonus = 0;
-		int countryCtr = 0;
-		for (Continent c: Util.continents){
-			boolean ownsThis = true;
-			for (int i = c.getIdLow(); i < c.getIdHigh(); i++)
-				if (!owns(i)){
-					ownsThis = false;
-					break;
-				}
-			if (ownsThis) 
-				continentBonus += c.getBonus();
+    public boolean owns(int id){//check if own a certain country.
+	for (Country c: countriesOwned)
+	    if (c.getId() == id)
+		return true;
+	return false;
+    }
+    public int calcReinforcements(){//aw, who needs .contains anyways...
+	//calculate number of continents owned
+	int continentBonus = 0;
+	int countryCtr = 0;
+	for (Continent c: Util.continents){
+	    boolean ownsThis = true;
+	    for (int i = c.getIdLow(); i < c.getIdHigh(); i++)
+		if (!owns(i)){
+		    ownsThis = false;
+		    break;
 		}
-		return (Math.max(3,numTroops() / 3) + continentBonus);
+	    if (ownsThis) 
+		continentBonus += c.getBonus();
 	}
+	return (Math.max(3,numTroops() / 3) + continentBonus);
+    }
 	
     public char setNick(char nick){
 	char temp = getNick();

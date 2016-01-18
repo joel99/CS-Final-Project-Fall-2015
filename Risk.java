@@ -20,7 +20,7 @@ public class Risk{
 	//Example of file parsing
 	int numCountries = 42;
 	String fileName = "countries.txt";
-    String[] countriesIn = new String[numCountries];
+	String[] countriesIn = new String[numCountries];
 	
 	int[][] allMapLoc = new int[numCountries][2];
 	int[][] allBorders = new int[numCountries][6];//max border count is 6
@@ -43,8 +43,8 @@ public class Risk{
 		allMapLoc[ctr][0] = Integer.parseInt(input[1]);
 		allMapLoc[ctr][1] = Integer.parseInt(input[2]);
 		for (int i = 3; i < input.length; i++){    
-			System.out.println(input[i]);
-			allBorders[ctr][i-3] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
+		    System.out.println(input[i]);
+		    allBorders[ctr][i-3] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
 		}
 		ctr++;
 	    }
@@ -99,7 +99,9 @@ public class Risk{
 		game.getUsers()[i].add(countries[i*7+j]);
 	    }	
 			
-	game.printMap();   
+	game.printMap();
+
+	
 	
 	//Check for anyone owns continent.
 	//for (int i = 0; i < 42; i++){
@@ -108,58 +110,82 @@ public class Risk{
 
 	Scanner in = new Scanner(System.in);
 	while(game.getPhase() != -1){
-		switch(in.nextLine().substring(0,1)){
+	    switch(in.nextLine().substring(0,1)){
 			
-			//"e": exit
-			case "e": System.out.println("Now exiting Risk.");
-			break;
+		//"e": exit
+	    case "e": System.out.println("Now exiting Risk.");
+		break;
 			
-			//"o": options
-			case "o":
-			break;
+		//"o": options
+	    case "o":
+		break;
 			
-			//"s": start game
-			case "s":
-			game.setTurn((int)(Math.random()*6)+1);
+		//"s": start game
+	    case "s":
+		game.setTurn((int)(Math.random()*6)+1);
 		
-			while (game.getTurn() != -1){
-				switch(game.getTurnState()){
-					case 0: //REINFORCE
-					game.calcReinforce();
-					while(game.getReinforcements() > 0){
-						
+		while (game.getTurn() != -1){
+		    switch(game.getTurnState()){
+		    case 0: //REINFORCE
+			while(game.getTurn() <= game.getUsers().length){ //do for every player
+			    //don't want to refill troops if process is cut off
+			    if (game.getReinforcements() == 0) { 
+				game.calcReinforce();
+			    }
+			    
+			    while(game.getReinforcements() > 0) {
+				//distribute country
+				
+				    String countryStr = in.nextLine(); //user-entered country
+				    boolean countryAdded = false; //used to tell user country is invalid
+
+				    for (Country c : countries) { //for every country in country array
+					if (c.getName().equals(countryStr)) { //linear search
+					    game.getCurrentUser().add(c);
+					    countryAdded = true;
+					    game.useReinforcement();
+					    break;
 					}
-					break;
-					case 1: //ATTACK
-					while(in.nextLine().substring(0,1) != "e"){
+				    }
+				    
+				    if (!countryAdded) { //if the linear search failed
+					System.out.println("Error: Invalid country '" + countryStr + "'");
+				    }
+			    }
+			    game.nextTurn();
+			}
+			      
+			break;
+		    case 1: //ATTACK
+			while(in.nextLine().substring(0,1) != "e"){
 						
-					}
-					break;
-					case 2: //FORTIFY
-					while(in.nextLine().substring(0,1) != "e"){
-						
-					}
-					break;
-				}
-				//game.nextTurnState();
-				switch(in.nextLine().substring(0,1)){
-				case "e":
-					game.setTurn(-1);
-					break;
-				
-				
-				
-				
-				
-				}
-				game.nextTurn();
 			}
 			break;
-			
-			
+		    case 2: //FORTIFY
+			while(in.nextLine().substring(0,1) != "e"){
+						
+			}
+			break;
+		    }
+		    //game.nextTurnState();
+		    switch(in.nextLine().substring(0,1)){
+		    case "e":
+			game.setTurn(-1);
+			break;
+				
+				
+				
+				
+				
+		    }
+		    game.nextTurn();
 		}
+		break;
+			
+			
+	    }
 	}
 		
-	}	
+    }	
 		
 }

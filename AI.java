@@ -3,5 +3,7 @@
  **********************/ 
 
 public class AI extends User{
-
+    public AI(int id) {
+	super(id);
+    }
 }

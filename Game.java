@@ -16,7 +16,7 @@ public class Game{
              Settings
              Exit
          1 - game start
-		 2 - game midgame
+	 2 - game midgame
          3 - in-game paused (settings)
          settings desc:
              Save Game
@@ -41,7 +41,7 @@ public class Game{
 	    
     private User[] users;
     private Map map;
-	private int reinforcements;
+    private int reinforcements;
 	
     
     public Game(int numPlayers, String filename){
@@ -113,15 +113,24 @@ public class Game{
     public void printMap(){
 	System.out.println(map);
     }
+
+    public User getCurrentUser() {
+	return users[turn];
+    }
+    
+    public int getReinforcements(){
+	return reinforcements;
+    }
 	
-	public int getReinforcements(){
-		return reinforcements;
-	}
-	
-	public void calcReinforce(){
-		reinforcements = users[turn].calcReinforcements();
-	}
-	
+    public void calcReinforce(){
+	reinforcements = getCurrentUser().calcReinforcements();
+    }
+
+    public void useReinforcement() {
+	reinforcements--;
+    }
+
+    
 	
 
 }
