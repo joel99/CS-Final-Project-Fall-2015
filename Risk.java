@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
  
 public class Risk{
-	
+    
     public static void main(String[] args){	
 	
 	boolean validInput; //Used for all sorts of control flow.
@@ -83,31 +83,7 @@ public class Risk{
 		//blahblah something similar to case 0, skipping others.
 		
 		game.setPhase(1);
-		/*
-		  while(game.getReinforcements() > 0) {
-			
-		  //snake pick...
-					
-		  System.out.println("Please select a country.");
-					
-		  game.parse(in.nextLine()); //user-entered country
-				    
-		  boolean countryAdded = false; //used to tell user country is invalid
 
-		  for (Country c : countries) { //for every country in country array
-		  if (c.getName().equals(countryStr)) { //linear search
-
-		  game.getCurrentUser().add(c);
-						
-		  countryAdded = true;
-		  System.out.println(");
-						
-		  game.useReinforcement();
-		  break;
-		  }
-		  }
-		  }
-		*/
 		
 		//Game looping
 		
@@ -121,63 +97,69 @@ public class Risk{
 		    switch(game.getTurnState()){
 				
 		    case 0: //REINFORCE
-			
-			if (game.getReinforcements() == 0)
-			    game.calcReinforce();
+			while (game.getTurn() <= game.getUsers().length) { 
+			    if (game.getReinforcements() == 0) //if saved in the middle of distr reinforcements
+				game.calcReinforce();
 				
-			while(game.getReinforcements() > 0) {
-			    //distribute given reinforcements among user owned countries.
+			    while(game.getReinforcements() > 0) {
+				//distribute given reinforcements among user owned countries.
 				
-			    //lmao no panning while zoomed.
-			    game.printMap();
-			    System.out.println("Please select a country to reinforce.");
-			    Country c = game.countries[0]; //for initialization fears...
-			    validInput = false;
+				//lmao no panning while zoomed.
+				game.printMap();
+				System.out.println("Player " + game.getCurrentUser() + "'s turn start:");
+				System.out.println("Please select a country to reinforce.");
+				Country c = game.countries[0]; //for initialization fears...
+				validInput = false;
 					
-			    while (!validInput){	//validInput condition: input country is valid.
-				String input = in.nextLine();
-				if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
-				    try{
-					c = game.countryIdentify(input);
-					if (game.getCurrentUser().owns(c.getId())){
+				while (!validInput){	//validInput condition: input country is valid.
+				    String input = in.nextLine();
+				    if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					try{
+					    c = game.countryIdentify(input);
+					    if (game.getCurrentUser().owns(c.getId())){
+						validInput = true;
+					    }
+					    else
+						System.out.println("You do not own " + c + ".");
+					}
+					catch(Exception e){
+					    System.out.println("Error: Invalid country '" + input + "'.");
+					}
+				    }
+				}
+						
+				game.getMap().logBoundaries();
+				game.getMap().zoom(c, 1);
+				game.printMap();
+
+				System.out.println("You have " + game.getReinforcements() + " troop(s) remaining.");
+				System.out.println("How many troops do you want to add?");
+				validInput = false;
+					
+				while (!validInput){ //validInput condition: input is a number <= reinforcements.
+				    try{//consider breaking in a do/while loop??? I unno how to use that.
+					int num = Integer.parseInt(in.nextLine());
+					if (num > game.getReinforcements())
+					    System.out.println("The amount specified is more than you have.");
+					else if (num <= 0)
+					    System.out.println("Please specify a positive amount.");
+					else{
+					    c.addTroops(num);
+					    game.update(c);
+					    game.useReinforcements(num);
+					    game.getMap().resetZoom();
+					    System.out.println("Troops added!");				
 					    validInput = true;
 					}
-					else
-					    System.out.println("You do not own " + c + ".");
 				    }
 				    catch(Exception e){
-					System.out.println("Error: Invalid country '" + input + "'.");
+					System.out.println("Invalid number.");
 				    }
-				}
+				}			
 			    }
-						
-			    game.getMap().logBoundaries();
-			    game.getMap().zoom(c, 1);
-			    game.printMap();
-					
-			    System.out.println("How many troops do you want to add?");
-			    validInput = false;
-					
-			    while (!validInput){ //validInput condition: input is a number <= reinforcements.
-				try{//consider breaking in a do/while loop??? I unno how to use that.
-				    int num = Integer.parseInt(in.nextLine());
-				    if (num > game.getReinforcements())
-					System.out.println("The amount specified is more than you have.");
-				    else if (num <= 0)
-					System.out.println("Please specify a positive amount.");
-				    else{
-					c.addTroops(num);
-					game.update(c);
-					game.useReinforcements(num);
-					game.getMap().resetZoom();
-				    }
-				}
-				catch(Exception e){
-				    System.out.println("Invalid number.");
-				}
-			    }
-				
-			} 
+			    System.out.println("Player " + game.getCurrentUser() + "'s turn ended");
+			    game.nextTurn();
+			}
 				
 				
 			game.nextTurnState();

@@ -211,9 +211,28 @@ public class Game{
     }
 
     public int calcNumSaves() {
-	return 0;
+	return 0; //to be changed
     }
 	
+    
+    public Country countryIdentify(String str){
+	for (Country c : countries) { //for every country in country array
+	    if (c.getName().equals(str)) { //linear search
+		return c; 
+	    }
+	}
+	return null; //if no country exists with str as name
+	
+    }
+    
+    public boolean conqueredAny(){
+	return conqueredAny;
+    }
+	
+    public void setConquered(boolean b){
+	conqueredAny = b;
+    }
+
     //checks for generic commands
     public String parse(String str){//takes actions, but returns String for explicit commands
 	String ret = "";
@@ -242,29 +261,6 @@ public class Game{
 	    break;
 	}	
 	return ret;
-    }
-    
-    public Country countryIdentify(String str){
-	//do something with id's or shortened name here.
-	try{
-	}
-	catch(Exception e){
-			
-	}
-		
-	//linear search mechanism
-	//but where's countries :(
-	return new Country(3,"#",new int[3],new int[3]);
-    }
-    
-    public boolean conqueredAny(){
-	return conqueredAny;
-    }
-	
-    public void setConquered(boolean b){
-	conqueredAny = b;
-    }
-	
-	
+    }	
 
 }
