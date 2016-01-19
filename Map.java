@@ -52,6 +52,8 @@ public class Map{
 	    }		
 	    retStr += "\n";
 	}
+
+	//border here
 	return retStr;
     }
 	
