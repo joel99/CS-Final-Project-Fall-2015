@@ -21,3 +21,4 @@ ETD: Estimated time of delivery
 > Card Trade in caps reinforcements (see rules)
 > Multi-pronged attacks (deluxe, non-classic)
 > Map wrapping
+> Map border when printing (panning and zooming are disorienting as is)
