@@ -83,8 +83,6 @@ public class Map{
     public void zoom(Country c1, Country c2){
 	zoom(Util.average(c1.getMapLoc(),c2.getMapLoc()), 3);
     }
-	
-	
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
     public void zoom(int in){

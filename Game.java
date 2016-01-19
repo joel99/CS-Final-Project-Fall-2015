@@ -3,6 +3,7 @@
 *********************/
 
 import java.io.*;
+import java.util.*;
 
 public class Game{
     
@@ -201,7 +202,27 @@ public class Game{
 	    FileWriter fileWriter = new FileWriter(saveFileName);
 	    BufferedWriter saveFile = new BufferedWriter(fileWriter);
 
-	    saveFile.write("test");
+	    saveFile.write(saveFileName); //1
+		saveFile.newLine();
+		saveFile.write(Integer.toString(phase)); //2
+		saveFile.newLine();
+		saveFile.write(Integer.toString(turnState)); //3
+		saveFile.newLine();
+		saveFile.write(Integer.toString(turn)); //4
+		saveFile.newLine();
+		saveFile.write(users.toString()); //5
+		saveFile.newLine();
+		saveFile.write(map.toString()); //6
+		saveFile.newLine();
+		saveFile.write(Integer.toString(reinforcements)); //7
+		saveFile.newLine();
+		saveFile.write(Boolean.toString(conqueredAny)); //8
+		saveFile.newLine();
+		saveFile.write(Integer.toString(numCountries)); //9
+		saveFile.newLine();
+		saveFile.write(countries.toString()); //10
+		saveFile.newLine();
+		
 
 	    saveFile.close();
 	}
