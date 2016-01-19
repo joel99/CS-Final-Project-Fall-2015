@@ -41,12 +41,25 @@ public class Game{
          2 - fortify
     *****************/
     private static int turnState;
-
 	    
     private User[] users;
     private Map map;
     private int reinforcements;
-	private boolean conqueredAny;
+    private boolean conqueredAny;
+
+    int numCountries = 42;
+    String fileName = "countries.txt";
+    String[] countriesIn = new String[numCountries];
+    Country[] countries = new Country[numCountries];
+	
+    int[][] allMapLoc = new int[numCountries][2];
+    int[][] allBorders = new int[numCountries][6];//max border count is 6
+    /*
+      It's also valid to just use allBorders and the indices to
+      indicate which country's borders we're referring to, but here's
+      an excuse to use a 2d array.
+    */
+
     
     public Game(int numPlayers, String filename){
 	users = new User[numPlayers]; 
@@ -57,6 +70,48 @@ public class Game{
 	turn = -1;
 	turnState = 0;
     }
+
+
+    public void loadMap() {
+	//Loading of Continents and Countries show 2 different methods of mass-object creation, I guess...
+		
+	//Example of file parsing	
+	int ctr = 0;
+        try {
+	    String line = null;
+	    String[] input = null;
+            FileReader fileReader = new FileReader(fileName);
+	    BufferedReader bufferedReader = new BufferedReader(fileReader);
+            while((line = bufferedReader.readLine()) != null){
+		input = line.split("_");
+				
+		countriesIn[ctr] = input[0];
+		allMapLoc[ctr][0] = Integer.parseInt(input[1]);
+		allMapLoc[ctr][1] = Integer.parseInt(input[2]);
+		for (int i = 3; i < input.length; i++){    
+		    //System.out.println(input[i]);
+		    allBorders[ctr][i-3] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
+		}
+		ctr++;
+	    }
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+			       "Unable to open file '" + 
+			       fileName + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+			       "Error reading file '" 
+			       + fileName + "'");                  
+        }
+	        
+	for (int i = 0; i < numCountries; i++)
+	    countries[i] = new Country(i, countriesIn[i], allBorders[i], allMapLoc[i]);	
+	
+    }
+    
 	
     public int getPhase(){
 	return phase;
@@ -118,11 +173,10 @@ public class Game{
 	System.out.println(map);
     }
 	
-	public Map getMap(){
-		return map;
-	}
-	
-
+    public Map getMap(){
+	return map;
+    }
+    
     public User getCurrentUser() {
 	return users[turn];
     }
@@ -136,11 +190,11 @@ public class Game{
     }
 
     public void useReinforcements(int num) {
-		reinforcements -= num;
+	reinforcements -= num;
     }
-	public void useReinforcements(){
-		reinforcements--;
-	}
+    public void useReinforcements(){
+	reinforcements--;
+    }
 
     public void writeSave() {
 	try {
@@ -160,56 +214,56 @@ public class Game{
 	return 0;
     }
 	
-	//checks for generic commands
-	public String parse(String str){//takes actions, but returns String for explicit commands
-		String ret = "";
-		switch(str){
-			case "exit": case "e":
-				ret = "QUIT";
-			break;
-			case "j":
-				map.pan(-1);
-				ret = "Panned.";
-			break;
-			case "k":
-				map.pan(-2);
-				ret = "Panned.";
-			break;
-			case "l":
-				map.pan(1);
-				ret = "Panned.";
-			break;
-			case "i":
-				map.pan(2);
-				ret = "Panned.";
-			break;
-			default:
-				ret = str;
-			break;
-		}	
-		return ret;
+    //checks for generic commands
+    public String parse(String str){//takes actions, but returns String for explicit commands
+	String ret = "";
+	switch(str){
+	case "exit": case "e":
+	    ret = "QUIT";
+	    break;
+	case "j":
+	    map.pan(-1);
+	    ret = "Panned.";
+	    break;
+	case "k":
+	    map.pan(-2);
+	    ret = "Panned.";
+	    break;
+	case "l":
+	    map.pan(1);
+	    ret = "Panned.";
+	    break;
+	case "i":
+	    map.pan(2);
+	    ret = "Panned.";
+	    break;
+	default:
+	    ret = str;
+	    break;
+	}	
+	return ret;
+    }
+    
+    public Country countryIdentify(String str){
+	//do something with id's or shortened name here.
+	try{
 	}
-	
-	public Country countryIdentify(String str){
-		//do something with id's or shortened name here.
-		try{
-		}
-		catch(Exception e){
+	catch(Exception e){
 			
-		}
+	}
 		
-		//linear search mechanism
-		//but where's countries :(
-		return ??
-	}
+	//linear search mechanism
+	//but where's countries :(
+	return new Country(3,"#",new int[3],new int[3]);
+    }
+    
+    public boolean conqueredAny(){
+	return conqueredAny;
+    }
 	
-	public boolean conqueredAny(){
-		return conqueredAny;
-	}
-	
-	public void setConquered(boolean b){
-		conqueredAny = b;
-	}
+    public void setConquered(boolean b){
+	conqueredAny = b;
+    }
 	
 	
 

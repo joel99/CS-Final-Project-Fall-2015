@@ -14,62 +14,7 @@ public class Risk{
     public static void main(String[] args){	
 	
 	boolean validInput; //Used for all sorts of control flow.
-	
-	//LOADING COUNTRIES
-	//Loading of Continents and Countries show 2 different methods of mass-object creation, I guess...
-	//{
-		
-	//Example of file parsing
-	int numCountries = 42;
-	String fileName = "countries.txt";
-	String[] countriesIn = new String[numCountries];
-	
-	int[][] allMapLoc = new int[numCountries][2];
-	int[][] allBorders = new int[numCountries][6];//max border count is 6
-	/*
-	  It's also valid to just use allBorders and the indices to
-	  indicate which country's borders we're referring to, but here's
-	  an excuse to use a 2d array.
-	*/
-		
-	int ctr = 0;
-        try {
-	    String line = null;
-	    String[] input = null;
-            FileReader fileReader = new FileReader(fileName);
-	    BufferedReader bufferedReader = new BufferedReader(fileReader);
-            while((line = bufferedReader.readLine()) != null){
-		input = line.split("_");
-				
-		countriesIn[ctr] = input[0];
-		allMapLoc[ctr][0] = Integer.parseInt(input[1]);
-		allMapLoc[ctr][1] = Integer.parseInt(input[2]);
-		for (int i = 3; i < input.length; i++){    
-		    System.out.println(input[i]);
-		    allBorders[ctr][i-3] = Integer.parseInt(input[i]) - 1; //-1 because file uses line numbers, not indices... 
-		}
-		ctr++;
-	    }
-            bufferedReader.close();         
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println(
-			       "Unable to open file '" + 
-			       fileName + "'");                
-        }
-        catch(IOException ex) {
-            System.out.println(
-			       "Error reading file '" 
-			       + fileName + "'");                  
-        }
-		
-	Country[] countries = new Country[numCountries];
-		
-	for (int i = 0; i < numCountries; i++)
-	    countries[i] = new Country(i, countriesIn[i], allBorders[i], allMapLoc[i]);	
-	//}
-	
-	//{
+
 	System.out.println("Now loading..." );
 	
 	//System.out.println("Do you use Windows?");
@@ -81,24 +26,29 @@ public class Risk{
 	for (int i = 0; i < 3; i++) {Util.wait(1000); System.out.print(".");}
 	System.out.println("\n\n");
 	System.out.println("Welcome to Risk");
-	//}
+
+	//Load map
+	game.loadMap();
 	
 	//At this point, presume the map is loaded.
 	System.out.println("Rules documentation is located in 'Rules.txt'.");
 	System.out.println("Detailed controls are in 'Controls.txt'.");
 	System.out.println("Type 'quit' at any time to exit the game.");
-		
-	//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
 
+
+	
+	//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
+	//Code coould be simpler if in Game.java, but we thought assigning countries to players made more sense in driver
+	
 	//assign countries
-	Util.shuffle(countries);
+	Util.shuffle(game.countries);
 	
 	for (int i = 0; i < 6; i++)
 	    for (int j = 0; j < 7; j++){
-		countries[i * 7 + j].setOwnerId(i);
-		countries[i * 7 + j].addTroops(1);
+		game.countries[i * 7 + j].setOwnerId(i);
+		game.countries[i * 7 + j].addTroops(1);
 		//update(countries[i*7+j]);
-		game.getUsers()[i].add(countries[i*7+j]);
+		game.getUsers()[i].add(game.countries[i*7+j]);
 	    }	
 			
 	game.printMap();
@@ -134,29 +84,29 @@ public class Risk{
 		
 		game.setPhase(1);
 		/*
-		while(game.getReinforcements() > 0) {
+		  while(game.getReinforcements() > 0) {
 			
-				//snake pick...
+		  //snake pick...
 					
-					System.out.println("Please select a country.");
+		  System.out.println("Please select a country.");
 					
-				    game.parse(in.nextLine()); //user-entered country
+		  game.parse(in.nextLine()); //user-entered country
 				    
-					boolean countryAdded = false; //used to tell user country is invalid
+		  boolean countryAdded = false; //used to tell user country is invalid
 
-				    for (Country c : countries) { //for every country in country array
-					if (c.getName().equals(countryStr)) { //linear search
+		  for (Country c : countries) { //for every country in country array
+		  if (c.getName().equals(countryStr)) { //linear search
 
-					    game.getCurrentUser().add(c);
+		  game.getCurrentUser().add(c);
 						
-					    countryAdded = true;
-						System.out.println(");
+		  countryAdded = true;
+		  System.out.println(");
 						
-					    game.useReinforcement();
-					    break;
-					}
-			}
-		}
+		  game.useReinforcement();
+		  break;
+		  }
+		  }
+		  }
 		*/
 		
 		//Game looping
@@ -165,93 +115,93 @@ public class Risk{
 		
 		while (game.getTurn() != -1){
 			
-			game.setConquered(false); //Don't set in reinforce in case of card bonus.
-			//CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
+		    game.setConquered(false); //Don't set in reinforce in case of card bonus.
+		    //CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
 			
 		    switch(game.getTurnState()){
 				
 		    case 0: //REINFORCE
 			
-			    if (game.getReinforcements() == 0)
-					game.calcReinforce();
+			if (game.getReinforcements() == 0)
+			    game.calcReinforce();
 				
-			    while(game.getReinforcements() > 0) {
-				//distribute given reinforcements among user owned countries.
+			while(game.getReinforcements() > 0) {
+			    //distribute given reinforcements among user owned countries.
 				
-				//lmao no panning while zoomed.
-					game.printMap();
-					System.out.println("Please select a country to reinforce.");
-					Country c = countries[0]; //for initialization fears...
-					validInput = false;
+			    //lmao no panning while zoomed.
+			    game.printMap();
+			    System.out.println("Please select a country to reinforce.");
+			    Country c = game.countries[0]; //for initialization fears...
+			    validInput = false;
 					
-					while (!validInput){	//validInput condition: input country is valid.
-						String input = in.nextLine();
-						if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
-							try{
-								c = game.countryIdentify(input);
-								if (game.getCurrentUser().owns(c.getId())){
-									validInput = true;
-								}
-								else
-									System.out.println("You do not own " + c + ".");
-							}
-							catch(Exception e){
-								System.out.println("Error: Invalid country '" + input + "'.");
-							}
-						}
+			    while (!validInput){	//validInput condition: input country is valid.
+				String input = in.nextLine();
+				if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+				    try{
+					c = game.countryIdentify(input);
+					if (game.getCurrentUser().owns(c.getId())){
+					    validInput = true;
 					}
+					else
+					    System.out.println("You do not own " + c + ".");
+				    }
+				    catch(Exception e){
+					System.out.println("Error: Invalid country '" + input + "'.");
+				    }
+				}
+			    }
 						
-					game.getMap().logBoundaries();
-					game.getMap().zoom(c, 1);
-					game.printMap();
+			    game.getMap().logBoundaries();
+			    game.getMap().zoom(c, 1);
+			    game.printMap();
 					
-					System.out.println("How many troops do you want to add?");
-					validInput = false;
+			    System.out.println("How many troops do you want to add?");
+			    validInput = false;
 					
-					while (!validInput){ //validInput condition: input is a number <= reinforcements.
-						try{//consider breaking in a do/while loop??? I unno how to use that.
-							int num = Integer.parseInt(in.nextLine());
-							if (num > game.getReinforcements())
-								System.out.println("The amount specified is more than you have.");
-							else if (num <= 0)
-								System.out.println("Please specify a positive amount.");
-							else{
-								c.addTroops(num);
-								game.update(c);
-								game.useReinforcements(num);
-								game.getMap().resetZoom();
-							}
-						}
-						catch(Exception e){
-							System.out.println("Invalid number.");
-						}
-					}
+			    while (!validInput){ //validInput condition: input is a number <= reinforcements.
+				try{//consider breaking in a do/while loop??? I unno how to use that.
+				    int num = Integer.parseInt(in.nextLine());
+				    if (num > game.getReinforcements())
+					System.out.println("The amount specified is more than you have.");
+				    else if (num <= 0)
+					System.out.println("Please specify a positive amount.");
+				    else{
+					c.addTroops(num);
+					game.update(c);
+					game.useReinforcements(num);
+					game.getMap().resetZoom();
+				    }
+				}
+				catch(Exception e){
+				    System.out.println("Invalid number.");
+				}
+			    }
 				
-				} 
+			} 
 				
 				
-			    game.nextTurnState();
+			game.nextTurnState();
 			      
 			break;
 		    case 1: //ATTACK
-				while(in.nextLine().substring(0,1) != "e"){
+			while(in.nextLine().substring(0,1) != "e"){
 							
-				}
+			}
 			break;
 		    case 2: //FORTIFY
-				boolean end = false;
+			boolean end = false;
 				
-				while(!end){
+			while(!end){
 					
-					System.out.println("Select a country to fortify from");
-					validInput = false;
+			    System.out.println("Select a country to fortify from");
+			    validInput = false;
 				
 				
-				}
+			}
 				
-				game.nextTurnState();
-				game.nextTurn();
-		    break;
+			game.nextTurnState();
+			game.nextTurn();
+			break;
 		    }
 		    switch(in.nextLine().substring(0,1)){
 		    case "e":
