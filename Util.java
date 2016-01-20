@@ -51,4 +51,13 @@ public class Util{
 			ret[i] = (i1[i] + i2[i])/2;
 		return ret;
 	}
+	
+	//good oppportunity to use generics but nooo i'm dumb - Joel
+	public static boolean contains(int[] a, int b){
+		for (int i: a)
+			if (i == b)
+				return true;
+		return false;
+	}
+	
 }

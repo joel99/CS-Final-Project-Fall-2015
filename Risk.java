@@ -14,7 +14,18 @@ public class Risk{
     public static void main(String[] args){	
 	
 	boolean validInput; //Used for all sorts of control flow.
-
+	//more control flow variables
+	Country cFrom = null;
+	Country cTo = null;
+	boolean from = false;
+	boolean to = false;
+	
+	//Options menu things...
+	//0 - random
+	int distributionMethod = 0;
+	
+	
+	
 	System.out.println("Now loading..." );
 	
 	//System.out.println("Do you use Windows?");
@@ -33,28 +44,10 @@ public class Risk{
 	//At this point, presume the map is loaded.
 	System.out.println("Rules documentation is located in 'Rules.txt'.");
 	System.out.println("Detailed controls are in 'Controls.txt'.");
-	System.out.println("Type 'quit' at any time to exit the game.");
-
-
-	
-	//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
-	//Code coould be simpler if in Game.java, but we thought assigning countries to players made more sense in driver
-	
-	//assign countries
-	Util.shuffle(game.countries);
-	
-	for (int i = 0; i < 6; i++)
-	    for (int j = 0; j < 7; j++){
-		game.countries[i * 7 + j].setOwnerId(i);
-		game.countries[i * 7 + j].addTroops(1);
-		//update(countries[i*7+j]);
-		game.getUsers()[i].add(game.countries[i*7+j]);
-	    }	
-			
-	game.printMap();
+	System.out.println("Type 'exit' at any time to exit the game.");	
 
 	//TEST
-	game.writeSave();
+	//game.writeSave();
 
 	
 	
@@ -65,6 +58,12 @@ public class Risk{
 
 	Scanner in = new Scanner(System.in);
 	while(game.getPhase() != -1){
+		System.out.println("Please make your selection:");
+		System.out.println("e - exit");
+		System.out.println("o - options (currently non-functional)");
+		System.out.println("l - load game (currently non-functional)");
+		System.out.println("s - start game");
+		
 	    switch(in.nextLine().substring(0,1)){
 			
 		//"e": exit
@@ -77,17 +76,35 @@ public class Risk{
 			
 		//"s": start game
 	    case "s":
-		game.setTurn((int)(Math.random()*6)+1);
+		
+		game.setTurn((int)(Math.random()*6));
 		
 		//Initial reinforcement phase
-		//blahblah something similar to case 0, skipping others.
+		
+		//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
+		//Code could be simpler if in Game.java, but we thought assigning countries to players made more sense in driver
+		
+		//assign countries
+		switch(distributionMethod){
+		case 0:
+		default:
+			Util.shuffle(game.countries);
+			for (int i = 0; i < 6; i++)
+				for (int j = 0; j < 7; j++){
+				game.countries[i * 7 + j].setOwnerId(i);
+				game.countries[i * 7 + j].addTroops(1);
+				game.update(i*7+j);
+				game.getUsers()[i].add(game.countries[i*7+j]);
+				}
+		break;
+		}
+		
+		System.out.println("Countries have been distributed.");
 		
 		game.setPhase(1);
-
+		int initCtr = game.getUsers().length; //ticks down to change phase.
 		
-		//Game looping
-		
-		game.setPhase(2);
+		//GAME START!!!
 		
 		while (game.getTurn() != -1){
 			
@@ -98,9 +115,12 @@ public class Risk{
 				
 		    case 0: //REINFORCE
 			while (game.getTurn() <= game.getUsers().length) { 
-			    if (game.getReinforcements() == 0) //if saved in the middle of distr reinforcements
-				game.calcReinforce();
-				
+			    if (game.getReinforcements() == 0){ //if saved in the middle of distr reinforcements
+					if (game.getPhase() == 1)
+						game.setReinforcements(20 - game.getCurrentUser().numTroops()); //20 may be swapped out
+					else if (game.getPhase() == 2)
+						game.calcReinforce();
+				}
 			    while(game.getReinforcements() > 0) {
 				//distribute given reinforcements among user owned countries.
 				
@@ -136,70 +156,180 @@ public class Risk{
 				System.out.println("How many troops do you want to add?");
 				validInput = false;
 					
-				while (!validInput){ //validInput condition: input is a number <= reinforcements.
-				    try{//consider breaking in a do/while loop??? I unno how to use that.
-					int num = Integer.parseInt(in.nextLine());
-					if (num > game.getReinforcements())
-					    System.out.println("The amount specified is more than you have.");
-					else if (num <= 0)
-					    System.out.println("Please specify a positive amount.");
-					else{
-					    c.addTroops(num);
-					    game.update(c);
-					    game.useReinforcements(num);
-					    game.getMap().resetZoom();
-					    System.out.println("Troops added!");				
-					    validInput = true;
-					}
-				    }
-				    catch(Exception e){
-					System.out.println("Invalid number.");
-				    }
-				}			
+					while (!validInput){ //validInput condition: input is a number <= reinforcements.
+						try{//consider breaking in a do/while loop??? I unno how to use that.
+						int num = Integer.parseInt(in.nextLine());
+						if (num > game.getReinforcements())
+							System.out.println("The amount specified is more than you have.");
+						else if (num <= 0)
+							System.out.println("Please specify a positive amount.");
+						else{
+							c.addTroops(num);
+							game.update(c);
+							game.useReinforcements(num);
+							game.getMap().resetZoom();
+							System.out.println("Troops added!");				
+							validInput = true;
+						}
+						}
+						catch(Exception e){
+						System.out.println("Invalid number.");
+						}
+					}			
 			    }
-			    System.out.println("Player " + game.getCurrentUser() + "'s turn ended");
+			    System.out.println("Player " + game.getCurrentUser() + "'s turn ended.");
+				if (initCtr == 1){	//since this check is done at end, initCtr should stop at 1, not 0.
+					game.setPhase(2);
+					System.out.println("Initial reinforcement complete!");
+				}
+				else
+					initCtr--;
 			    game.nextTurn();
 			}
-				
-				
+			
 			game.nextTurnState();
 			      
 			break;
 		    case 1: //ATTACK
-			while(in.nextLine().substring(0,1) != "e"){
-							
+			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size()	//implying must be out of attacking troops
+					|| in.nextLine().substring(0,1) != "e"){	//e for end, ha!
+					
+				System.out.println("Select a country to attack from.");
+				
 			}
 			break;
 		    case 2: //FORTIFY
 			boolean end = false;
-				
+			from = false;
+			to = false;
+
+			fortify:
 			while(!end){
 					
-			    System.out.println("Select a country to fortify from");
+			    System.out.println("Select a country to fortify from. 'end' to skip phase.");
 			    validInput = false;
+				if (!from)
+					cFrom = game.countries[0];
+				
+				while (!from || !validInput){	//validInput condition: country owned. While I can't understand where to go from
+				    String input = in.nextLine();
+				    if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					try{
+						if (input.equals("end") || input.equals("e"))
+							break fortify;
+						
+					    cFrom = game.countryIdentify(input);
+					    if (game.getCurrentUser().owns(cFrom.getId())){
+							if(cFrom.getTroops() == 1)
+								System.out.println("Not enough troops to fortify from " + cFrom + ".");
+							else{
+								validInput = true;
+								from = true;
+							}
+					    }
+					    else
+						System.out.println("You do not own " + cFrom + ".");
+					}
+					catch(Exception e){
+					    System.out.println("Error: Invalid country '" + input + "'.");
+					}
+				    }
+				}
+				
+				game.getMap().logBoundaries();
+				game.getMap().zoom(cFrom, 2);	//zoom to allow adequate viewing of neighboring countries
+				game.printMap();
+				
+				if (!to)
+					cTo = game.countries[0];
+				
+				System.out.println("Country selected. 'cancel' to cancel. Select neighboring country to fortify.");
+				validInput = false;
+				while (!to || !validInput){	//validInput condition: input country is neighbor to og, is also yours
+				    String input = in.nextLine();
+				    if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+						try{
+							if (input.equals("c") || input.equals("cancel")){
+								System.out.println("Selection canceled.");
+								game.getMap().resetZoom();
+								from = false;
+								break;
+							}
+							
+							cTo = game.countryIdentify(input);
+								
+							if (!game.getCurrentUser().owns(cTo.getId()))
+								System.out.println("You do not own " + cTo + ".");
+							else if(!Util.contains(cFrom.getBorders(),cTo.getId()))
+								System.out.println(cTo + " is not connected to " + cFrom + ".");
+							else{
+									System.out.println("Target country selected.");
+									validInput = true;
+									to = true;
+									game.getMap().zoom(cFrom, cTo);
+									game.printMap();
+							}
+							
+						}
+						catch(Exception e){
+							System.out.println("Error: Invalid country '" + input + "'.");
+						}
+				    }
+				}
+				
+				//if this part of the code wasn't reached by a break line
+				if (validInput){	//therefore, if cTo and cFrom are valid.
+					System.out.println("Enter number of troops to transfer.");
+					validInput = false;
+					while (!validInput){
+						String input = in.nextLine();
+						
+						if (input.equals("c") || input.equals("cancel")){
+								System.out.println("Selection canceled.");
+								to = false;
+								break;
+						}	
+							
+						try{//consider breaking in a do/while loop??? I unno how to use that.
+							int num = Integer.parseInt(in.nextLine());
+							if (num > cFrom.getTroops() - 1)
+								System.out.println(cFrom + " does not have enough troops.");
+							else if (num <= 0)
+								System.out.println("Please specify a positive amount.");
+							else{
+									cTo.addTroops(num);
+									cFrom.addTroops(-num);
+									game.update(cTo);
+									game.update(cFrom);
+									game.getMap().resetZoom();
+									System.out.println("Troops transfered.");				
+									validInput = true;
+									end = true;
+							}
+						}
+						catch(Exception e){
+							System.out.println("Invalid number.");
+						}    
+					}
+				}
 				
 				
 			}
-				
+			
+			if (game.conqueredAny())
+				game.addCard();
 			game.nextTurnState();
 			game.nextTurn();
 			break;
 		    }
-		    switch(in.nextLine().substring(0,1)){
-		    case "e":
-			game.setTurn(-1);
-			break;
-				
-				
-				
-				
-				
-		    }
-		    game.nextTurn();
+		    //switch(in.nextLine().substring(0,1)){
+		    //case "e": unreachable???
+			//game.setTurn(-1);
+			//break;	
+		    //}
 		}
 		break;
-			
-			
+						
 	    }
 	}
 		

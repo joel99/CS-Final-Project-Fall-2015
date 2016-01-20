@@ -46,8 +46,8 @@ public class Map{
 	String retStr = "";
 	int max1 = Math.min(boundaries[3], map.length);
 	int max2 = Math.min(boundaries[2], map[0].length);
-	for (int lineNum = Math.min(boundaries[1], 0); lineNum < max1; lineNum++) {
-	    for (int chNum = Math.min(boundaries[0], 0); chNum < max2; chNum++) {
+	for (int lineNum = Math.max(boundaries[1], 0); lineNum < max1; lineNum++) {
+	    for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
 		retStr += map[lineNum][chNum];
 	    }		
 	    retStr += "\n";
@@ -72,10 +72,10 @@ public class Map{
 	
     //makes a square zoom around w/e.
     public void zoom(int[] coords, int lvl){
-	boundaries[0] = coords[1] - 10 * lvl;
-	boundaries[1] = coords[0] - 10 * lvl;
-	boundaries[2] = coords[1] + 10 * lvl;
-	boundaries[3] = coords[0] + 10 * lvl;
+	boundaries[0] = coords[1] - 20 * lvl;
+	boundaries[1] = coords[0] - 20 * lvl;
+	boundaries[2] = coords[1] + 20 * lvl;
+	boundaries[3] = coords[0] + 20 * lvl;
     }
 	
     public void zoom(Country c, int lvl){//lvl - 1 for closest, 2 for reasonable distance

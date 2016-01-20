@@ -49,9 +49,9 @@ public class Game{
     private boolean conqueredAny;
 
     int numCountries = 42;
-    String fileName = "countries.txt";
-    String[] countriesIn = new String[numCountries];
-    Country[] countries = new Country[numCountries];
+    private String fileName = "countries.txt";
+    private String[] countriesIn = new String[numCountries];
+    public Country[] countries = new Country[numCountries];
 	
     int[][] allMapLoc = new int[numCountries][2];
     int[][] allBorders = new int[numCountries][6];//max border count is 6
@@ -155,6 +155,10 @@ public class Game{
 	return turnState;
     }
 	
+	public void update(int cId){
+	update(countries[cId]);
+    }
+	
     //assume no wrapping problems (b/c we're good with this stuff right :))
     public void update(Country c){
 	int[] coords = c.getMapLoc();
@@ -185,6 +189,9 @@ public class Game{
     public int getReinforcements(){
 	return reinforcements;
     }
+	public void setReinforcements(int n){
+	reinforcements = n;
+	}
 	
     public void calcReinforce(){
 	reinforcements = getCurrentUser().calcReinforcements();
@@ -263,25 +270,46 @@ public class Game{
 	    break;
 	case "j":
 	    map.pan(-1);
+	    System.out.println(map);
 	    ret = "Panned.";
 	    break;
 	case "k":
 	    map.pan(-2);
+	    System.out.println(map);
 	    ret = "Panned.";
 	    break;
 	case "l":
 	    map.pan(1);
+	    System.out.println(map);
 	    ret = "Panned.";
 	    break;
 	case "i":
 	    map.pan(2);
+	    System.out.println(map);
 	    ret = "Panned.";
+	    break;
+	case "zoom in":
+	    map.zoom(1);
+	    System.out.println(map);
+	    ret = "Zoomed";
+	    break;
+	case "zoom out":
+	    map.zoom(-1);
+	    System.out.println(map);
+	    ret = "Zoomed.";
 	    break;
 	default:
 	    ret = str;
 	    break;
-	}	
+	}
+	System.out.println(ret);
 	return ret;
     }	
 
+	
+	//ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.
+	public void addCard(){
+		//user.getCurrentUser();
+	}
+	
 }
