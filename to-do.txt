@@ -14,7 +14,10 @@ ETD: Estimated time of delivery
 > Find zoom continent
 > Border for map
 
-
+> User friendly interaction messages:
+  >> 'status' command to track what you have to do and other data
+  >> more shorthand for countries (better than linear search)
+  >> colors on countries or easier identification
 
 === Optional Addons ===
 > AI that you can play against or ally with
