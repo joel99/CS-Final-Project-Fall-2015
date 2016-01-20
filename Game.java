@@ -49,9 +49,9 @@ public class Game{
     private boolean conqueredAny;
 
     int numCountries = 42;
-    String fileName = "countries.txt";
-    String[] countriesIn = new String[numCountries];
-    Country[] countries = new Country[numCountries];
+    private String fileName = "countries.txt";
+    private String[] countriesIn = new String[numCountries];
+    public Country[] countries = new Country[numCountries];
 	
     int[][] allMapLoc = new int[numCountries][2];
     int[][] allBorders = new int[numCountries][6];//max border count is 6
@@ -306,4 +306,10 @@ public class Game{
 	return ret;
     }	
 
+	
+	//ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.
+	public void addCard(){
+		//user.getCurrentUser();
+	}
+	
 }

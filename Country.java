@@ -46,6 +46,10 @@ public class Country {
 		return id;
 	}
 	
+	public int[] getBorders(){
+		return borders;
+	}
+	
 	/*
 	public User getOwner(){
 		return owner;

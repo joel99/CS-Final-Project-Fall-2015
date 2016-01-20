@@ -14,6 +14,11 @@ public class Risk{
     public static void main(String[] args){	
 	
 	boolean validInput; //Used for all sorts of control flow.
+	//more control flow variables
+	Country cFrom = null;
+	Country cTo = null;
+	boolean from = false;
+	boolean to = false;
 	
 	//Options menu things...
 	//0 - random
@@ -181,46 +186,150 @@ public class Risk{
 					initCtr--;
 			    game.nextTurn();
 			}
-				
-				
+			
 			game.nextTurnState();
 			      
 			break;
 		    case 1: //ATTACK
-			while(in.nextLine().substring(0,1) != "e"){
-							
+			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size()	//implying must be out of attacking troops
+					|| in.nextLine().substring(0,1) != "e"){	//e for end, ha!
+					
+				System.out.println("Select a country to attack from.");
+				
 			}
 			break;
 		    case 2: //FORTIFY
 			boolean end = false;
-				
+			from = false;
+			to = false;
+
+			fortify:
 			while(!end){
 					
-			    System.out.println("Select a country to fortify from");
+			    System.out.println("Select a country to fortify from. 'end' to skip phase.");
 			    validInput = false;
+				if (!from)
+					cFrom = game.countries[0];
+				
+				while (!from || !validInput){	//validInput condition: country owned. While I can't understand where to go from
+				    String input = in.nextLine();
+				    if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					try{
+						if (input.equals("end") || input.equals("e"))
+							break fortify;
+						
+					    cFrom = game.countryIdentify(input);
+					    if (game.getCurrentUser().owns(cFrom.getId())){
+							if(cFrom.getTroops() == 1)
+								System.out.println("Not enough troops to fortify from " + cFrom + ".");
+							else{
+								validInput = true;
+								from = true;
+							}
+					    }
+					    else
+						System.out.println("You do not own " + cFrom + ".");
+					}
+					catch(Exception e){
+					    System.out.println("Error: Invalid country '" + input + "'.");
+					}
+				    }
+				}
+				
+				game.getMap().logBoundaries();
+				game.getMap().zoom(cFrom, 2);	//zoom to allow adequate viewing of neighboring countries
+				game.printMap();
+				
+				if (!to)
+					cTo = game.countries[0];
+				
+				System.out.println("Country selected. 'cancel' to cancel. Select neighboring country to fortify.");
+				validInput = false;
+				while (!to || !validInput){	//validInput condition: input country is neighbor to og, is also yours
+				    String input = in.nextLine();
+				    if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+						try{
+							if (input.equals("c") || input.equals("cancel")){
+								System.out.println("Selection canceled.");
+								game.getMap().resetZoom();
+								from = false;
+								break;
+							}
+							
+							cTo = game.countryIdentify(input);
+								
+							if (!game.getCurrentUser().owns(cTo.getId()))
+								System.out.println("You do not own " + cTo + ".");
+							else if(!Util.contains(cFrom.getBorders(),cTo.getId()))
+								System.out.println(cTo + " is not connected to " + cFrom + ".");
+							else{
+									System.out.println("Target country selected.");
+									validInput = true;
+									to = true;
+									game.getMap().zoom(cFrom, cTo);
+									game.printMap();
+							}
+							
+						}
+						catch(Exception e){
+							System.out.println("Error: Invalid country '" + input + "'.");
+						}
+				    }
+				}
+				
+				//if this part of the code wasn't reached by a break line
+				if (validInput){	//therefore, if cTo and cFrom are valid.
+					System.out.println("Enter number of troops to transfer.");
+					validInput = false;
+					while (!validInput){
+						String input = in.nextLine();
+						
+						if (input.equals("c") || input.equals("cancel")){
+								System.out.println("Selection canceled.");
+								to = false;
+								break;
+						}	
+							
+						try{//consider breaking in a do/while loop??? I unno how to use that.
+							int num = Integer.parseInt(in.nextLine());
+							if (num > cFrom.getTroops() - 1)
+								System.out.println(cFrom + " does not have enough troops.");
+							else if (num <= 0)
+								System.out.println("Please specify a positive amount.");
+							else{
+									cTo.addTroops(num);
+									cFrom.addTroops(-num);
+									game.update(cTo);
+									game.update(cFrom);
+									game.getMap().resetZoom();
+									System.out.println("Troops transfered.");				
+									validInput = true;
+									end = true;
+							}
+						}
+						catch(Exception e){
+							System.out.println("Invalid number.");
+						}    
+					}
+				}
 				
 				
 			}
-				
+			
+			if (game.conqueredAny())
+				game.addCard();
 			game.nextTurnState();
 			game.nextTurn();
 			break;
 		    }
-		    switch(in.nextLine().substring(0,1)){
-		    case "e":
-			game.setTurn(-1);
-			break;
-				
-				
-				
-				
-				
-		    }
-		    game.nextTurn();
+		    //switch(in.nextLine().substring(0,1)){
+		    //case "e": unreachable???
+			//game.setTurn(-1);
+			//break;	
+		    //}
 		}
 		break;
-			
-			
+						
 	    }
 	}
 		
