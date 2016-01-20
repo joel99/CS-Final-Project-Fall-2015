@@ -28,3 +28,6 @@
 
 === 1/18/16 === 
 > Reinforcements overarching command flow complete. (Joel)
+
+=== 1/19/16 ===
+> Fortify overarching command flow complete. (Joel)
