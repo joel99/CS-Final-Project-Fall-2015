@@ -43,15 +43,26 @@ public class Map{
     }
 
     public String toString(){
+	String horizBorder = "||";
 	String retStr = "";
 	int max1 = Math.min(boundaries[3], map.length);
 	int max2 = Math.min(boundaries[2], map[0].length);
+
+	for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
+	    horizBorder += "=";
+	}
+	horizBorder += "||\n";
+
 	for (int lineNum = Math.max(boundaries[1], 0); lineNum < max1; lineNum++) {
+	    retStr += "||";
 	    for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
 		retStr += map[lineNum][chNum];
 	    }		
-	    retStr += "\n";
+	    retStr += "||\n";
 	}
+
+	//append border
+	retStr = horizBorder + retStr + horizBorder;
 	return retStr;
     }
 	
