@@ -155,6 +155,10 @@ public class Game{
 	return turnState;
     }
 	
+	public void update(int cId){
+	update(countries[cId]);
+    }
+	
     //assume no wrapping problems (b/c we're good with this stuff right :))
     public void update(Country c){
 	int[] coords = c.getMapLoc();
@@ -185,6 +189,9 @@ public class Game{
     public int getReinforcements(){
 	return reinforcements;
     }
+	public void setReinforcements(int n){
+	reinforcements = n;
+	}
 	
     public void calcReinforce(){
 	reinforcements = getCurrentUser().calcReinforcements();
@@ -263,24 +270,39 @@ public class Game{
 	    break;
 	case "j":
 	    map.pan(-1);
+	    System.out.println(map);
 	    ret = "Panned.";
 	    break;
 	case "k":
 	    map.pan(-2);
+	    System.out.println(map);
 	    ret = "Panned.";
 	    break;
 	case "l":
 	    map.pan(1);
+	    System.out.println(map);
 	    ret = "Panned.";
 	    break;
 	case "i":
 	    map.pan(2);
+	    System.out.println(map);
 	    ret = "Panned.";
+	    break;
+	case "zoom in":
+	    map.zoom(1);
+	    System.out.println(map);
+	    ret = "Zoomed";
+	    break;
+	case "zoom out":
+	    map.zoom(-1);
+	    System.out.println(map);
+	    ret = "Zoomed.";
 	    break;
 	default:
 	    ret = str;
 	    break;
-	}	
+	}
+	System.out.println(ret);
 	return ret;
     }	
 
