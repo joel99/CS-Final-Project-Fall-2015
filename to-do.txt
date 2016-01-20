@@ -6,9 +6,10 @@ ETD: Estimated time of delivery
 > Start and Game Menu : ETD - 1-17
 > Actual Gameplay
   >> Reinforcements Phase (Includes calculating reinforcements): ETD - 1-19 DONE
-  >> Battle Phase : ETD - 1-21
-  >> Fortify Phase : ETD - 1-22
+  >> Battle Phase : ETD - 1-21 --> new ETD - 1-24 (so much w0rk)
+  >> Fortify Phase : ETD - 1-22 DONE (oops, did it earlier bc easier than battle phase)
 > Card Trade-Ins: ETD - 1-22
+  >> We need a deck of cards... and a random assignment method: ETD 1-21
 
 > Find zoom continent
 > Border for map
