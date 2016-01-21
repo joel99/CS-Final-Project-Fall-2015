@@ -81,10 +81,10 @@ public class Map{
 	
     //makes a square zoom around w/e.
     public void zoom(int[] coords, int lvl){
-	boundaries[0] = coords[1] - 20 * lvl;
-	boundaries[1] = coords[0] - 20 * lvl;
-	boundaries[2] = coords[1] + 20 * lvl;
-	boundaries[3] = coords[0] + 20 * lvl;
+	boundaries[0] = coords[1] - 15 * lvl;
+	boundaries[1] = coords[0] - 15 * lvl;
+	boundaries[2] = coords[1] + 15 * lvl;
+	boundaries[3] = coords[0] + 15 * lvl;
     }
 	
     public void zoom(Country c, int lvl){//lvl - 1 for closest, 2 for reasonable distance
