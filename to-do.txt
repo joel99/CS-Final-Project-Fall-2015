@@ -15,7 +15,9 @@ ETD: Estimated time of delivery
 
 > cycling thru players during battle phase (says 'initial reinforcement complete' for some reason)
 
-> User friendly interaction messages:
+> Robustify commands
+> Fix calc reinforce
+> User friendly interaction messages: (William)
   >> 'status' command to track what you have to do and other data
   >> more shorthand for countries (better than linear search)
   >> colors on countries or easier identification
