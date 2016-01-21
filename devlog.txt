@@ -34,3 +34,4 @@
 
 === 1/20/16 ===
 > Complete Battle Phase. (Joel) WORKING VERSION COMPLETE. (needs debugging)
+> Rewrote code for parse to allow argument processing for zoom (William)

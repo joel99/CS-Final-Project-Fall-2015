@@ -12,7 +12,8 @@ ETD: Estimated time of delivery
   >> We need a deck of cards... and a random assignment method: ETD 1-21
 
 > Find zoom continent
-> Border for map
+
+> cycling thru players during battle phase (says 'initial reinforcement complete' for some reason)
 
 > User friendly interaction messages:
   >> 'status' command to track what you have to do and other data
