@@ -168,7 +168,7 @@ public class Game{
 	//REMEMBER TO UPDATE w/ NICKNAME!!!
 	//User id here:
 	map.set(x++,y, users[Integer.parseInt(stat.substring(0,1))].getNick());
-	map.set(x++,y, "|"); 
+	map.set(x++,y, '|'); 
 	for (int i = 1; i < stat.length(); i++)
 	    map.set(x++,y, stat.charAt(i));
 	//first char is userId, convert to user info. Track owner or ownerId????

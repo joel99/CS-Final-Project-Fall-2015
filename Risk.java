@@ -25,11 +25,7 @@ public class Risk{
 	//0 - random
 	int distributionMethod = 0;
 	
-	
-	
 	System.out.println("Now loading..." );
-	
-	//System.out.println("Do you use Windows?");
 
 	Game game = new Game(6, "map.txt");
 
@@ -65,7 +61,10 @@ public class Risk{
 	    System.out.println("o - options (currently non-functional)");
 	    System.out.println("l - load game (currently non-functional)");
 	    System.out.println("s - start game");
-		
+	    
+	    validInput = false;
+	    while (!validInput){
+		try{
 	    switch(in.nextLine().substring(0,1)){
 			
 		//"e": exit
@@ -115,8 +114,8 @@ public class Risk{
 			
 		    switch(game.getTurnState()){
 			//====================================================================================				
-		    case 0: //REINFORCE
-			while (initCtr > 0) { 
+		    case 0: //REINFORCE 
+
 			    if (game.getReinforcements() == 0){ //if saved in the middle of distr reinforcements
 				if (game.getPhase() == 1)
 				    game.setReinforcements(20 - game.getCurrentUser().numTroops()); //20 may be swapped out
@@ -179,13 +178,22 @@ public class Risk{
 				    }
 				}			
 			    }
-			    System.out.println("Player " + game.getCurrentUser() + "'s turn ended.\n\n");
-			    initCtr--;
-			    game.nextTurn();
-			}
+			    if (game.getPhase() == 1){
+				if (initCtr > 0){
+				    System.out.println("Player " + game.getCurrentUser() + "'s turn ended.\n\n");
+				    initCtr--;
+				    game.nextTurn();
+				    break; //get outta here!
+				}
+				if (initCtr == 0){
+				    System.out.println("Initial reinforcement complete!");
+				    game.setPhase(2);
+				    initCtr--;
+				    break;
+				}
+			    }
 			
-			System.out.println("Initial reinforcement complete!");
-			game.nextTurnState();
+			    game.nextTurnState();
 			      
 			break;
 
@@ -548,6 +556,12 @@ public class Risk{
 		break;
 						
 	    }
+		}
+		catch(Exception e){
+		    System.out.println("I don't understand");
+		}
+	    }
+
 	}
 		
     }	
