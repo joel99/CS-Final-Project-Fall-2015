@@ -155,7 +155,7 @@ public class Game{
 	return turnState;
     }
 	
-	public void update(int cId){
+    public void update(int cId){
 	update(countries[cId]);
     }
 	
@@ -189,9 +189,9 @@ public class Game{
     public int getReinforcements(){
 	return reinforcements;
     }
-	public void setReinforcements(int n){
+    public void setReinforcements(int n){
 	reinforcements = n;
-	}
+    }
 	
     public void calcReinforce(){
 	reinforcements = getCurrentUser().calcReinforcements();
@@ -210,25 +210,25 @@ public class Game{
 	    BufferedWriter saveFile = new BufferedWriter(fileWriter);
 
 	    saveFile.write(saveFileName); //1
-		saveFile.newLine();
-		saveFile.write(Integer.toString(phase)); //2
-		saveFile.newLine();
-		saveFile.write(Integer.toString(turnState)); //3
-		saveFile.newLine();
-		saveFile.write(Integer.toString(turn)); //4
-		saveFile.newLine();
-		saveFile.write(users.toString()); //5
-		saveFile.newLine();
-		saveFile.write(map.toString()); //6
-		saveFile.newLine();
-		saveFile.write(Integer.toString(reinforcements)); //7
-		saveFile.newLine();
-		saveFile.write(Boolean.toString(conqueredAny)); //8
-		saveFile.newLine();
-		saveFile.write(Integer.toString(numCountries)); //9
-		saveFile.newLine();
-		saveFile.write(countries.toString()); //10
-		saveFile.newLine();
+	    saveFile.newLine();
+	    saveFile.write(Integer.toString(phase)); //2
+	    saveFile.newLine();
+	    saveFile.write(Integer.toString(turnState)); //3
+	    saveFile.newLine();
+	    saveFile.write(Integer.toString(turn)); //4
+	    saveFile.newLine();
+	    saveFile.write(users.toString()); //5
+	    saveFile.newLine();
+	    saveFile.write(map.toString()); //6
+	    saveFile.newLine();
+	    saveFile.write(Integer.toString(reinforcements)); //7
+	    saveFile.newLine();
+	    saveFile.write(Boolean.toString(conqueredAny)); //8
+	    saveFile.newLine();
+	    saveFile.write(Integer.toString(numCountries)); //9
+	    saveFile.newLine();
+	    saveFile.write(countries.toString()); //10
+	    saveFile.newLine();
 		
 
 	    saveFile.close();
@@ -288,18 +288,6 @@ public class Game{
 	    System.out.println(map);
 	    ret = "Panned Up.\n";
 	    break;
-	/*
-	case "zoom in":
-	    map.zoom(1);
-	    System.out.println(map);
-	    ret = "Zoomed";
-	    break;
-	case "zoom out":
-	    map.zoom(-1);
-	    System.out.println(map);
-	    ret = "Zoomed.";
-	    break;
-	*/
 	case "help":
 	    ret = "\n=== COMMANDS ===\n" + 
 		"'help' -- display commands\n" +
@@ -308,7 +296,10 @@ public class Game{
 		"'k' -- pan map down\n" +
 		"'l' -- pan map right\n" +
 		"'zoom in' -- zoom in once\n" +
-		"'zoom out' -- zoom out once\n";
+		"'zoom out' -- zoom out once\n" +
+		"'zoom <country>' -- zoom into a country\n" + 
+		"'zoom <continent>' -- zoom into a continent";
+	    break;
 	default:
 	    if ((str.length() >= 5) && (str.substring(0,5).equals("zoom "))) {
 		String zoomArg = str.substring(5,str.length());
@@ -318,12 +309,12 @@ public class Game{
 		if (zoomArg.equals("in")) {
 		    map.zoom(1);
 		    System.out.println(map);
-		    System.out.println("Zoomed In.\n");
+		    ret = "Zoomed In.\n";
 		    zoomSuccess = true;
 		} else if (zoomArg.equals("out")) {
 		    map.zoom(-1);
 		    System.out.println(map);
-		    System.out.println("Zoomed Out.\n");
+		    ret = "Zoomed Out.\n";
 		    zoomSuccess = true;
 		}
 
@@ -332,7 +323,7 @@ public class Game{
 			if (c.getName().equals(zoomArg)) {
 			    map.zoom(c,1);
 			    System.out.println(map);
-			    System.out.println("Zoomed into " + c.getName() + ".\n");
+			    ret = "Zoomed into " + c.getName() + ".\n";
 			    zoomSuccess = true;
 			    break;
 			}
@@ -343,7 +334,7 @@ public class Game{
 		    for (Continent co : Util.continents) {
 			if (co.getName().equals(zoomArg)) {
 			    //map.zoom(co,2);
-			    System.out.println("Continent zoom to be implemented...");
+			    ret = "Continent zoom to be implemented...";
 			    zoomSuccess = true;
 			    break;
 			}
@@ -355,17 +346,20 @@ public class Game{
 		}
 
 		
-		}
-	    break;
+	    } else {	    
+		ret = str;
+		break;
+	    }
 	}
-    System.out.println(ret);
-    return ret;
-}	
+	System.out.println(ret);
+	System.out.println("Player " + getCurrentUser() + "'s turn (TEXT ORDER WILL BE FIXED!):");
+	return ret;
+    }	
 
 	
-	//ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.
-	public void addCard(){
-		//user.getCurrentUser();
-	}
+    //ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.
+    public void addCard(){
+	//user.getCurrentUser();
+    }
 	
 }

@@ -45,6 +45,7 @@ public class Risk{
 	//At this point, presume the map is loaded.
 	System.out.println("Rules documentation is located in 'Rules.txt'.");
 	System.out.println("Detailed controls are in 'Controls.txt'.");
+	System.out.println("Type 'help' at any time to list generic commands.");
 	System.out.println("Type 'exit' at any time to exit the game.");	
 
 	//TEST
@@ -78,7 +79,7 @@ public class Risk{
 		//"s": start game
 	    case "s":
 		
-		game.setTurn((int)(Math.random()*6));
+		game.setTurn(0); //start at player 0
 		
 		//Initial reinforcement phase
 		
@@ -115,7 +116,7 @@ public class Risk{
 		    switch(game.getTurnState()){
 			//====================================================================================				
 		    case 0: //REINFORCE
-			while (game.getTurn() <= game.getUsers().length) { 
+			while (initCtr > 0) { 
 			    if (game.getReinforcements() == 0){ //if saved in the middle of distr reinforcements
 				if (game.getPhase() == 1)
 				    game.setReinforcements(20 - game.getCurrentUser().numTroops()); //20 may be swapped out
@@ -178,16 +179,12 @@ public class Risk{
 				    }
 				}			
 			    }
-			    System.out.println("Player " + game.getCurrentUser() + "'s turn ended.");
-			    if (initCtr == 1){	//since this check is done at end, initCtr should stop at 1, not 0.
-				game.setPhase(2);
-				System.out.println("Initial reinforcement complete!");
-			    }
-			    else
-				initCtr--;
+			    System.out.println("Player " + game.getCurrentUser() + "'s turn ended.\n\n");
+			    initCtr--;
 			    game.nextTurn();
 			}
 			
+			System.out.println("Initial reinforcement complete!");
 			game.nextTurnState();
 			      
 			break;
@@ -200,9 +197,9 @@ public class Risk{
 			to = false;
 			boolean attack = false;
 		    attack:
-			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size()	//implying must be out of attacking troops
+			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size() //implying must be out of attacking troops
 			      || !end){
-					
+			    System.out.println("Player " + game.getCurrentUser() + "'s turn start:");					
 			    System.out.println("Select a country to attack from. 'end' to end phase.");
 			    validInput = false;
 			    if (!from)
@@ -284,7 +281,7 @@ public class Risk{
 					    System.out.println("Battle beginning between countries " + cTo + " and " + cFrom + ".");
 					    //there's no breaking now!!!
 					    while(!attack){//a mini validInput for this stuff specifically
-						System.out.println(game.getCurrentUser() + ", please specify number of dice to roll." );
+						System.out.println("Player " + game.getCurrentUser() + ", please specify number of dice to roll." );
 						try{
 						    attackDiceNum = Integer.parseInt(in.nextLine());
 						    if (attackDiceNum > cFrom.getTroops() - 1)
@@ -300,7 +297,7 @@ public class Risk{
 					    }
 					    attack = false;
 					    while (!attack){
-						System.out.println(game.getUsers()[cTo.getOwnerId()] + ", please specify number of dice to roll." );
+						System.out.println("Player " + game.getUsers()[cTo.getOwnerId()] + ", please specify number of dice to roll." );
 						try{
 						    defendDiceNum = Integer.parseInt(in.nextLine());
 						    if (defendDiceNum > cTo.getTroops())
@@ -314,7 +311,7 @@ public class Risk{
 						    System.out.println("Not a valid number.");
 						}
 					    }
-						int roll;
+					    int roll;
 					    //Roll dice (INSERT INTO ARRAY BY HIGHEST FIRST)
 					    ArrayList<Integer> attackDice = new ArrayList<>();
 					    ArrayList<Integer> defendDice = new ArrayList<>();
@@ -413,9 +410,9 @@ public class Risk{
 				}
 				
 			    }
-
-				
+			    game.nextTurn();
 			}
+			game.nextTurnState();
 			break;
 
 			//====================================================================================
