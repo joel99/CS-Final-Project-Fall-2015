@@ -20,7 +20,6 @@ public class Risk{
 	boolean from = false;
 	boolean to = false;
 	boolean end = false;
-	boolean roll = false;
 
 	//Options menu things...
 	//0 - random
@@ -199,7 +198,7 @@ public class Risk{
 			end = false;
 			from = false;
 			to = false;
-			
+			boolean attack = false;
 		    attack:
 			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size()	//implying must be out of attacking troops
 			      || !end){
@@ -207,7 +206,7 @@ public class Risk{
 			    System.out.println("Select a country to attack from. 'end' to end phase.");
 			    validInput = false;
 			    if (!from)
-				cFrom = game.coutnries[0];
+				cFrom = game.countries[0];
 			    while (!from || !validInput){	//validInput condition: country owned. While I can't understand where to go from
 				String input = in.nextLine();
 				if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
@@ -272,13 +271,145 @@ public class Risk{
 				}
 			    }
 
-			    
+
+			    //BATTLE!!!
 			    if (from && to){
 				validInput = false;
 				System.out.println("Roll? (Y/N)");
-			       System.out.println;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-				try{
+				while (!validInput){
+				    String input = in.nextLine();
+				    try{
+					if (input.equals("Y") || input.equals("yes")){
+					    int attackDiceNum = 0; int defendDiceNum = 0;
+					    System.out.println("Battle beginning between countries " + cTo + " and " + cFrom + ".");
+					    //there's no breaking now!!!
+					    while(!attack){//a mini validInput for this stuff specifically
+						System.out.println(game.getCurrentUser() + ", please specify number of dice to roll." );
+						try{
+						    attackDiceNum = Integer.parseInt(in.nextLine());
+						    if (attackDiceNum > cFrom.getTroops() - 1)
+							System.out.println(cFrom + " does not have sufficient troops (must be number of troops - 1 or less).");
+						    else if (attackDiceNum > 3 || attackDiceNum <= 0)
+							System.out.println("You can only roll 1, 2, or 3 dice.");
+						    else
+							attack = true;
+						}
+						catch(Exception e){
+						    System.out.println("Not a valid number.");
+						}
+					    }
+					    attack = false;
+					    while (!attack){
+						System.out.println(game.getUsers()[cTo.getOwnerId()] + ", please specify number of dice to roll." );
+						try{
+						    defendDiceNum = Integer.parseInt(in.nextLine());
+						    if (defendDiceNum > cTo.getTroops())
+							System.out.println(cTo + " does not have sufficiently many troops (must be number of troops or less.");
+						    if (defendDiceNum > 2 || defendDiceNum <= 0)
+							System.out.println("You can only roll 1 or 2 dice.");
+						    else
+							attack = true;
+						}
+						catch(Exception e){
+						    System.out.println("Not a valid number.");
+						}
+					    }
+						int roll;
+					    //Roll dice (INSERT INTO ARRAY BY HIGHEST FIRST)
+					    ArrayList<Integer> attackDice = new ArrayList<>();
+					    ArrayList<Integer> defendDice = new ArrayList<>();
+					    System.out.println("Attacker roll(s): \t");
+					    for (int i = 0; i < attackDiceNum; i++){
+						roll = Util.rollDie();
+						System.out.println(roll + " \t");
+						for (int j = 0; j < attackDiceNum; j++)
+						    if (roll > attackDice.get(j)){
+							attackDice.add(j, roll);
+							break;
+						    }
+					    }
+					    System.out.println("Defender roll(s) : \t");
+					    for (int i = 0; i < defendDiceNum; i++){
+						roll = Util.rollDie();
+						System.out.println(roll + " \t");
+						for (int j = 0; j < defendDiceNum; j++)
+						    if (roll > defendDice.get(j)){
+							defendDice.add(j, roll);
+						    }
+					    }
+					    
+					    //Compare
+					    int attCas = 0;
+					    int defCas = 0;
+					    for (int i = 0; i < Math.min(attackDiceNum, defendDiceNum); i++)
+						if (attackDice.get(i) > defendDice.get(i))
+						    defCas++;
+						else
+						    attCas++;
+					    System.out.println("Attacker loses " + attCas + " troop(s).");
+					    cFrom.addTroops(-1 * attCas);
+					    System.out.println(cFrom + " has " + cFrom.getTroops() + " troops left.");
+					    System.out.println("Defender loses " + defCas + " troop(s).");
+					    cTo.addTroops(-1 * defCas);
+					    System.out.println(cTo + " has " + cTo.getTroops() + " troops left.");
+					    game.update(cFrom); game.update(cTo);
 
+					    //Check for battle report.
+					    if (cFrom.getTroops() == 1 || cTo.getTroops() == 0){
+						if (cFrom.getTroops() == 1)
+						    System.out.println(cFrom + " no longer able to attack. Retreating...");
+						else{
+						    game.setConquered(true);
+						    System.out.println(cTo + " has been conquered.");
+						    cTo.setOwnerId(game.getCurrentUser().getId());
+						    System.out.println("How many troops do you want to transfer to " + cTo + "?");
+						    validInput = false;
+						    while (!validInput){
+							try{//consider breaking in a do/while loop??? I unno how to use that.
+							    int num = Integer.parseInt(in.nextLine());
+							    if (num > cFrom.getTroops() - 1)
+								System.out.println(cFrom + " does not have enough troops.");
+							    else if (num < attackDiceNum)
+								System.out.println("You must move at least as many troops as dice you have rolled (" + attackDiceNum + ")."); //always possible
+							    else if (num <= 0)
+								System.out.println("Please specify a positive amount.");
+							    else{
+								cTo.addTroops(num);
+								cFrom.addTroops(-num);
+								game.update(cTo);
+								game.update(cFrom);
+								System.out.println("Troops transfered.");
+							    }
+							}
+							catch(Exception e){
+							    System.out.println("Invalid number.");
+							}    
+						    }
+						}
+						    
+						from = false;
+						to = false;
+						game.getMap().resetZoom();
+						game.printMap();
+						break;
+					    }
+					    //note, game rules don't allow for some sort of troop count paradox, so don't worry about that (if's are mutually exclusive)
+					}
+
+					else if (input.equals("N") || input.equals("no")){
+					    System.out.println("Retreating.");
+					    from = false;
+					    to = false;
+					    game.getMap().resetZoom();
+					    break; //should break up to y/n while loop (asking for new countries)
+					}
+					
+					else
+					    System.out.println("I don't understand...");
+				    }
+				    catch(Exception e){
+					System.out.println("Yes or no? Not hard...");
+				    }
 				}
 				
 			    }
@@ -380,7 +511,7 @@ public class Risk{
 				    }	
 							
 				    try{//consider breaking in a do/while loop??? I unno how to use that.
-					int num = Integer.parseInt(in.nextLine());
+					int num = Integer.parseInt(input);
 					if (num > cFrom.getTroops() - 1)
 					    System.out.println(cFrom + " does not have enough troops.");
 					else if (num <= 0)

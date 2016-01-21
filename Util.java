@@ -59,5 +59,9 @@ public class Util{
 				return true;
 		return false;
 	}
+
+    public static int rollDie(){
+	return (int)(Math.random() * 6) + 1;
+    }
 	
 }
