@@ -9,6 +9,12 @@ The program should then run, and you will be guided from there. There will
 be a short rules rundown within the game itself, but for detailed rules, read
 the Rules.txt file. 
 
+Controls (Temporary)
+- Type country name (Full, w/ capitalization) when prompted to select country. Type integers when prompted
+- 'zoom in', 'zoom out' are recognized commands
+- 'zoom <continent name>', 'zoom <country name>' may be recognized commands
+- ijkl keys can be used to pan (type a letter and enter) the map.
+
 Risk - A Game of Domination
 For 2-6 players
 Try to conquer the world with your armies - each turn, one player gains 
