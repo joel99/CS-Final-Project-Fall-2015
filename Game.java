@@ -271,23 +271,24 @@ public class Game{
 	case "j":
 	    map.pan(-1);
 	    System.out.println(map);
-	    ret = "Panned.";
+	    ret = "Panned Left.\n";
 	    break;
 	case "k":
 	    map.pan(-2);
 	    System.out.println(map);
-	    ret = "Panned.";
+	    ret = "Panned Down.\n";
 	    break;
 	case "l":
 	    map.pan(1);
 	    System.out.println(map);
-	    ret = "Panned.";
+	    ret = "Panned Right.\n";
 	    break;
 	case "i":
 	    map.pan(2);
 	    System.out.println(map);
-	    ret = "Panned.";
+	    ret = "Panned Up.\n";
 	    break;
+	/*
 	case "zoom in":
 	    map.zoom(1);
 	    System.out.println(map);
@@ -298,13 +299,68 @@ public class Game{
 	    System.out.println(map);
 	    ret = "Zoomed.";
 	    break;
+	*/
+	case "help":
+	    ret = "\n=== COMMANDS ===\n" + 
+		"'help' -- display commands\n" +
+		"'i' -- pan map up\n" +
+		"'j' -- pan map left\n" +
+		"'k' -- pan map down\n" +
+		"'l' -- pan map right\n" +
+		"'zoom in' -- zoom in once\n" +
+		"'zoom out' -- zoom out once\n";
 	default:
-	    ret = str;
+	    if ((str.length() >= 5) && (str.substring(0,5).equals("zoom "))) {
+		String zoomArg = str.substring(5,str.length());
+		Boolean zoomSuccess = false;
+
+		//test if arg is recognized
+		if (zoomArg.equals("in")) {
+		    map.zoom(1);
+		    System.out.println(map);
+		    System.out.println("Zoomed In.\n");
+		    zoomSuccess = true;
+		} else if (zoomArg.equals("out")) {
+		    map.zoom(-1);
+		    System.out.println(map);
+		    System.out.println("Zoomed Out.\n");
+		    zoomSuccess = true;
+		}
+
+		if (!zoomSuccess) {
+		    for (Country c : countries) {
+			if (c.getName().equals(zoomArg)) {
+			    map.zoom(c,1);
+			    System.out.println(map);
+			    System.out.println("Zoomed into " + c.getName() + ".\n");
+			    zoomSuccess = true;
+			    break;
+			}
+		    }
+		}
+
+		if (!zoomSuccess) {
+		    for (Continent co : Util.continents) {
+			if (co.getName().equals(zoomArg)) {
+			    //map.zoom(co,2);
+			    System.out.println("Continent zoom to be implemented...");
+			    zoomSuccess = true;
+			    break;
+			}
+		    }
+		}
+
+		if (!zoomSuccess) {
+		    System.out.println("'" + zoomArg + "' is not a valid zoom argument");
+		}
+
+		
+		}
 	    break;
 	}
-	System.out.println(ret);
-	return ret;
-    }	
+    System.out.println(ret);
+    return ret;
+}	
 
 	
 	//ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.

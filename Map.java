@@ -94,6 +94,10 @@ public class Map{
     public void zoom(Country c1, Country c2){
 	zoom(Util.average(c1.getMapLoc(),c2.getMapLoc()), 3);
     }
+
+    public void zoom(Continent co, int lvl) {
+	//zoom(co.getMapLoc, lvl);
+    }
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
     public void zoom(int in){

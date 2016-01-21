@@ -68,7 +68,7 @@ public class Risk{
 	    switch(in.nextLine().substring(0,1)){
 			
 		//"e": exit
-	    case "e": System.out.println("Now exiting Risk.");
+	    case "e": System.out.println("Now exiting Risk.\n\n");
 		break;
 			
 		//"o": options

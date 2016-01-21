@@ -1,18 +1,18 @@
 /*******************
  class Util - holds constants and driver's static methods 
- ******************/
+******************/
 
 
 public class Util{
     
-	public static final Continent nAm = new Continent("North America", 5, 1, 10);
-	public static final Continent sAm = new Continent ("South America", 2, 10, 14);
-	public static final Continent africa = new Continent("Africa", 3, 14, 20);
-	public static final Continent europe = new Continent("Europe", 5, 20, 27);
-	public static final Continent australia = new Continent("Australia", 2, 27, 31);
-	public static final Continent asia = new Continent("Asia", 7, 31, 43);
+    public static final Continent nAm = new Continent("North America", 5, 1, 10);
+    public static final Continent sAm = new Continent ("South America", 2, 10, 14);
+    public static final Continent africa = new Continent("Africa", 3, 14, 20);
+    public static final Continent europe = new Continent("Europe", 5, 20, 27);
+    public static final Continent australia = new Continent("Australia", 2, 27, 31);
+    public static final Continent asia = new Continent("Asia", 7, 31, 43);
 
-	public static final Continent[] continents = {nAm, sAm, africa, europe, australia, asia};
+    public static final Continent[] continents = {nAm, sAm, africa, europe, australia, asia};
 	
 	
     public final int[] cardBonus = {4, 6, 8, 10, 12, 15};
@@ -44,21 +44,21 @@ public class Util{
 	}
     }
 
-	//assuming same length;
-	public static int[] average(int[] i1, int[] i2){
-		int[] ret = new int[i1.length];
-		for (int i = 0; i < i1.length; i++)
-			ret[i] = (i1[i] + i2[i])/2;
-		return ret;
-	}
+    //assuming same length;
+    public static int[] average(int[] i1, int[] i2){
+	int[] ret = new int[i1.length];
+	for (int i = 0; i < i1.length; i++)
+	    ret[i] = (i1[i] + i2[i])/2;
+	return ret;
+    }
 	
-	//good oppportunity to use generics but nooo i'm dumb - Joel
-	public static boolean contains(int[] a, int b){
-		for (int i: a)
-			if (i == b)
-				return true;
-		return false;
-	}
+    //good oppportunity to use generics but nooo i'm dumb - Joel
+    public static boolean contains(int[] a, int b){
+	for (int i: a)
+	    if (i == b)
+		return true;
+	return false;
+    }
 
     public static int rollDie(){
 	return (int)(Math.random() * 6) + 1;
