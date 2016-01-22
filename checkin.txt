@@ -1,0 +1,52 @@
+Team 2D - William Xiang and Joel Ye
+APCS1 pd10
+HW58 - Checking In
+2016-01-22
+
+=== Obstacles Overcome ===
+> Obtaining a printable world map
+	> Solution: Take an image of a world map off the Internet, photoshop it to bolden lines,
+	  and use an online Image>ASCII software to obtain an ASCII version of map
+> Getting the map to fit in terminal
+	> We realized that the ASCII map was too big for a regular terminal to fit
+	> Solution: only show a portion of the map at once and pan/zoom the view to navigate map
+> Generic commands vs Specific commands
+	> We wanted generic commands, such as for zooming and panning, to work no matter what
+	  stage the game was in, but we also wanted phase-based commands such as reinforcing
+	  your country or attacking another country to only work in the certain phase, and we wanted
+	  to do this all without writing obfuscated and repetitive code
+	> Solution: We wrote a 'parse' method to filter out generic commands from more specific commands
+> Getting the game to recognize which countries were adjacent to one another for battle purposes and 
+what position the country was in so 'zoom <country>' would zoom to the right position
+	> Solution: WE HARDCODEZ EVRYTING
+
+=== Unresolved Issues ===
+> Saving and loading game
+	> Saving has always been on the top of our heads and we make accomodations for saving
+	  as we code, but we haven't yet implemented the ability to save/load the game yet
+> Fine-tuning user control and accessibility
+
+
+=== Cool Stuff Learned ===
+> Even driver level organization is essential for headache reduction
+> ArrayLists are super useful actually, who needs traditional arrays :) - Joel. 
+
+=== Mid-development Design Changes ===
+> Moved country array from Risk.java to Game.java, because it made more logical sense (to clean up the
+driver); in order to save the Country data, the country array had to be in Game.java.
+
+
+=== Lessons Learned ===
+> Our code in Risk.java is very
+		              very
+									  very
+										  very
+											  very
+												shifted to the right, due to many necessary if/for/while clauses,
+												so it made our code annoying to read in emacs, since we couldn't get
+												horizontal scrolling to work. To remedy this, we're probably going to
+												write a lot more helper functions to make the code easier to read
+
+
+
+
