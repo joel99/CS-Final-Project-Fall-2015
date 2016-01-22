@@ -19,6 +19,12 @@ ETD: Estimated time of delivery
   >> 'status' command to track what you have to do and other data
   >> more shorthand for countries (better than linear search)
   >> colors on countries or easier identification
+  
+> Player elimination/win condition (Both)
+
+
+
+
 
 === Optional Addons ===
 > AI that you can play against or ally with (??)
