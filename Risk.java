@@ -200,14 +200,16 @@ public class Risk{
 
 			//====================================================================================
 		    case 1: //ATTACK
+			game.printMap();
 			end = false;
 			from = false;
 			to = false;
 			boolean attack = false;
+			System.out.println("Player " + game.getCurrentUser() + "'s turn start:");
+			
 		    attack:
 			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size() //implying must be out of attacking troops
-			      || !end){
-			    System.out.println("Player " + game.getCurrentUser() + "'s turn start:");					
+			      || !end){					
 			    System.out.println("Select a country to attack from. 'end' to end phase.");
 			    validInput = false;
 			    if (!from)
@@ -280,14 +282,15 @@ public class Risk{
 			    //BATTLE!!!
 			    if (from && to){
 				validInput = false;
-				System.out.println("Roll? (Y/N)");
+				System.out.println("Battle beginning between countries " + cTo + " and " + cFrom + ".");
 				while (!validInput){
+					System.out.println("Roll? (Y/N)");
 				    String input = in.nextLine();
 				    try{
 					if (input.equals("Y") || input.equals("yes")){
 					    int attackDiceNum = 0; int defendDiceNum = 0;
-					    System.out.println("Battle beginning between countries " + cTo + " and " + cFrom + ".");
 					    //there's no breaking now!!!
+						attack = false;
 					    while(!attack){//a mini validInput for this stuff specifically
 						System.out.println("Player " + game.getCurrentUser() + ", please specify number of dice to roll." );
 						try{
@@ -310,7 +313,7 @@ public class Risk{
 						    defendDiceNum = Integer.parseInt(in.nextLine());
 						    if (defendDiceNum > cTo.getTroops())
 							System.out.println(cTo + " does not have sufficiently many troops (must be number of troops or less.");
-						    if (defendDiceNum > 2 || defendDiceNum <= 0)
+						    else if (defendDiceNum > 2 || defendDiceNum <= 0)
 							System.out.println("You can only roll 1 or 2 dice.");
 						    else
 							attack = true;
@@ -328,7 +331,7 @@ public class Risk{
 						roll = Util.rollDie();
 						System.out.println(roll + " \t");
 						for (int j = 0; j < attackDiceNum; j++)
-						    if (roll > attackDice.get(j)){
+						    if (j >= attackDice.size() || roll > attackDice.get(j)){
 							attackDice.add(j, roll);
 							break;
 						    }
@@ -338,7 +341,7 @@ public class Risk{
 						roll = Util.rollDie();
 						System.out.println(roll + " \t");
 						for (int j = 0; j < defendDiceNum; j++)
-						    if (roll > defendDice.get(j)){
+						    if (j >= defendDice.size() || roll > defendDice.get(j)){
 							defendDice.add(j, roll);
 						    }
 					    }
@@ -383,7 +386,16 @@ public class Risk{
 								cFrom.addTroops(-num);
 								game.update(cTo);
 								game.update(cFrom);
+								//CHECK FOR DEFEAT! (HERE)
+								game.getUsers()[cTo.getOwnerId()].getCountries().remove(cTo);
+								cTo.setOwnerId(game.getCurrentUser().getId());
+								game.getCurrentUser().getCountries().add(cTo);
+								
 								System.out.println("Troops transfered.");
+								validInput = true;
+								//CHECK DEFEAT HERE!!!
+								
+								
 							    }
 							}
 							catch(Exception e){
@@ -414,11 +426,10 @@ public class Risk{
 				    }
 				    catch(Exception e){
 					System.out.println("Yes or no? Not hard...");
+					e.printStackTrace();
 				    }
 				}
-				
 			    }
-			    game.nextTurn();
 			}
 			game.nextTurnState();
 			break;

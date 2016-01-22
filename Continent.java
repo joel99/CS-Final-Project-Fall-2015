@@ -16,7 +16,7 @@ public class Continent{
 	this.idHigh = idHigh;
     }
 
-    public String getName() {
+    public String toString() {
 	return name;
     }
 	

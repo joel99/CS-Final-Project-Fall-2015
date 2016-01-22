@@ -77,10 +77,12 @@ public class User{
 		    ownsThis = false;
 		    break;
 		}
-	    if (ownsThis) 
+	    if (ownsThis) {
 		continentBonus += c.getBonus();
+		System.out.println("I own " + c);
+		}
 	}
-	return (Math.max(3,numTroops() / 3) + continentBonus);
+	return (Math.max(3,countriesOwned.size() / 3) + continentBonus);
     }
 	
     public char setNick(char nick){

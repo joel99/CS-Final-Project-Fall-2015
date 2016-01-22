@@ -171,9 +171,10 @@ public class Game{
 	map.set(x++,y, '|'); 
 	for (int i = 1; i < stat.length(); i++)
 	    map.set(x++,y, stat.charAt(i));
-	//first char is userId, convert to user info. Track owner or ownerId????
-    }
-	
+	//gotta overwrite old info)
+	while (Util.userChars.indexOf(map.get(x++,y)) != -1)
+		map.set(x,y, ' ');
+	}
     public void printMap(){
 	System.out.println(map);
     }
@@ -244,8 +245,9 @@ public class Game{
 	
     
     public Country countryIdentify(String str){
+	str = str.toLowerCase();
 	for (Country c : countries) { //for every country in country array
-	    if (c.getName().equals(str)) { //linear search
+	    if (c.getName().toLowerCase().equals(str)) { //linear search
 		return c; 
 	    }
 	}
@@ -268,6 +270,13 @@ public class Game{
 	case "exit": case "e":
 	    ret = "QUIT";
 	    break;
+	case "status":
+		ret = "to be implemented";
+		break;
+	case "map":
+		printMap();
+		ret = "Map printed.";
+		break;
 	case "j":
 	    map.pan(-1);
 	    System.out.println(map);
@@ -332,7 +341,7 @@ public class Game{
 
 		if (!zoomSuccess) {
 		    for (Continent co : Util.continents) {
-			if (co.getName().equals(zoomArg)) {
+			if (co.toString().equals(zoomArg)) {
 			    //map.zoom(co,2);
 			    ret = "Continent zoom to be implemented...";
 			    zoomSuccess = true;
@@ -352,7 +361,7 @@ public class Game{
 	    }
 	}
 	System.out.println(ret);
-	System.out.println("Player " + getCurrentUser() + "'s turn (TEXT ORDER WILL BE FIXED!):");
+	//System.out.println("Player " + getCurrentUser() + "'s turn (TEXT ORDER WILL BE FIXED!):");
 	return ret;
     }	
 

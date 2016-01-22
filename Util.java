@@ -5,6 +5,8 @@
 
 public class Util{
     
+	public static final String userChars = "abcdefghijklmnopqrstuvwxyz1234567890";
+	
     public static final Continent nAm = new Continent("North America", 5, 1, 10);
     public static final Continent sAm = new Continent ("South America", 2, 10, 14);
     public static final Continent africa = new Continent("Africa", 3, 14, 20);
