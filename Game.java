@@ -6,8 +6,6 @@ import java.io.*;
 import java.util.*;
 
 public class Game{
-    
-    public static String[] turnStateNames = {"Reinforce","Attack", "Fortify"};
 
     private String saveFileName = "saves/game1.rdat";
     
@@ -52,7 +50,8 @@ public class Game{
     private String fileName = "countries.txt";
     private String[] countriesIn = new String[numCountries];
     public Country[] countries = new Country[numCountries];
-	
+    public ArrayList<Card> cards = new ArrayList<>(); //need two wildcards
+    
     int[][] allMapLoc = new int[numCountries][2];
     int[][] allBorders = new int[numCountries][6];//max border count is 6
     /*
@@ -108,8 +107,10 @@ public class Game{
 			       + fileName + "'");                  
         }
 	        
-	for (int i = 0; i < numCountries; i++)
+	for (int i = 0; i < numCountries; i++){
 	    countries[i] = new Country(i, countriesIn[i], allBorders[i], allMapLoc[i]);	
+	    cards.add(new Card(countries[i],i % 3));
+	}
 	
     }
     
@@ -367,8 +368,12 @@ public class Game{
 
 	
     //ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.
+    //cards stores bank cards. Assume only need to add card to given user.
     public void addCard(){
-	//user.getCurrentUser();
+	int index = (int) (Math.random() * cards.size());
+	getCurrentUser().add(cards.get(index));
+	cards.remove(index);
+	System.out.println("Card added"); //how to make private???
     }
 	
 }

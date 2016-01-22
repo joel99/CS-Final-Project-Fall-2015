@@ -5,7 +5,11 @@
 
 public class Util{
     
-	public static final String userChars = "abcdefghijklmnopqrstuvwxyz1234567890";
+    public static final String[] turnStateNames = {"Reinforce","Attack", "Fortify"};
+
+    public static final String[] cardTypes = {"Soldier", "Horse", "Cannon"};
+
+    public static final String userChars = "abcdefghijklmnopqrstuvwxyz1234567890";
 	
     public static final Continent nAm = new Continent("North America", 5, 1, 10);
     public static final Continent sAm = new Continent ("South America", 2, 10, 14);
