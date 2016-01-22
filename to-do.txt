@@ -2,33 +2,30 @@ ETD: Estimated time of delivery
 === To Do === 
 > Update countries.txt with the data locations and continent boundaries (a global variable): ETD - 1-15 DONE
 > Port Risk.java to Game.java : ETD - 1-16 DONE
-> Battle Mechanism for troop v. troop battle : ETD - 1-20
+> Battle Mechanism for troop v. troop battle : ETD - 1-20 DONE
 > Start and Game Menu : ETD - 1-17
 > Actual Gameplay
   >> Reinforcements Phase (Includes calculating reinforcements): ETD - 1-19 DONE
-  >> Battle Phase : ETD - 1-21 --> new ETD - 1-24 (so much w0rk)
+  >> Battle Phase : ETD - 1-21 --> new ETD - 1-24 (so much w0rk) DONE
   >> Fortify Phase : ETD - 1-22 DONE (oops, did it earlier bc easier than battle phase)
-> Card Trade-Ins: ETD - 1-22
+> Card Trade-Ins: ETD - 1-22 (Joel)
   >> We need a deck of cards... and a random assignment method: ETD 1-21
 
-> Find zoom continent
-
-> cycling thru players during battle phase (says 'initial reinforcement complete' for some reason)
+> Find zoom continent (William)
+> Fix zoom (cap zoom out or zoom in boundary limit) (William)
 
 > Robustify commands
-> Fix calc reinforce
 > User friendly interaction messages: (William)
   >> 'status' command to track what you have to do and other data
   >> more shorthand for countries (better than linear search)
   >> colors on countries or easier identification
 
 === Optional Addons ===
-> AI that you can play against or ally with
-> Play when # of players < 6
-> Wildcards in card deck (2)
-> Saving game and writing data to a txt file
-> Snake Pick or Ordered Pick as opposed to random pick
-> Card Trade in caps reinforcements (see rules)
-> Multi-pronged attacks (deluxe, non-classic)
-> Map wrapping
-> Map border when printing (panning and zooming are disorienting as is)
+> AI that you can play against or ally with (??)
+> Play when # of players < 6 (Joel)
+> Wildcards in card deck (2) (Joel)
+> Saving game and writing data to a txt file (William)
+> Snake Pick or Ordered Pick as opposed to random pick (Joel)
+> Card Trade in caps reinforcements (see rules) (??)
+> Multi-pronged attacks (deluxe, non-classic) (??)
+> Map wrapping (William)
