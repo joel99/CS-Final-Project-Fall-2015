@@ -45,8 +45,11 @@ public class Map{
     public String toString(){
 	String horizBorder = "||";
 	String retStr = "";
-	int max1 = Math.min(boundaries[3], map.length);
-	int max2 = Math.min(boundaries[2], map[0].length);
+	
+	int max1 = boundaries[3];
+	int max2 = boundaries[2];
+	//int max1 = Math.min(boundaries[3], map.length);
+	//int max2 = Math.min(boundaries[2], map[0].length);
 
 	for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
 	    horizBorder += "=";
@@ -56,7 +59,7 @@ public class Map{
 	for (int lineNum = Math.max(boundaries[1], 0); lineNum < max1; lineNum++) {
 	    retStr += "||";
 	    for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
-		retStr += map[lineNum][chNum];
+		retStr += map[lineNum % map.length][chNum % map[lineNum].length];
 	    }		
 	    retStr += "||\n";
 	}
@@ -67,7 +70,7 @@ public class Map{
     }
 	
 	
-    //hard copy - otherwise if we just set tempBoundaries to Boundaries, it'll be same pointer
+    //deep copy - otherwise if we just set tempBoundaries to Boundaries, it'll be same pointer
     //i.e. changing one will change the other...
     public void logBoundaries(){
 	for (int i = 0; i < 4; i++)
@@ -101,12 +104,17 @@ public class Map{
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
     public void zoom(int in){
-	boundaries[0] += 5 * in;
-	boundaries[1] += 5 * in;
-	boundaries[2] -= 5 * in;
-	boundaries[3] -= 5 * in;
+	private int[] boundaries = {0, 0, 70, 30};
+	if ((boundaries[3] - boundaries[1] <= 10) || boundaries[4] - boundaries[0] <= 10){
+	    pass;
+	} else {
+	    boundaries[0] += 5 * in;
+	    boundaries[1] += 5 * in;
+	    boundaries[2] -= 5 * in;
+	    boundaries[3] -= 5 * in;
+	}    
     }
-
+    
     //pans boundaries. takes half of old map, half of new direction. -2 - down, -1 - left, 1 - right, 2 - up
     //DEFAULT SPACING OF BOUNDARY SHOULD BE EVEN!!! -loY and hiY are opposite parity
     //-2 - down -1 - left 1 - right 2 - up
