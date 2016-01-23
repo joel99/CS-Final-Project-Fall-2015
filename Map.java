@@ -46,20 +46,24 @@ public class Map{
 	String horizBorder = "||";
 	String retStr = "";
 	
-	int max1 = boundaries[3];
-	int max2 = boundaries[2];
-	//int max1 = Math.min(boundaries[3], map.length);
-	//int max2 = Math.min(boundaries[2], map[0].length);
+	//int max1 = boundaries[3];
+	//int max2 = boundaries[2];
+	int max1 = Math.min(boundaries[3], map.length);
+	int max2 = Math.min(boundaries[2], map[0].length);
 
 	for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
 	    horizBorder += "=";
 	}
 	horizBorder += "||\n";
-
+	System.out.println("lmao printing");
 	for (int lineNum = Math.max(boundaries[1], 0); lineNum < max1; lineNum++) {
 	    retStr += "||";
 	    for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
-		retStr += map[lineNum % map.length][chNum % map[lineNum].length];
+		retStr += map[lineNum 
+		//% map.length
+		][chNum 
+		//% map[lineNum].length
+		];
 	    }		
 	    retStr += "||\n";
 	}
@@ -104,9 +108,11 @@ public class Map{
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
     public void zoom(int in){
-	if ((boundaries[3] - boundaries[1] <= 10) || boundaries[4] - boundaries[0] <= 10){
-	    //pass;
-	} else {
+	if ((in == 1 && (boundaries[3] - boundaries[1] <= 10 || boundaries[2] - boundaries[0] <= 10))
+		|| (in == -1 && (boundaries[3] - boundaries[1] >= 90 || boundaries[2] - boundaries[0] >= 160)))
+		System.out.println("Bounds exceeded");
+		
+	else{
 	    boundaries[0] += 5 * in;
 	    boundaries[1] += 5 * in;
 	    boundaries[2] -= 5 * in;

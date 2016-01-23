@@ -67,19 +67,22 @@ public class User{
     public boolean owns(int id){//check if own a certain country.
 	for (Country c: countriesOwned)
 	    if (c.getId() == id)
-		return true;
+			return true;
 	return false;
     }
+
     public int calcReinforcements(){//aw, who needs .contains anyways...
 	//calculate number of continents owned
 	int continentBonus = 0;
-	int countryCtr = 0;
 	for (Continent c: Util.continents){
 	    boolean ownsThis = true;
-	    for (int i = c.getIdLow(); i < c.getIdHigh(); i++)
+		System.out.println("Now looping through " + c);
+	    for (int i = c.getIdLow(); i < c.getIdHigh(); i++){
 		if (!owns(i)){
 		    ownsThis = false;
+			System.out.println("User does not own country " + i + ", breaking");
 		    break;
+		}
 		}
 	    if (ownsThis) {
 		continentBonus += c.getBonus();

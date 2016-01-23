@@ -109,7 +109,7 @@ public class Risk{
 		
 		while (game.getTurn() != -1){
 			
-		    game.setConquered(false); //Don't set in reinforce in case of card bonus.
+		    //Don't set in reinforce in case of card bonus.
 		    //CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
 			
 		    switch(game.getTurnState()){
@@ -138,13 +138,16 @@ public class Risk{
 					
 				while (!validInput){	//validInput condition: input country is valid.
 				    String input = in.nextLine();
-					if (game.parse(input).equals("Trading...")){
+					String parsed = game.parse(input);
+					if (parsed.equals("Trading...")){
 						boolean validCards = false;
 						while (!validCards){
 						try{
 							String countries = in.nextLine();
-							if (countries.equals("cancel") || countries.equals("c"))
+							if (countries.equals("cancel") || countries.equals("c")){
+								System.out.println("Trading canceled.");
 								break;
+							}
 							String inputs[] = countries.split(",");
 							if (inputs.length != 3)
 								System.out.println("Bad number of inputs");
@@ -175,7 +178,7 @@ public class Risk{
 						}
 						}
 					}
-				    else if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+				    else if (parsed.equals(input)){ //this if checks if command is nongeneric.
 					try{
 					    c = game.countryIdentify(input);
 					    if (game.getCurrentUser().owns(c.getId())){
@@ -609,13 +612,14 @@ public class Risk{
 					System.out.println("Invalid number.");
 				    }    
 				}
-			    }
-				
-				
+			    }		
 			}
 			
-			if (game.conqueredAny())
+			if (game.conqueredAny()){
 			    game.addCard();
+				System.out.println("Card awarded for conquering a territory.");
+				game.setConquered(false);
+			}
 			game.nextTurnState();
 			game.nextTurn();
 			break;

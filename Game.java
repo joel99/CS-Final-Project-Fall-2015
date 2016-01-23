@@ -69,11 +69,9 @@ public class Game{
 	turn = -1;
 	turnState = 0;
     }
-
-
+	
     public void loadMap() {
 	//Loading of Continents and Countries show 2 different methods of mass-object creation, I guess...
-		
 	//Example of file parsing	
 	int ctr = 0;
         try {
@@ -110,7 +108,6 @@ public class Game{
 	    countries[i] = new Country(i, countriesIn[i], allBorders[i], allMapLoc[i]);	
 	    cards.add(new Card(countries[i],i % 3));
 	}
-	
     }
     
 	
@@ -337,6 +334,7 @@ public class Game{
 	default:
 	    if ((str.length() >= 5) && (str.substring(0,5).equals("zoom "))) {
 		String zoomArg = str.substring(5,str.length());
+		System.out.println("zoomarg is " + zoomArg);
 		//test if arg is recognized
 		if (zoomArg.equals("in")) {
 		    map.zoom(1);
@@ -344,6 +342,7 @@ public class Game{
 		    ret = "Zoomed In.\n";
 		    success = true;
 		} else if (zoomArg.equals("out")) {
+			System.out.println("out dtected");
 		    map.zoom(-1);
 		    System.out.println(map);
 		    ret = "Zoomed Out.\n";
@@ -383,7 +382,8 @@ public class Game{
 		break;
 	    }
 	}
-	System.out.println(ret);
+	if (!str.equals(ret))
+		System.out.println(ret);
 	//System.out.println("Player " + getCurrentUser() + "'s turn (TEXT ORDER WILL BE FIXED!):");
 	return ret;
     }	
@@ -395,7 +395,6 @@ public class Game{
 	int index = (int) (Math.random() * cards.size());
 	getCurrentUser().add(cards.get(index));
 	cards.remove(index);
-	System.out.println("Card added"); //how to make private???
     }
 	
 	public boolean ownsCard(Country c, User u){
@@ -415,5 +414,8 @@ public class Game{
 		System.out.println("Cards traded.");
 	}
 	
+	public Country[] getCountries(){
+		return countries;
+	}
 	
 }
