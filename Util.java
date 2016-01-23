@@ -21,9 +21,9 @@ public class Util{
     public static final Continent[] continents = {nAm, sAm, africa, europe, australia, asia};
 	
 	
-    public final int[] cardBonus = {4, 6, 8, 10, 12, 15};
+    public static final int[] cardBonus = {4, 6, 8, 10, 12, 15};
 
-    public int cardBonusCtr = 0; //num sets traded in so far
+    public static int cardBonusCtr = 0; //num sets traded in so far
 	
     public static int getCardReinforce(){
 	cardBonusCtr++;
@@ -33,8 +33,9 @@ public class Util{
     }
 	
 	public static int getCardReinforcePredict(){
-		getCardReinforce();
+		int ret = getCardReinforce();
 		cardBonusCtr--;
+		return ret;
 	}
 
     //Wait function, for that authentic feel.

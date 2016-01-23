@@ -104,9 +104,8 @@ public class Map{
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
     public void zoom(int in){
-	private int[] boundaries = {0, 0, 70, 30};
 	if ((boundaries[3] - boundaries[1] <= 10) || boundaries[4] - boundaries[0] <= 10){
-	    pass;
+	    //pass;
 	} else {
 	    boundaries[0] += 5 * in;
 	    boundaries[1] += 5 * in;

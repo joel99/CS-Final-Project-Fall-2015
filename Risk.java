@@ -131,7 +131,7 @@ public class Risk{
 				if (game.getReinforcements() != 0)
 					System.out.println("Please select a country to reinforce.");
 				else
-					System.out.println("You must trade in your cards! You have " + game.getCurrentUser().getCards.size() + ".");
+					System.out.println("You must trade in your cards! You have " + game.getCurrentUser().getCards().size() + ".");
 				
 				Country c = game.countries[0]; //for initialization fears...
 				validInput = false;
@@ -143,6 +143,8 @@ public class Risk{
 						while (!validCards){
 						try{
 							String countries = in.nextLine();
+							if (countries.equals("cancel") || countries.equals("c"))
+								break;
 							String inputs[] = countries.split(",");
 							if (inputs.length != 3)
 								System.out.println("Bad number of inputs");
@@ -150,13 +152,13 @@ public class Risk{
 								Country inputCountries[] = new Country[3];
 								Card inputCards[] = new Card[3];
 								for (int i = 0; i < 3; i++){
-									inputCountries[i] = countryIdentify(inputs[i]);
-									if (!ownsCard(inputCountries[i], game.getCurrentUser())){
+									inputCountries[i] = game.countryIdentify(inputs[i]);
+									if (!game.ownsCard(inputCountries[i], game.getCurrentUser())){
 										System.out.println("You don't own " + inputCountries[i] + ".");
 										break;
 									}
 									else {
-										inputCard[i] = game.cardIdentify(inputCountries[i]);
+										inputCards[i] = game.cardIdentify(inputCountries[i]);
 									}
 								}
 								if (Util.validTrade(inputCards)){
@@ -427,14 +429,14 @@ public class Risk{
 								game.update(cFrom);
 								//CHECK FOR DEFEAT! (HERE)
 								boolean defeat = false;
-								User loser = game.getUsers.get(cTo.getOwnerId());
+								User loser = game.getUsers().get(cTo.getOwnerId());
 								loser.getCountries().remove(cTo);
 								if (loser.getCountries().size() == 0){
 									defeat = true;
 									ArrayList<Card> lostCards = loser.getCards();
 									while (lostCards.size() > 0){
 										game.getCurrentUser().add(lostCards.get(0));
-										loser.remove(0);
+										loser.getCards().remove(0);
 									}
 								}
 								

@@ -139,7 +139,7 @@ public class Game{
     }
 	
     public int nextTurn(){
-	if (turn == users.length - 1)
+	if (turn == users.size() - 1)
 	    turn = 0;
 	else
 	    turn++;
@@ -171,7 +171,7 @@ public class Game{
 	String stat = c.status();
 	//REMEMBER TO UPDATE w/ NICKNAME!!!
 	//User id here:
-	map.set(x++,y, users[Integer.parseInt(stat.substring(0,1))].getNick());
+	map.set(x++,y, users.get(Integer.parseInt(stat.substring(0,1))).getNick());
 	map.set(x++,y, '|'); 
 	for (int i = 1; i < stat.length(); i++)
 	    map.set(x++,y, stat.charAt(i));
@@ -188,7 +188,7 @@ public class Game{
     }
     
     public User getCurrentUser() {
-	return users[turn];
+	return users.get(turn);
     }
     
     public int getReinforcements(){
@@ -259,7 +259,7 @@ public class Game{
     }
 	public Card cardIdentify(Country c){
 		for (Card card: getCurrentUser().getCards())
-			if (card.toString().equals(c.toString))
+			if (card.toString().equals(c.toString()))
 				return card;
 		return null;
 	}
@@ -402,7 +402,7 @@ public class Game{
 		for (int i = 0; i < u.getCards().size(); i++)
 			if (u.getCards().get(i).toString().equals(c.toString()))
 				return true;
-		else return false;
+		return false;
 	}
 	
 	public void trade(Card[] gameCards){

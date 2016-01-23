@@ -27,7 +27,7 @@ public class Card //implements Ownable
 	return type;
     }
 
-    public int setOwnerId(int newId){
+    public void setOwnerId(int newId){
 	ownerId = newId;
     }
 
