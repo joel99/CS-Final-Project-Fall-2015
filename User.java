@@ -36,6 +36,10 @@ public class User{
 	cards.add(c);
     }
 	
+	public ArrayList<Card> getCards(){
+		return cards;
+	}
+	
     public void add(Country c){ //Add in order so that we can check continent ownership easier
 	for (int i = 0; i < countriesOwned.size(); i++)
 	    if (c.compareTo(countriesOwned.get(i)) < 0){

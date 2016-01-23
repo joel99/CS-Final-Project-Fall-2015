@@ -9,6 +9,10 @@ public class Card //implements Ownable
     //wildcard - 3 (To be implemented)
     private int ownerId; //initialize to -1 (no one owns)
 	
+	public String toString(){
+		return country.toString() + "\t: " + Util.cardTypes[type]; 
+	}
+	
     public Card(Country c, int type){
 	country = c;
 	this.type = type;

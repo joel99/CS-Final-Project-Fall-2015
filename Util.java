@@ -7,7 +7,7 @@ public class Util{
     
     public static final String[] turnStateNames = {"Reinforce","Attack", "Fortify"};
 
-    public static final String[] cardTypes = {"Soldier", "Horse", "Cannon"};
+    public static final String[] cardTypes = {"Soldier", "Horse", "Cannon", "Wildcard"};
 
     public static final String userChars = "abcdefghijklmnopqrstuvwxyz1234567890";
 	
@@ -24,13 +24,18 @@ public class Util{
     public final int[] cardBonus = {4, 6, 8, 10, 12, 15};
 
     public int cardBonusCtr = 0; //num sets traded in so far
-
-    public int getCardReinforce(){
+	
+    public static int getCardReinforce(){
 	cardBonusCtr++;
 	if (cardBonusCtr > cardBonus.length)
 	    return (cardBonusCtr - cardBonus.length) * 5 + cardBonus[cardBonus.length - 1];
 	return cardBonus[cardBonusCtr - 1];
     }
+	
+	public static int getCardReinforcePredict(){
+		getCardReinforce();
+		cardBonusCtr--;
+	}
 
     //Wait function, for that authentic feel.
     public static void wait(int ms){try {Thread.sleep(ms);} catch (InterruptedException ie) {}}
@@ -69,5 +74,19 @@ public class Util{
     public static int rollDie(){
 	return (int)(Math.random() * 6) + 1;
     }
+	
+	public static boolean validTrade(Card[] input){
+		if (input.length != 3)
+			return false;
+		int type1 = input[0].getType();
+		int type2 = input[1].getType();
+		int type3 = input[2].getType();
+		if (type1 == 3 || type2 == 3 || type3 == 3)
+			return true;
+		if (type1 == type2)
+			return type1 == type3;
+		else
+			return type1 != type3 && type2 != type3;
+	}
 	
 }

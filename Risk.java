@@ -95,7 +95,7 @@ public class Risk{
 			    game.countries[i * 7 + j].setOwnerId(i);
 			    game.countries[i * 7 + j].addTroops(1);
 			    game.update(i*7+j);
-			    game.getUsers()[i].add(game.countries[i*7+j]);
+			    game.getUsers().get(i).add(game.countries[i*7+j]);
 			}
 		    break;
 		}
@@ -103,7 +103,7 @@ public class Risk{
 		System.out.println("Countries have been distributed.");
 		
 		game.setPhase(1);
-		int initCtr = game.getUsers().length; //ticks down to change phase.
+		int initCtr = game.getUsers().size(); //ticks down to change phase.
 		
 		//GAME START!!!
 		
@@ -115,26 +115,65 @@ public class Risk{
 		    switch(game.getTurnState()){
 			//====================================================================================				
 		    case 0: //REINFORCE 
-
+				System.out.println("Player " + game.getCurrentUser() + "'s reinforcements phase start:");
 			    if (game.getReinforcements() == 0){ //if saved in the middle of distr reinforcements
 				if (game.getPhase() == 1)
 				    game.setReinforcements(20 - game.getCurrentUser().numTroops()); //20 may be swapped out
 				else if (game.getPhase() == 2)
 				    game.calcReinforce();
 			    }
-			    while(game.getReinforcements() > 0) {
+			    while(game.getReinforcements() > 0 || game.getCurrentUser().getCards().size() >= 5) {
 				//distribute given reinforcements among user owned countries.
 				
 				//lmao no panning while zoomed.
 				game.printMap();
-				System.out.println("Player " + game.getCurrentUser() + "'s turn start:");
-				System.out.println("Please select a country to reinforce.");
+
+				if (game.getReinforcements() != 0)
+					System.out.println("Please select a country to reinforce.");
+				else
+					System.out.println("You must trade in your cards! You have " + game.getCurrentUser().getCards.size() + ".");
+				
 				Country c = game.countries[0]; //for initialization fears...
 				validInput = false;
 					
 				while (!validInput){	//validInput condition: input country is valid.
 				    String input = in.nextLine();
-				    if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					if (game.parse(input).equals("Trading...")){
+						boolean validCards = false;
+						while (!validCards){
+						try{
+							String countries = in.nextLine();
+							String inputs[] = countries.split(",");
+							if (inputs.length != 3)
+								System.out.println("Bad number of inputs");
+							else {
+								Country inputCountries[] = new Country[3];
+								Card inputCards[] = new Card[3];
+								for (int i = 0; i < 3; i++){
+									inputCountries[i] = countryIdentify(inputs[i]);
+									if (!ownsCard(inputCountries[i], game.getCurrentUser())){
+										System.out.println("You don't own " + inputCountries[i] + ".");
+										break;
+									}
+									else {
+										inputCard[i] = game.cardIdentify(inputCountries[i]);
+									}
+								}
+								if (Util.validTrade(inputCards)){
+									game.trade(inputCards);
+									validCards = true;
+									validInput = true;
+								}
+								else
+									System.out.println("Cards do not make a valid combo.");
+							}
+						}
+						catch(Exception e){
+							System.out.println("I don't understand");
+						}
+						}
+					}
+				    else if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
 					try{
 					    c = game.countryIdentify(input);
 					    if (game.getCurrentUser().owns(c.getId())){
@@ -205,7 +244,7 @@ public class Risk{
 			from = false;
 			to = false;
 			boolean attack = false;
-			System.out.println("Player " + game.getCurrentUser() + "'s turn start:");
+			System.out.println("Player " + game.getCurrentUser() + "'s battle phase start:");
 			
 		    attack:
 			while(game.getCurrentUser().numTroops() != game.getCurrentUser().getCountries().size() //implying must be out of attacking troops
@@ -308,7 +347,7 @@ public class Risk{
 					    }
 					    attack = false;
 					    while (!attack){
-						System.out.println("Player " + game.getUsers()[cTo.getOwnerId()] + ", please specify number of dice to roll." );
+						System.out.println("Player " + game.getUsers().get(cTo.getOwnerId()) + ", please specify number of dice to roll." );
 						try{
 						    defendDiceNum = Integer.parseInt(in.nextLine());
 						    if (defendDiceNum > cTo.getTroops())
@@ -387,11 +426,32 @@ public class Risk{
 								game.update(cTo);
 								game.update(cFrom);
 								//CHECK FOR DEFEAT! (HERE)
-								game.getUsers()[cTo.getOwnerId()].getCountries().remove(cTo);
+								boolean defeat = false;
+								User loser = game.getUsers.get(cTo.getOwnerId());
+								loser.getCountries().remove(cTo);
+								if (loser.getCountries().size() == 0){
+									defeat = true;
+									ArrayList<Card> lostCards = loser.getCards();
+									while (lostCards.size() > 0){
+										game.getCurrentUser().add(lostCards.get(0));
+										loser.remove(0);
+									}
+								}
+								
 								cTo.setOwnerId(game.getCurrentUser().getId());
 								game.getCurrentUser().getCountries().add(cTo);
 								
 								System.out.println("Troops transfered.");
+								
+								if (defeat){
+									System.out.println("Player " + loser + " has been defeated!");
+									System.out.println("Cards transferred to player " + game.getCurrentUser() + ".");
+									if (game.getCurrentUser().getCards().size() >= 6){
+										System.out.println("You must trade in cards! Reverting to reinforcements phase.");
+										game.setTurnState(0); 
+									}
+								}
+								
 								validInput = true;
 								//CHECK DEFEAT HERE!!!
 								
@@ -426,7 +486,7 @@ public class Risk{
 				    }
 				    catch(Exception e){
 					System.out.println("Yes or no? Not hard...");
-					e.printStackTrace();
+					//e.printStackTrace();
 				    }
 				}
 			    }

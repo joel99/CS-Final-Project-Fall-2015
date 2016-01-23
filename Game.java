@@ -41,7 +41,7 @@ public class Game{
     *****************/
     private static int turnState;
 	    
-    private User[] users;
+	private ArrayList<User> users = new ArrayList<>();
     private Map map;
     private int reinforcements;
     private boolean conqueredAny;
@@ -61,10 +61,9 @@ public class Game{
     */
 
     
-    public Game(int numPlayers, String filename){
-	users = new User[numPlayers]; 
+    public Game(int numPlayers, String filename){ 
 	for (int i = 0; i < numPlayers; i++) 
-	    users[i] = new Player(i);
+	    users.add(new Player(i));
 	map = new Map(filename);
 	phase = 0;
 	turn = -1;
@@ -127,7 +126,11 @@ public class Game{
 	return turnState;
     }
 	
-    public User[] getUsers(){
+	public void setTurnState(int num){
+		turnState = num;
+	}
+	
+    public ArrayList<User> getUsers(){
 	return users;
     }
 	
@@ -253,8 +256,15 @@ public class Game{
 	    }
 	}
 	return null; //if no country exists with str as name
-	
     }
+	public Card cardIdentify(Country c){
+		for (Card card: getCurrentUser().getCards())
+			if (card.toString().equals(c.toString))
+				return card;
+		return null;
+	}
+	
+	
     
     public boolean conqueredAny(){
 	return conqueredAny;
@@ -267,6 +277,7 @@ public class Game{
     //checks for generic commands
     public String parse(String str){//takes actions, but returns String for explicit commands
 	String ret = "";
+	boolean success = false;
 	switch(str){
 	case "exit": case "e":
 	    ret = "QUIT";
@@ -298,8 +309,19 @@ public class Game{
 	    System.out.println(map);
 	    ret = "Panned Up.\n";
 	    break;
+	case "cards":
+		System.out.println("");
+		for (int i = 0; i < getCurrentUser().getCards().size(); i++)
+			System.out.println(cards.get(i));
+		ret = "Printed cards. \n";
+		break;
+	case "trade": case "t":
+		parse("cards");	//just to print them.
+		System.out.println("Please enter the three cards (seperated by a comma ',') to trade in for " + Util.getCardReinforcePredict() + " troops.");
+		ret = "Trading...";
+		break;
 	case "help":
-	    ret = "\n=== COMMANDS ===\n" + 
+	    ret = "\n=== COMMANDS ===\n" +
 		"'help' -- display commands\n" +
 		"'i' -- pan map up\n" +
 		"'j' -- pan map left\n" +
@@ -308,50 +330,50 @@ public class Game{
 		"'zoom in' -- zoom in once\n" +
 		"'zoom out' -- zoom out once\n" +
 		"'zoom <country>' -- zoom into a country\n" + 
-		"'zoom <continent>' -- zoom into a continent";
+		"'zoom <continent>' -- zoom into a continent\n" +
+		"'trade' -- trade in cards\n" +
+		"'cards' -- display cards\n";
 	    break;
 	default:
 	    if ((str.length() >= 5) && (str.substring(0,5).equals("zoom "))) {
 		String zoomArg = str.substring(5,str.length());
-		Boolean zoomSuccess = false;
-
 		//test if arg is recognized
 		if (zoomArg.equals("in")) {
 		    map.zoom(1);
 		    System.out.println(map);
 		    ret = "Zoomed In.\n";
-		    zoomSuccess = true;
+		    success = true;
 		} else if (zoomArg.equals("out")) {
 		    map.zoom(-1);
 		    System.out.println(map);
 		    ret = "Zoomed Out.\n";
-		    zoomSuccess = true;
+		    success = true;
 		}
 
-		if (!zoomSuccess) {
+		if (!success) {
 		    for (Country c : countries) {
 			if (c.getName().equals(zoomArg)) {
 			    map.zoom(c,1);
 			    System.out.println(map);
 			    ret = "Zoomed into " + c.getName() + ".\n";
-			    zoomSuccess = true;
+			    success = true;
 			    break;
 			}
 		    }
 		}
 
-		if (!zoomSuccess) {
+		if (!success) {
 		    for (Continent co : Util.continents) {
 			if (co.toString().equals(zoomArg)) {
 			    //map.zoom(co,2);
 			    ret = "Continent zoom to be implemented...";
-			    zoomSuccess = true;
+			    success = true;
 			    break;
 			}
 		    }
 		}
 
-		if (!zoomSuccess) {
+		if (!success) {
 		    System.out.println("'" + zoomArg + "' is not a valid zoom argument");
 		}
 
@@ -375,5 +397,23 @@ public class Game{
 	cards.remove(index);
 	System.out.println("Card added"); //how to make private???
     }
+	
+	public boolean ownsCard(Country c, User u){
+		for (int i = 0; i < u.getCards().size(); i++)
+			if (u.getCards().get(i).toString().equals(c.toString()))
+				return true;
+		else return false;
+	}
+	
+	public void trade(Card[] gameCards){
+		User user = getCurrentUser();
+		for (int i = 0; i < gameCards.length; i++){
+			user.getCards().remove(gameCards[i]);
+			cards.add(gameCards[i]);
+		}
+		reinforcements += Util.getCardReinforce();
+		System.out.println("Cards traded.");
+	}
+	
 	
 }
