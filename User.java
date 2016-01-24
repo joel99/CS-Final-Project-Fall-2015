@@ -10,14 +10,14 @@ public class User{
     private ArrayList <Card> cards;
     private ArrayList <Country> countriesOwned;
     private String name;
-    private char nickname;
+	private boolean alive;	//because actually removing the user from users is a lil annoying, I think...
 
     public User(int id){
 	name = Integer.toString(id);
-	nickname = name.charAt(0);
 	cards = new ArrayList<Card>();
 	countriesOwned = new ArrayList<Country>();
 	this.id = id;
+	alive = true;
     }
 	
     public String toString(){
@@ -27,6 +27,18 @@ public class User{
     public String getName(){
 	return name;
     }
+	
+	public void setName(String newName){
+		name = newName;
+	}
+	
+	public void kill(){
+		alive = false;
+	}
+	
+	public boolean isAlive(){
+		return alive;
+	}
     
     public int getId() {
     	return id;
@@ -51,10 +63,6 @@ public class User{
 	
     public ArrayList<Country> getCountries(){
 	return countriesOwned;
-    }
-
-    public char getNick(){
-	return nickname;
     }
 	
     public int numTroops(){
@@ -90,11 +98,5 @@ public class User{
 		}
 	}
 	return (Math.max(3,countriesOwned.size() / 3) + continentBonus);
-    }
-	
-    public char setNick(char nick){
-	char temp = getNick();
-	nickname = nick;
-	return temp;
     }
 }

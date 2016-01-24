@@ -87,28 +87,77 @@ public class Risk{
 		
 			//assign countries
 			switch(distributionMethod){
-			case 0:
+			case 1: //snake pick
+				break;
+			case 0:	//random
 			default:
 			    Util.shuffle(game.countries);
 			    for (int i = 0; i < 6; i++)
 				for (int j = 0; j < 7; j++){
 				    game.countries[i * 7 + j].setOwnerId(i);
 				    game.countries[i * 7 + j].addTroops(1);
-				    game.update(i*7+j);
 				    game.getUsers().get(i).add(game.countries[i*7+j]);
 				}
 			    break;
 			}
 		
+		/**************************************SET NAMES************************************/
+			for (int i = 0; i < game.getUsers().size(); i++){
+				validInput = false;
+				while (!validInput){
+					System.out.println("Player " + (i + 1) + ", please choose an alphanumeric name (length < 12). \n" +
+					"Your nickname (displayed on map) will be the first 3 characters of your name.");
+					try{
+						String newName = in.nextLine();
+						if (newName.length() > 12)
+							System.out.println("Name is too long");
+						else{
+							boolean validName = true;
+							for (int k = 0; k < i; k++){
+								if (game.getUsers().get(k).getName().substring(0,Math.min(3,newName.length())).toLowerCase().equals(newName.substring(0,Math.min(3,newName.length())).toLowerCase())){
+									System.out.println("Input name already chosen.");
+									validName = false;
+									break;
+								}
+							}
+							if (validName)
+							for (int j = 0; j < newName.length(); j++)
+								if (Util.userChars.indexOf(newName.substring(j,j+1)) == -1){
+									System.out.println("Name is not alphanumeric.");
+									validName = false;
+									break;
+								}
+							
+							
+							if (validName){
+							game.getUsers().get(i).setName(newName);
+							validInput = true;
+							System.out.println("Name accepted.");
+							}
+							else
+								System.out.println("Name rejected.");
+						}
+					}
+					catch(Exception e){
+						System.out.println("Invalid input.");
+						e.printStackTrace();
+					}
+				}
+			}
+			
 			System.out.println("Countries have been distributed.");
-		
+			for (Country c: game.getCountries())
+				game.update(c);
+			
 			game.setPhase(1);
 			int initCtr = game.getUsers().size(); //ticks down to change phase.
 		
 			//GAME START!!!
 		
 			while (game.getTurn() != -1){
-			
+				while (!game.getCurrentUser().isAlive()){
+					game.nextTurn();
+				}
 			    //Don't set in reinforce in case of card bonus.
 			    //CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
 			
@@ -442,6 +491,7 @@ public class Risk{
 									    while (lostCards.size() > 0){
 										game.getCurrentUser().add(lostCards.get(0));
 										loser.getCards().remove(0);
+										loser.kill();	//brutal
 									    }
 									}
 								
@@ -460,9 +510,6 @@ public class Risk{
 									}
 								
 									validInput = true;
-									//CHECK DEFEAT HERE!!!
-								
-								
 								    }
 								}
 								catch(Exception e){

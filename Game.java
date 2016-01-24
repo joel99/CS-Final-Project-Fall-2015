@@ -167,15 +167,19 @@ public class Game{
 	int x = coords[1];
 	String stat = c.status();
 	//REMEMBER TO UPDATE w/ NICKNAME!!!
-	//User id here:
-	map.set(x++,y, users.get(Integer.parseInt(stat.substring(0,1))).getNick());
-	map.set(x++,y, '|'); 
+	String name = users.get(Integer.parseInt(stat.substring(0,1))).getName();
+	for (int i = 0; i < name.length(); i++)
+		map.set(x++, y, name.charAt(i));
+	map.set(x++,y, '-'); 
 	for (int i = 1; i < stat.length(); i++)
 	    map.set(x++,y, stat.charAt(i));
 	//gotta overwrite old info
-	while (Util.userChars.indexOf(map.get(x,y)) != -1)
+	while (Util.userChars.indexOf(map.get(x,y)) != -1){
 		map.set(x,y, ' ');
+		x++;	//or the while loop is pointless...
 	}
+	}
+	
     public void printMap(){
 	System.out.println(map);
     }

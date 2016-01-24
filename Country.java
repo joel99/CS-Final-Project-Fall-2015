@@ -6,27 +6,18 @@ public class Country {
 
     //no need to store continents, tracked in id.
     private int id;
-    private String name;
-    private int ownerId;
-	
-    private User owner;
-	
+    private String name;	
     private int troops;
     private int borders[];	//holds ids of bordering countries
     private int[] mapLoc; 	//stored in proper y,x format.
+	private int ownerId;
 	
-    /*
-      public Country(int id){
-      this.id = id;
-      }
-    */
     public Country(int id, String name, int[] borders, int[] mapLoc){
 	this.id = id;
 	this.name = name;
 	this.borders = borders; 
 	this.mapLoc = mapLoc;
 	ownerId = 0;
-	owner = null;
 	troops = 0;
     }
 	
@@ -49,18 +40,6 @@ public class Country {
     public int[] getBorders(){
 	return borders;
     }
-	
-    /*
-      public User getOwner(){
-      return owner;
-      }
-	
-      public User setOwner(User newOwner){
-      User temp = owner;
-      owner = newOwner;
-      return temp;
-      }	
-    */
 	
     public int setOwnerId(int newOwnerId){
 	int temp = ownerId;
@@ -86,7 +65,7 @@ public class Country {
 	
     //for update function
     public String status(){
-	return Integer.toString(ownerId) + Integer.toString(getTroops());
+	return Integer.toString(getOwnerId()) + Integer.toString(getTroops());
     }
 	
     public int compareTo(Country other){ //not actually a comparable class :)
