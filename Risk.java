@@ -302,7 +302,7 @@ public class Risk{
 						c.addTroops(num);
 						game.update(c);
 						game.useReinforcements(num);
-						game.getMap().resetZoom();
+						game.getMap().resetBoundaries();
 						System.out.println("Troops added!");				
 						validInput = true;
 					    }
@@ -386,7 +386,7 @@ public class Risk{
 					    try{
 						if (input.equals("c") || input.equals("cancel")){
 						    System.out.println("Selection canceled.");
-						    game.getMap().resetZoom();
+						    game.getMap().resetBoundaries();
 						    from = false;
 						    break;
 						}
@@ -561,7 +561,7 @@ public class Risk{
 						    
 							from = false;
 							to = false;
-							game.getMap().resetZoom();
+							game.getMap().resetBoundaries();
 							game.printMap();
 							break;
 						    }
@@ -572,7 +572,7 @@ public class Risk{
 						    System.out.println("Retreating.");
 						    from = false;
 						    to = false;
-						    game.getMap().resetZoom();
+						    game.getMap().resetBoundaries();
 						    break; //should break up to y/n while loop (asking for new countries)
 						}
 					
@@ -642,7 +642,7 @@ public class Risk{
 					    try{
 						if (input.equals("c") || input.equals("cancel")){
 						    System.out.println("Selection canceled.");
-						    game.getMap().resetZoom();
+						    game.getMap().resetBoundaries();
 						    from = false;
 						    break;
 						}
@@ -692,7 +692,7 @@ public class Risk{
 						    cFrom.addTroops(-num);
 						    game.update(cTo);
 						    game.update(cFrom);
-						    game.getMap().resetZoom();
+						    game.getMap().resetBoundaries();
 						    System.out.println("Troops transfered.");				
 						    validInput = true;
 						    end = true;

@@ -55,7 +55,6 @@ public class Map{
 	    horizBorder += "=";
 	}
 	horizBorder += "||\n";
-	System.out.println("lmao printing");
 	for (int lineNum = Math.max(boundaries[1], 0); lineNum < max1; lineNum++) {
 	    retStr += "||";
 	    for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
@@ -81,7 +80,7 @@ public class Map{
 	    tempBoundaries[i] = boundaries[i];
     }
 	
-    public void resetZoom(){
+    public void resetBoundaries(){
 	for (int i = 0; i < 4; i++)
 	    boundaries[i] = tempBoundaries[i];
     }
@@ -123,36 +122,57 @@ public class Map{
     //pans boundaries. takes half of old map, half of new direction. -2 - down, -1 - left, 1 - right, 2 - up
     //DEFAULT SPACING OF BOUNDARY SHOULD BE EVEN!!! -loY and hiY are opposite parity
     //-2 - down -1 - left 1 - right 2 - up
-    public void pan(int dir){
-	
+    //returns true if pan is succesful, false otherwise
+    public boolean pan(int dir){
+	boolean validPan = false;
+	logBoundaries();
+	    
 	switch(dir){
 	case -2: //DOWN(k) e.g. 1,4 as Y's become 3,6
-	    if ( boundaries[3] - (( boundaries[3] + boundaries[1] ) / 2 + 1 ) + 1  < 0 )  { //basically doing computation beforehand 
-		System.out.println("Can't pan any more in this direction.");
-	    } else {
-		boundaries[1] = (boundaries[3] + boundaries[1]) / 2 + 1;
-		boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+	    boundaries[1] = (boundaries[3] + boundaries[1]) / 2 + 1;
+	    boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+
+	    validPan = boundaries[1] < map.length; //this seems like easist way to do it
+	    if (!validPan) {
+		resetBoundaries();
 	    }
+	    
 	    break;
 	case 2: //UP(i) e.g. 3,6 as Y's become 1,4
-	    if ((boundaries[1] - ((boundaries[3] + boundaries[1] / 2) - boundaries[1]) + 1) < 0) {
-		System.out.println("Can't pan any more in this direction.");
-	    }
 	    boundaries[3] = (boundaries[3] + boundaries[1]) / 2;
 	    boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
+
+	    validPan = boundaries[3] > 0;
+	    if (!validPan) {
+		resetBoundaries();
+	    }
+	
 	    break;
-	case -1: //LEFT(l) same as case 2 for x.
+	case -1: //LEFT(j) same as case 2 for x.
 	    boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
 	    boundaries[0] -= (boundaries[2] - boundaries[0]) + 1;
+
+	    validPan = boundaries[2] > 0;
+	    if (!validPan) {
+		resetBoundaries();
+	    }
 	    break;
 	case 1: //RIGHT(l) same as case -2 for x
 	    boundaries[0] = (boundaries[2] + boundaries[0]) / 2 + 1;
 	    boundaries[2] += (boundaries[2] - boundaries[0]) + 1;
-	    break;	
+
+	    validPan = boundaries[0] < map[0].length;
+	    if (!validPan) {
+		resetBoundaries();
+	    }
+	    
+	    break;
 	default:
 	    System.out.println("Invalid pan");
+	    validPan = true;
 	    break;
 	}
+	return validPan;
 		
     }
     

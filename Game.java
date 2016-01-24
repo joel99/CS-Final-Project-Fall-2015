@@ -295,24 +295,36 @@ public class Game{
 		ret = "Map printed.";
 		break;
 	case "j":
-	    map.pan(-1);
-	    System.out.println(map);
-	    ret = "Panned Left.\n";
+	    if (map.pan(-1)) { //if the pan is valid
+		System.out.println(map);
+		ret = "Panned Left.\n";
+	    } else {
+		ret = "Could not pan any more in this direction.";
+	    }
 	    break;
 	case "k":
-	    map.pan(-2);
-	    System.out.println(map);
-	    ret = "Panned Down.\n";
+	    if (map.pan(-2)) {
+		System.out.println(map);
+		ret = "Panned Down.\n";
+	    } else {
+		ret = "Could not pan any more in this direction.";
+	    }
 	    break;
 	case "l":
-	    map.pan(1);
-	    System.out.println(map);
-	    ret = "Panned Right.\n";
+	    if (map.pan(1)) {
+		System.out.println(map);
+		ret = "Panned Right.\n";
+	    } else {
+		ret = "Could not pan any more in this direction.";
+	    }
 	    break;
 	case "i":
-	    map.pan(2);
-	    System.out.println(map);
-	    ret = "Panned Up.\n";
+	    if (map.pan(2)) {
+		System.out.println(map);
+		ret = "Panned Up.\n";
+	    } else {
+		ret = "Could not pan any more in this direction.";
+	    }
 	    break;
 	case "cards":
 		System.out.println("");
@@ -350,7 +362,7 @@ public class Game{
 		    ret = "Zoomed In.\n";
 		    success = true;
 		} else if (zoomArg.equals("out")) {
-			System.out.println("out dtected");
+			System.out.println("out detected");
 		    map.zoom(-1);
 		    System.out.println(map);
 		    ret = "Zoomed Out.\n";
