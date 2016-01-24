@@ -24,6 +24,8 @@ public class Risk{
 	//Options menu things...
 	//0 - random
 	int distributionMethod = 0;
+
+	int numPlayers = 6; //default, game was previously is built around 6 players so we had to work around by removing players from 6
 	
 	System.out.println("Now loading..." );
 
@@ -84,86 +86,119 @@ public class Risk{
 		
 			//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
 			//Code could be simpler if in Game.java, but we thought assigning countries to players made more sense in driver
-		
+
+			System.out.println("How many players will be playing? (2-6 players only)");
+			validInput = false; //just for clarification/robustness
+			while (!validInput) {
+			    try {
+				numPlayers = Integer.parseInt(in.nextLine());
+				
+				if (numPlayers < 2 || numPlayers > 6) {
+				    System.out.println("Number of players must be between 2 and 6, inclusive");
+				} else {
+				    validInput = true;
+				}
+			    }
+			    catch (Exception e) {
+				System.out.println("Please enter a valid integer.");
+			    }
+			}
+			
 			//assign countries
 			switch(distributionMethod){
-			case 1: //snake pick
-				break;
+			case 1: //snake pick, unlikely to be implemented
+			    break;
 			case 0:	//random
 			default:
 			    Util.shuffle(game.countries);
-			    for (int i = 0; i < 6; i++)
-				for (int j = 0; j < 7; j++){
-				    game.countries[i * 7 + j].setOwnerId(i);
-				    game.countries[i * 7 + j].addTroops(1);
-				    game.getUsers().get(i).add(game.countries[i*7+j]);
+			    for (int i = 6; i > numPlayers; i--) {
+				game.removeUser(game.getUsers().get(i-1)); //removes users from the right to match players required	
+			    }
+			    			    			    
+			    for (int i = 0; i < game.getUsers().size(); i++) {
+				for (int j = 0; j < (42/numPlayers); j++){
+				    game.countries[i * (42/numPlayers) + j].setOwnerId(i);
+				    game.countries[i * (42/numPlayers) + j].addTroops(1);
+				    game.getUsers().get(i).add(game.countries[i*(42/numPlayers)+j]);
 				}
-			    break;
+			    }
+
+			    for (int i = 0; i < game.getUsers().size(); i++) {
+				
+				int myCountries = 0;
+				for (Country c : game.getCountries()) {
+				    if (c.getOwnerId() == game.getUsers().get(i).getId()) {
+					myCountries++;
+				    }
+				}
+				System.out.println(game.getUsers().get(i).getName() + " owns " + myCountries + " countries");
+				
+			    }
+			    
 			}
 		
-		/**************************************SET NAMES************************************/
+			/**************************************SET NAMES************************************/
 			for (int i = 0; i < game.getUsers().size(); i++){
-				validInput = false;
-				while (!validInput){
-					System.out.println("Player " + (i + 1) + ", please choose an alphanumeric name (length < 12). \n" +
-					"Your nickname (displayed on map) will be the first 3 characters of your name.");
-					try{
-						String newName = in.nextLine();
-						if (newName.length() > 12)
-							System.out.println("Name is too long");
-						else{
-							boolean validName = true;
-							for (int k = 0; k < i; k++){
-								if (game.getUsers().get(k).getName().substring(0,Math.min(3,newName.length())).toLowerCase().equals(newName.substring(0,Math.min(3,newName.length())).toLowerCase())){
-									System.out.println("Input name already chosen.");
-									validName = false;
-									break;
-								}
-							}
-							if (validName)
-							for (int j = 0; j < newName.length(); j++)
-								if (Util.userChars.indexOf(newName.substring(j,j+1)) == -1){
-									System.out.println("Name is not alphanumeric.");
-									validName = false;
-									break;
-								}
-							
-							
-							if (validName){
-							game.getUsers().get(i).setName(newName);
-							validInput = true;
-							System.out.println("Name accepted.");
-							}
-							else
-								System.out.println("Name rejected.");
+			    validInput = false;
+			    while (!validInput){
+				System.out.println("Player " + (i + 1) + ", please choose an alphanumeric name (length < 12). \n" +
+						   "Your nickname (displayed on map) will be the first 3 characters of your name.");
+				try{
+				    String newName = in.nextLine();
+				    if (newName.length() > 12)
+					System.out.println("Name is too long");
+				    else{
+					boolean validName = true;
+					for (int k = 0; k < i - 1; k++){
+					    String otherName = game.getUsers().get(k).getName();
+						if (otherName.substring(0,Math.min(3,otherName.length())).toLowerCase().equals(newName.substring(0,Math.min(3,newName.length())).toLowerCase())){
+						System.out.println("Input name already chosen.");
+						validName = false;
+						break;
+					    }
+					}
+					if (validName)
+					    for (int j = 0; j < newName.length(); j++)
+						if (Util.userChars.indexOf(newName.substring(j,j+1)) == -1){
+						    System.out.println("Name is not alphanumeric.");
+						    validName = false;
+						    break;
 						}
+							
+							
+					if (validName){
+					    game.getUsers().get(i).setName(newName);
+					    validInput = true;
+					    System.out.println("Name accepted.");
 					}
-					catch(Exception e){
-						System.out.println("Invalid input.");
-						e.printStackTrace();
-					}
+					else
+					    System.out.println("Name rejected.");
+				    }
 				}
+				catch(Exception e){
+				    System.out.println("Invalid input.");
+				    e.printStackTrace();
+				}
+			    }
 			}
 			
 			System.out.println("Countries have been distributed.");
 			for (Country c: game.getCountries())
-				game.update(c);
+			    game.update(c);
 			
 			game.setPhase(1);
 			int initCtr = game.getUsers().size(); //ticks down to change phase.
-		
+
+			
 			//GAME START!!!
-		
+			
 			while (game.getTurn() != -1){
-				int thisTurn = turn;
-				while (!game.getCurrentUser().isAlive()){
-					game.nextTurn();
-				}
-				if (thisTurn == turn){
-					System.out.println("Congratulations! Player " + game.getCurrentUser() + " has won the game!");
-					// I would like some nicer game over text, like something outta block font, text-to-ascii???
-					return;
-				}
+			    
+			    if (game.getUsers().size() <= 1){
+				System.out.println("Congratulations! Player " + game.getCurrentUser() + " has won the game!");
+				// I would like some nicer game over text, like something outta block font, text-to-ascii???
+				return;
+			    }
 			    //Don't set in reinforce in case of card bonus.
 			    //CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
 			
@@ -497,7 +532,7 @@ public class Risk{
 									    while (lostCards.size() > 0){
 										game.getCurrentUser().add(lostCards.get(0));
 										loser.getCards().remove(0);
-										loser.kill();	//brutal
+										game.removeUser(loser);
 									    }
 									}
 								
@@ -545,7 +580,7 @@ public class Risk{
 						    System.out.println("I don't understand...");
 					    }
 					    catch(Exception e){
-						System.out.println("Yes or no? Not hard...");
+						System.out.println("Please enter 'yes'/'Y' or 'no','N'");
 						//e.printStackTrace();
 					    }
 					}

@@ -124,21 +124,28 @@ public class Map{
     //DEFAULT SPACING OF BOUNDARY SHOULD BE EVEN!!! -loY and hiY are opposite parity
     //-2 - down -1 - left 1 - right 2 - up
     public void pan(int dir){
-		
+	
 	switch(dir){
-	case -2://e.g. 1,4 as Y's become 3,6 
-	    boundaries[1] =  (boundaries[3] + boundaries[1]) / 2 + 1;
-	    boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+	case -2: //DOWN(k) e.g. 1,4 as Y's become 3,6
+	    if ( boundaries[3] - (( boundaries[3] + boundaries[1] ) / 2 + 1 ) + 1  < 0 )  { //basically doing computation beforehand 
+		System.out.println("Can't pan any more in this direction.");
+	    } else {
+		boundaries[1] = (boundaries[3] + boundaries[1]) / 2 + 1;
+		boundaries[3] += (boundaries[3] - boundaries[1]) + 1;
+	    }
 	    break;
-	case 2://e.g. 3,6 as Y's become 1,4
+	case 2: //UP(i) e.g. 3,6 as Y's become 1,4
+	    if ((boundaries[1] - ((boundaries[3] + boundaries[1] / 2) - boundaries[1]) + 1) < 0) {
+		System.out.println("Can't pan any more in this direction.");
+	    }
 	    boundaries[3] = (boundaries[3] + boundaries[1]) / 2;
 	    boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
 	    break;
-	case -1://same as case 2 for x.
+	case -1: //LEFT(l) same as case 2 for x.
 	    boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
 	    boundaries[0] -= (boundaries[2] - boundaries[0]) + 1;
 	    break;
-	case 1:
+	case 1: //RIGHT(l) same as case -2 for x
 	    boundaries[0] = (boundaries[2] + boundaries[0]) / 2 + 1;
 	    boundaries[2] += (boundaries[2] - boundaries[0]) + 1;
 	    break;	
@@ -148,6 +155,7 @@ public class Map{
 	}
 		
     }
+    
 	
     public char get(int x, int y){
 	return map[y][x];

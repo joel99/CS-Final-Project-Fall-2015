@@ -130,6 +130,10 @@ public class Game{
     public ArrayList<User> getUsers(){
 	return users;
     }
+
+    public void removeUser(User user) {
+	users.remove(user);
+    }
 	
     public void setTurn(int newTurn){
 	turn = newTurn;
