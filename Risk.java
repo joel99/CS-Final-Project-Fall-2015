@@ -188,7 +188,6 @@ public class Risk{
 			
 			game.setPhase(1);
 			int initCtr = game.getUsers().size(); //ticks down to change phase.
-
 			
 			//GAME START!!!
 			
@@ -208,7 +207,7 @@ public class Risk{
 				System.out.println("Player " + game.getCurrentUser() + "'s reinforcements phase start:");
 				if (game.getReinforcements() == 0){ //if saved in the middle of distr reinforcements
 				    if (game.getPhase() == 1)
-					game.setReinforcements(20 - game.getCurrentUser().numTroops()); //20 may be swapped out
+					game.setReinforcements(Util.initialTroops[game.getUsers().size()] - game.getCurrentUser().numTroops()); //20 may be swapped out
 				    else if (game.getPhase() == 2)
 					game.calcReinforce();
 				}
@@ -322,7 +321,6 @@ public class Risk{
 				    if (initCtr == 0){
 					System.out.println("Initial reinforcement complete!");
 					game.setPhase(2);
-					initCtr--;
 					break;
 				    }
 				}

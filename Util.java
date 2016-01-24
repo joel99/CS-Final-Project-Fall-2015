@@ -11,6 +11,8 @@ public class Util{
 
     public static final String userChars = "abcdefghijklmnopqrstuvwxyz1234567890";
 	
+	public static final int[] initialTroops = {0, 40, 35, 30, 25, 20};
+	
     public static final Continent nAm = new Continent("North America", 5, 0, 9);
     public static final Continent sAm = new Continent ("South America", 2, 9, 13);
     public static final Continent africa = new Continent("Africa", 3, 13, 19);
