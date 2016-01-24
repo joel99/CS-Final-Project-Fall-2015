@@ -55,7 +55,6 @@ public class Map{
 	    horizBorder += "=";
 	}
 	horizBorder += "||\n";
-	System.out.println("lmao printing");
 	for (int lineNum = Math.max(boundaries[1], 0); lineNum < max1; lineNum++) {
 	    retStr += "||";
 	    for (int chNum = Math.max(boundaries[0], 0); chNum < max2; chNum++) {
