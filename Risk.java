@@ -155,8 +155,14 @@ public class Risk{
 			//GAME START!!!
 		
 			while (game.getTurn() != -1){
+				int thisTurn = turn;
 				while (!game.getCurrentUser().isAlive()){
 					game.nextTurn();
+				}
+				if (thisTurn == turn){
+					System.out.println("Congratulations! Player " + game.getCurrentUser() + " has won the game!");
+					// I would like some nicer game over text, like something outta block font, text-to-ascii???
+					return;
 				}
 			    //Don't set in reinforce in case of card bonus.
 			    //CAREFUL TO OVERWRITE THIS IN CASE OF SAVING!
