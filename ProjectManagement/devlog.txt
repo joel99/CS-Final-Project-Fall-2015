@@ -43,4 +43,7 @@
 > Debugging 
 
 === 1/24/16 ===
-> Custom name functionality added.
+> Custom name functionality added (Joel)
+> Finished accomodations for less than 6 players (William)
+> Implemented world borders for panning (William)
+> Deleted the py file that's been causing Github to think this was a Python project for this entire time (William's crowning achievement)
