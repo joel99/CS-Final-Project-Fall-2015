@@ -1,5 +1,6 @@
 # CS-Final-Project-Fall-2015
 Risk (Terminal) - Joel Ye and William Xiang
+Note for Mr. Brown: to-do and devlog can be found in ProjectManagement folder.
 To launch the program, make sure you are in the same directory as Risk.java.
 Type the following commands:
 <br>$ javac Risk.java
