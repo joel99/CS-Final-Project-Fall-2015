@@ -3,35 +3,35 @@ ETD: Estimated time of delivery
 > Update countries.txt with the data locations and continent boundaries (a global variable): ETD - 1-15 DONE
 > Port Risk.java to Game.java : ETD - 1-16 DONE
 > Battle Mechanism for troop v. troop battle : ETD - 1-20 DONE
-> Start and Game Menu : ETD - 1-17
-> Actual Gameplay
+> Start and Game Menu : ETD - 1-17 KINDA DONE :|
+> Actual Gameplay DONE (party!)
   >> Reinforcements Phase (Includes calculating reinforcements): ETD - 1-19 DONE
   >> Battle Phase : ETD - 1-21 --> new ETD - 1-24 (so much w0rk) DONE
   >> Fortify Phase : ETD - 1-22 DONE (oops, did it earlier bc easier than battle phase)
 > Card Trade-Ins: ETD - 1-22 (Joel)
-  >> We need a deck of cards... and a random assignment method: ETD 1-21
+  >> We need a deck of cards... and a random assignment method: ETD 1-21 DONE
 
-> Find zoom continent (William)
-> Fix zoom (cap zoom out or zoom in boundary limit) (William)
+> Find zoom continent (William) 
+> Fix zoom (cap zoom out or zoom in boundary limit) (William) DONE
 
 > Robustify commands
 > User friendly interaction messages: (William)
-  >> 'status' command to track what you have to do and other data
-  >> more shorthand for countries (better than linear search)
-  >> colors on countries or easier identification
+  >> 'status' command to track what you have to do and other data (!! IMPORTANT)
+  >> more shorthand for countries (better than linear search) (DITCHED)
+  >> colors on countries or easier identification (DITCHED)
   
-> Player elimination/win condition (Both)
+> Player elimination/win condition (Both) DONE
 
 
 
 
 
 === Optional Addons ===
-> AI that you can play against or ally with (??)
-> Play when # of players < 6 (Joel)
-> Wildcards in card deck (2) (Joel)
-> Saving game and writing data to a txt file (William)
-> Snake Pick or Ordered Pick as opposed to random pick (Joel)
-> Card Trade in caps reinforcements (see rules) (??)
-> Multi-pronged attacks (deluxe, non-classic) (??)
+> AI that you can play against or ally with (??) (DITCHED)
+> Play when # of players < 6 (Joel) (WIP)
+> Wildcards in card deck (2) (Joel) DONE
+> Saving game and writing data to a txt file (William) (!! IMPORTANT)
+> Snake Pick or Ordered Pick as opposed to random pick (Joel) (WIP)
+> Card Trade in caps reinforcements (see rules) (??) (DITCHED)???
+> Multi-pronged attacks (deluxe, non-classic) (??) (DITCHED)
 > Map wrapping (William)
