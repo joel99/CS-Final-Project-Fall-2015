@@ -172,8 +172,8 @@ public class Game{
 	map.set(x++,y, '|'); 
 	for (int i = 1; i < stat.length(); i++)
 	    map.set(x++,y, stat.charAt(i));
-	//gotta overwrite old info)
-	while (Util.userChars.indexOf(map.get(x++,y)) != -1)
+	//gotta overwrite old info
+	while (Util.userChars.indexOf(map.get(x,y)) != -1)
 		map.set(x,y, ' ');
 	}
     public void printMap(){
