@@ -35,3 +35,12 @@
 === 1/20/16 ===
 > Complete Battle Phase. (Joel) WORKING VERSION COMPLETE. (needs debugging)
 > Rewrote code for parse to allow argument processing for zoom (William)
+
+=== 1/22/16 ===
+> State of delirium, cards structure added (Joel)
+
+=== 1/23/16 ===
+> Debugging 
+
+=== 1/24/16 ===
+> Custom name functionality added.
