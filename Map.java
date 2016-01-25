@@ -98,7 +98,7 @@ public class Map{
     }
 	
     public void zoom(Country c1, Country c2){
-	zoom(Util.average(c1.getMapLoc(),c2.getMapLoc()), 3);
+	zoom(Util.average(c1.getMapLoc(),c2.getMapLoc()), 2);
     }
 
     public void zoom(Continent co, int lvl) {

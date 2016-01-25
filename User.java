@@ -74,11 +74,11 @@ public class User{
 	int continentBonus = 0;
 	for (Continent c: Util.continents){
 	    boolean ownsThis = true;
-	    System.out.println("Now looping through " + c);
+	    //System.out.println("Now looping through " + c);
 	    for (int i = c.getIdLow(); i < c.getIdHigh(); i++){
 		if (!owns(i)){
 		    ownsThis = false;
-		    System.out.println("User does not own country " + i + ", breaking");
+		    //System.out.println("User does not own country " + i + ", breaking");
 		    break;
 		}
 	    }

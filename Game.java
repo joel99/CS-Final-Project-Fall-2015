@@ -41,7 +41,7 @@ public class Game{
     *****************/
     private static int turnState;
 	    
-	private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private Map map;
     private int reinforcements;
     private boolean conqueredAny;
@@ -123,9 +123,10 @@ public class Game{
 	return turnState;
     }
 	
-	public void setTurnState(int num){
-		turnState = num;
-	}
+    public void setTurnState(int num){
+	Util.wait(1000);
+	turnState = num;
+    }
 	
     public ArrayList<User> getUsers(){
 	return users;
@@ -136,10 +137,12 @@ public class Game{
     }
 	
     public void setTurn(int newTurn){
+	Util.wait(1000);
 	turn = newTurn;
     }
 	
     public int nextTurn(){
+	Util.wait(1000);
 	if (turn == users.size() - 1)
 	    turn = 0;
 	else
@@ -148,11 +151,13 @@ public class Game{
     }
 	
     public int setPhase(int newPhase){
+	Util.wait(1000);
 	phase = newPhase;
 	return phase;
     }
 	
     public int nextTurnState(){
+	Util.wait(1000);
 	if (turnState == 2)
 	    turnState = 0;
 	else
@@ -284,8 +289,9 @@ public class Game{
 	String ret = "";
 	boolean success = false;
 	switch(str){
-	case "exit": case "e":
+	case "exit":
 	    ret = "QUIT";
+	    System.exit(0);
 	    break;
 	case "status":
 		ret = "to be implemented";
@@ -338,8 +344,11 @@ public class Game{
 		ret = "Trading...";
 		break;
 	case "help":
-	    ret = "\n=== COMMANDS ===\n" +
-		"'help' -- display commands\n" +
+	    ret = "\n=== GENERIC COMMANDS ===\n" +
+		"'help' -- display generic commands and turn-based instructions\n" +
+		"'exit' -- save and quit the game\n" +
+		"'save' -- save and continue playing\n" +
+		"'map' -- print current map\n" +
 		"'i' -- pan map up\n" +
 		"'j' -- pan map left\n" +
 		"'k' -- pan map down\n" +
@@ -347,9 +356,46 @@ public class Game{
 		"'zoom in' -- zoom in once\n" +
 		"'zoom out' -- zoom out once\n" +
 		"'zoom <country>' -- zoom into a country\n" + 
-		"'zoom <continent>' -- zoom into a continent\n" +
-		"'trade' -- trade in cards\n" +
-		"'cards' -- display cards\n";
+		"'zoom <continent>' -- zoom into a continent\n\n\n";
+		//'trade' -- trade in cards\n" +
+		//"'cards' -- display cards\n\n\n";
+
+	    switch(phase) {
+	    case 1:
+		ret += "You are currently in INITIAL REINFORCEMENT PHASE:\n" +
+		    "In Intial Reinforcement, all players are given an initial number of troops to reinforce their countries.\n\n" +
+		    "To select a country, first make sure you own the country by seeing if the first label under the country name is your name. If it is, you can type the country name, hit Return, and enter how many troops you want to reinforce the country with.\n\n" +
+		    "Player " + users.get(turn) + ", please select a country to reinforce.";
+		break;
+	    case 2:
+		switch(turnState) {
+		case 0:
+		    ret += "You are currently in Player " + users.get(turn) + "'s REINFORCEMENT PHASE:\n" +
+			"in Reinforcement Phase, you are given a certain amount of reinforcements, determined by many factors (listed in Rules.txt).\n\n " + 
+			"To select a country, first make sure the country is yours by seeing if the first label under the country name is your name. If it is, you can type the country name, hit Return, and enter how many troops you want to reinforce the country with.\n\n" +
+		    "Player " + users.get(turn) + ", please select a country to reinforce.";
+		    break;
+		    
+		case 1:
+		    ret += "You are currently in Player " + users.get(turn) + "'s BATTLE PHASE:\n" +
+			"in Battle Phase, you must first choose a country you own to attack from, hit Return, and then enter an opposing player's country to attack. You can attack as many times as you want in Battle Phase, aslong as you have a valid country to attack from.\n\n" + 
+			"Make sure the you own the attacking country, and it has more than one troop on it.\n Also make sure you DON'T own the country you are attacking and it's adjacent to your attacking country (aerial assault is cheating :c).\n\n" +
+			"You will then enter battle. First, you choose a number of dice to roll, with a min of 1 and max of 3. However, you can't rolle more dice than the number of troops in your attacking country - 1.\n Then ask the owner of the defending country (the country being attacked) to choose a number of die to roll, with a min of 1 and max of 2. Similarly, they can't roll more than the number of troops in the defending country - 1.\n\n" +
+			"This will keep going until either:\n\t> The defending country runs out of troops, in which case that country is conquered by the attacking player.\n\t> Your attacking country is down to 1 troop, in which case you must retreat and the attack is unsuccessful.\n\t> You (the attacker) choose to retreat, in which case the battle stops.\n\n" +
+			"As a general rule for both sides, the more dice one rolls, the higher chance of winning the battle, but the more troops you may lose. \n\n" +
+			"Player " + users.get(turn) + ", please select one of your countries to attack from, or if you've done that already, select a country to attack, and if you've done that already, select a number of dice to roll, and if you've done that already, ask the owner of the country being attacked to select a number of dice to roll, and idk I'm probably making this more confusing than it already was :P";
+		    break;
+		    
+		case 2:
+		    ret += "You are currently in Player " + users.get(turn) + "'s FORTIFY PHASE:\n" +
+			"in Fortify Phase, you're given the opportunity to transfer troops from one of your countries to an adjacent country that you also own. You can only use this once per turn, so use it wisely!\n\n" + 
+			"Check that you own both countries and they're adjacent to one another. Also make sure you have at least one troop left in the country you send troops from so you still occupy it.\n\n" +
+		    "Player " + users.get(turn) + ", please select a country to supply troops and then select a country to fortify.";
+		    break;
+		}
+		break;
+	    }
+	    
 	    break;
 	default:
 	    if ((str.length() >= 5) && (str.substring(0,5).equals("zoom "))) {
@@ -385,7 +431,7 @@ public class Game{
 		    for (Continent co : Util.continents) {
 			if (co.toString().equals(zoomArg)) {
 			    //map.zoom(co,2);
-			    ret = "Continent zoom to be implemented...";
+			    ret = "Continent zoom to be implemented...\n";
 			    success = true;
 			    break;
 			}
@@ -393,7 +439,7 @@ public class Game{
 		}
 
 		if (!success) {
-		    System.out.println("'" + zoomArg + "' is not a valid zoom argument");
+		    System.out.println("'" + zoomArg + "' is not a valid zoom argument\n");
 		}
 
 		

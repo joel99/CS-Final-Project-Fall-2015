@@ -31,19 +31,18 @@ public class Risk{
 	
 	System.out.println("Now loading..." );
 
-	System.out.println("\n    _______      _          __\n   |_   __ \\    (_)        [  |  _\n    | |__) |   __   .--.   | | / ]\n    |  __ /   [  | ( (`\\]  | '' < \n   _| |  \\ \\_  | |  `'.'.  | |`\\ \\\n  |____| |___|[___][\\__) )[__|  \\_]\n ");
+	System.out.println("\n    _______     _           __\n   |_   __ \\   (_)         [  | __\n    | |__) |   __   .--.   | | / ]\n    |  __ /   [  | ( (`\\]  | '' < \n   _| |  \\ \\_  | |  `'.'.  | |`\\ \\\n  |____| |___|[___][\\__) )[__|  \\_]\n ");
 	for (int i = 0; i < 3; i++) {Util.wait(1000); System.out.print(".");}
 	System.out.println("\n\n");
-	System.out.println("Welcome to Risk");
+	System.out.println("Welcome to Risk!\n");
 
 	//Load map
 	game.loadMap();
 	
 	//At this point, presume the map is loaded.
 	System.out.println("Rules documentation is located in 'Rules.txt'.");
-	System.out.println("Detailed controls are in 'Controls.txt'.");
-	System.out.println("Type 'help' at any time to list generic commands.");
-	System.out.println("Type 'exit' at any time to exit the game.");	
+	System.out.println("Type 'help' at any time to list generic commands and turn-based instructions.");
+	System.out.println("Type 'exit' at any time to exit the game.\n");	
 
 	//TEST
 	//game.writeSave();
@@ -54,15 +53,17 @@ public class Risk{
 	    validInput = false;
 	    while (!validInput){
 		try{
-			System.out.println("Please make your selection:");
-			System.out.println("e - exit");
-			System.out.println("o - options");
-			System.out.println("l - load game (currently non-functional)");
-			System.out.println("s - start game");
+			System.out.println("\nPlease make your selection:");
+			System.out.println("e - Exit game");
+			System.out.println("o - Change game options");
+			System.out.println("l - Load game (currently non-functional)");
+			System.out.println("s - Start new game");
 		    switch(in.nextLine().substring(0,1)){
 			
 			//"e": exit
-		    case "e": System.out.println("Now exiting Risk.\n\n");
+		    case "e":
+			System.out.println("Now exiting Risk.\n\n");
+			System.exit(0);
 			break;
 			
 			//"o": options
@@ -70,10 +71,10 @@ public class Risk{
 			validInput = false;
 			options:
 			while (!validInput){
-				System.out.println("==Options Menu==");
+				System.out.println("\n=== Options Menu ===");
 				System.out.println("Type in the number of the option to perform.");
-				System.out.println("1. Adjust number of players");
-				System.out.println("2. Adjust distribution method");
+				System.out.println("1. Adjust number of players (default 6)");
+				System.out.println("2. Adjust distribution method (nonfunctional ;-;)");
 				System.out.println("3. Exit options");
 				String choice = in.nextLine();
 				try {
@@ -168,17 +169,16 @@ public class Risk{
 			for (int i = 0; i < game.getUsers().size(); i++){
 			    validInput = false;
 			    while (!validInput){
-				System.out.println("Player " + (i + 1) + ", please choose an alphanumeric name (length < 12). \n" +
-						   "Your nickname (displayed on map) will be the first 3 characters of your name.");
+				System.out.println("\nPlayer " + (i + 1) + ", please choose an alphanumeric name, max of 7 chars.");
 				try{
 				    String newName = in.nextLine();
-				    if (newName.length() > 12)
+				    if (newName.length() > 7)
 					System.out.println("Name is too long");
 				    else{
 					boolean validName = true;
-					for (int k = 0; k < i - 1; k++){
+					for (int k = 0; k < i; k++){
 					    String otherName = game.getUsers().get(k).getName();
-						if (otherName.substring(0,Math.min(3,otherName.length())).toLowerCase().equals(newName.substring(0,Math.min(3,newName.length())).toLowerCase())){
+					    if (otherName.toLowerCase().equals(newName.toLowerCase())) {
 						System.out.println("Input name already chosen.");
 						validName = false;
 						break;
@@ -209,7 +209,7 @@ public class Risk{
 			    }
 			}
 			
-			System.out.println("Countries have been distributed.");
+			System.out.println("\nCountries have been distributed.");
 			for (Country c: game.getCountries())
 			    game.update(c);
 			
@@ -234,7 +234,7 @@ public class Risk{
 				System.out.println("Player " + game.getCurrentUser() + "'s reinforcements phase start:");
 				if (game.getReinforcements() == 0){ //if saved in the middle of distr reinforcements
 				    if (game.getPhase() == 1)
-					game.setReinforcements(Util.initialTroops[game.getUsers().size()] - game.getCurrentUser().numTroops()); //20 may be swapped out
+					game.setReinforcements(Util.initialTroops[game.getUsers().size()-1] - game.getCurrentUser().numTroops()); //20 may be swapped out
 				    else if (game.getPhase() == 2)
 					game.calcReinforce();
 				}
@@ -243,12 +243,13 @@ public class Risk{
 				
 				    //lmao no panning while zoomed.
 				    game.printMap();
-
+				    /*
 				    if (game.getReinforcements() != 0)
-					System.out.println("Please select a country to reinforce.");
+					System.out.println(game.getCurrentUser() + ", please select a country to reinforce.");
 				    else
 					System.out.println("You must trade in your cards! You have " + game.getCurrentUser().getCards().size() + ".");
-				
+				    */
+				    System.out.println(game.getCurrentUser() + ", please select a country to reinforce.");
 				    Country c = game.countries[0]; //for initialization fears...
 				    validInput = false;
 					
@@ -301,10 +302,10 @@ public class Risk{
 						    validInput = true;
 						}
 						else
-						    System.out.println("You do not own " + c + ".");
+						    System.out.println("You do not own " + c + ".\n");
 					    }
 					    catch(Exception e){
-						System.out.println("Error: Invalid country '" + input + "'.");
+						System.out.println("Error: Invalid country '" + input + "'.\n");
 					    }
 					}
 				    }
@@ -321,9 +322,9 @@ public class Risk{
 					try{//consider breaking in a do/while loop??? I unno how to use that.
 					    int num = Integer.parseInt(in.nextLine());
 					    if (num > game.getReinforcements())
-						System.out.println("The amount specified is more than you have.");
+						System.out.println("The amount specified is more than you have.\n");
 					    else if (num <= 0)
-						System.out.println("Please specify a positive amount.");
+						System.out.println("Please specify a positive amount.\n");
 					    else{
 						c.addTroops(num);
 						game.update(c);
@@ -346,7 +347,7 @@ public class Risk{
 					break; //get outta here!
 				    }
 				    if (initCtr == 0){
-					System.out.println("Initial reinforcement complete!");
+					System.out.println("Initial reinforcement complete!\n");
 					game.setPhase(2);
 					break;
 				    }
@@ -382,16 +383,16 @@ public class Risk{
 						
 						cFrom = game.countryIdentify(input);
 						if (!game.getCurrentUser().owns(cFrom.getId()))
-						    System.out.println("You do not own " + cFrom + ".");
+						    System.out.println("You do not own " + cFrom + ".\n");
 						else if(cFrom.getTroops() == 1)
-						    System.out.println("Not enough troops to attack from " + cFrom + ".");
+						    System.out.println("Not enough troops to attack from " + cFrom + ".\n");
 						else{
 						    validInput = true;
 						    from = true;
 						}	
 					    }
 					    catch(Exception e){
-						System.out.println("Error: Invalid country '" + input + "'.");
+						System.out.println("Error: Invalid country '" + input + "'.\n");
 					    }
 					}
 				    }
@@ -410,7 +411,7 @@ public class Risk{
 					if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
 					    try{
 						if (input.equals("c") || input.equals("cancel")){
-						    System.out.println("Selection canceled.");
+						    System.out.println("Selection canceled.\n");
 						    game.getMap().resetBoundaries();
 						    from = false;
 						    break;
@@ -419,11 +420,11 @@ public class Risk{
 						cTo = game.countryIdentify(input);
 								
 						if (game.getCurrentUser().owns(cTo.getId()))
-						    System.out.println("You cannot attack " + cTo + ". (You own it)");
+						    System.out.println("You cannot attack " + cTo + ". (You own it)\n");
 						else if(!Util.contains(cFrom.getBorders(),cTo.getId()))
-						    System.out.println(cTo + " is not connected to " + cFrom + ".");
+						    System.out.println(cTo + " is not connected to " + cFrom + ".\n");
 						else{
-						    System.out.println("Target country selected.");
+						    System.out.println("Target country selected.\n");
 						    validInput = true;
 						    to = true;
 						    game.getMap().zoom(cFrom, cTo);
@@ -432,7 +433,7 @@ public class Risk{
 							
 					    }
 					    catch(Exception e){
-						System.out.println("Error: Invalid country '" + input + "'.");
+						System.out.println("Error: Invalid country '" + input + "'.\n");
 					    }
 					}
 				    }
@@ -443,7 +444,7 @@ public class Risk{
 					validInput = false;
 					System.out.println("Battle beginning between countries " + cTo + " and " + cFrom + ".");
 					while (!validInput){
-					    System.out.println("Roll? (Y/N)");
+					    System.out.println("Roll? (Y/N) \nIf you don't roll, you must retreat.");
 					    String input = in.nextLine();
 					    try{
 						if (input.equals("Y") || input.equals("yes")){
@@ -455,14 +456,14 @@ public class Risk{
 							try{
 							    attackDiceNum = Integer.parseInt(in.nextLine());
 							    if (attackDiceNum > cFrom.getTroops() - 1)
-								System.out.println(cFrom + " does not have sufficient troops (must be number of troops - 1 or less).");
+								System.out.println(cFrom + " does not have sufficient troops (must be number of troops - 1 or less).\n");
 							    else if (attackDiceNum > 3 || attackDiceNum <= 0)
-								System.out.println("You can only roll 1, 2, or 3 dice.");
+								System.out.println("You can only roll 1, 2, or 3 dice.\n");
 							    else
 								attack = true;
 							}
 							catch(Exception e){
-							    System.out.println("Not a valid number.");
+							    System.out.println("Not a valid number.\n");
 							}
 						    }
 						    attack = false;
@@ -471,21 +472,21 @@ public class Risk{
 							try{
 							    defendDiceNum = Integer.parseInt(in.nextLine());
 							    if (defendDiceNum > cTo.getTroops())
-								System.out.println(cTo + " does not have sufficiently many troops (must be number of troops or less.");
+								System.out.println(cTo + " does not have sufficiently many troops (must be number of troops or less.\n");
 							    else if (defendDiceNum > 2 || defendDiceNum <= 0)
-								System.out.println("You can only roll 1 or 2 dice.");
+								System.out.println("You can only roll 1 or 2 dice.\n");
 							    else
 								attack = true;
 							}
 							catch(Exception e){
-							    System.out.println("Not a valid number.");
+							    System.out.println("Not a valid number.\n");
 							}
 						    }
 						    int roll;
 						    //Roll dice (INSERT INTO ARRAY BY HIGHEST FIRST)
 						    ArrayList<Integer> attackDice = new ArrayList<>();
 						    ArrayList<Integer> defendDice = new ArrayList<>();
-						    System.out.println("Attacker roll(s): \t");
+						    System.out.println("\n\nAttacker roll(s): \t");
 						    for (int i = 0; i < attackDiceNum; i++){
 							roll = Util.rollDie();
 							System.out.println(roll + " \t");
@@ -495,7 +496,7 @@ public class Risk{
 								break;
 							    }
 						    }
-						    System.out.println("Defender roll(s) : \t");
+						    System.out.println("\nDefender roll(s) : \t");
 						    for (int i = 0; i < defendDiceNum; i++){
 							roll = Util.rollDie();
 							System.out.println(roll + " \t");
@@ -515,10 +516,10 @@ public class Risk{
 							else
 							    attCas++;
 					       
-						    System.out.println("Attacker loses " + attCas + " troop(s).");
+						    System.out.println("\nAttacker loses " + attCas + " troop(s).");
 						    cFrom.addTroops(-1 * attCas);
 						    System.out.println(cFrom + " has " + cFrom.getTroops() + " troops left.");
-						    System.out.println("Defender loses " + defCas + " troop(s).");
+						    System.out.println("\nDefender loses " + defCas + " troop(s).");
 						    cTo.addTroops(-1 * defCas);
 						    System.out.println(cTo + " has " + cTo.getTroops() + " troops left.");
 						    game.update(cFrom); game.update(cTo);
@@ -531,7 +532,7 @@ public class Risk{
 							    game.setConquered(true);
 							    System.out.println(cTo + " has been conquered.");
 							    cTo.setOwnerId(game.getCurrentUser().getId());
-							    System.out.println("How many troops do you want to transfer to " + cTo + "?");
+							    System.out.println("How many troops do you want to transfer to " + cTo + "? (max " + (cFrom.getTroops() - 1) + ")");
 							    validInput = false;
 							    while (!validInput){
 								try{//consider breaking in a do/while loop??? I unno how to use that.
@@ -640,7 +641,7 @@ public class Risk{
 						if (!game.getCurrentUser().owns(cFrom.getId()))
 						    System.out.println("You do not own " + cFrom + ".");
 						else if(cFrom.getTroops() == 1)
-						    System.out.println("Not enough troops to attack from " + cFrom + ".");
+						    System.out.println("Not enough troops to fortify from " + cFrom + ".");
 						else{
 						    validInput = true;
 						    from = true;
@@ -695,7 +696,7 @@ public class Risk{
 				
 				    //if this part of the code wasn't reached by a break line
 				    if (validInput){	//therefore, if cTo and cFrom are valid.
-					System.out.println("Enter number of troops to transfer.");
+					System.out.println("Enter number of troops to transfer. (max " + (cFrom.getTroops() - 1) + ")");
 					validInput = false;
 					while (!validInput){
 					    String input = in.nextLine();
@@ -732,7 +733,7 @@ public class Risk{
 			
 				if (game.conqueredAny()){
 				    game.addCard();
-				    System.out.println("Card awarded for conquering a territory.");
+				    System.out.println("Card awarded for conquering a territory. (not sure if cards work :/)");
 				    game.setConquered(false);
 				}
 				game.nextTurnState();

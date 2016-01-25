@@ -9,7 +9,7 @@ public class Util{
 
     public static final String[] cardTypes = {"Soldier", "Horse", "Cannon", "Wildcard"};
 
-    public static final String userChars = "abcdefghijklmnopqrstuvwxyz1234567890";
+    public static final String userChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	
 	public static final int[] initialTroops = {0, 40, 35, 30, 25, 20};
 	
