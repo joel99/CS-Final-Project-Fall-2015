@@ -1,6 +1,6 @@
 # CS-Final-Project-Fall-2015
 Risk (Terminal) - Joel Ye and William Xiang
-Note for Mr. Brown: to-do and devlog can be found in ProjectManagement folder.
+Note for Mr. Brown: to-do and devlog can be found in ProjectManagement folder. A bunch of features were ditched. Like AI. Unfortunately.
 To launch the program, make sure you are in the same directory as Risk.java.
 Type the following commands:
 <br>$ javac Risk.java
@@ -15,6 +15,7 @@ Controls (Temporary)
 - 'zoom in', 'zoom out' are recognized commands
 - 'zoom <continent name>', 'zoom <country name>' may be recognized commands
 - ijkl keys can be used to pan (type a letter and enter) the map.
+- When in doubt, 'cancel' will save the day.
 
 Risk - A Game of Domination
 For 2-6 players
