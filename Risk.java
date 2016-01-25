@@ -27,10 +27,9 @@ public class Risk{
 
 	int numPlayers = 6; //default, game was previously is built around 6 players so we had to work around by removing players from 6
 	
-	System.out.println("Now loading..." );
-
 	Game game = new Game(6, "map.txt");
-
+	
+	System.out.println("Now loading..." );
 
 	System.out.println("\n    _______      _          __\n   |_   __ \\    (_)        [  |  _\n    | |__) |   __   .--.   | | / ]\n    |  __ /   [  | ( (`\\]  | '' < \n   _| |  \\ \\_  | |  `'.'.  | |`\\ \\\n  |____| |___|[___][\\__) )[__|  \\_]\n ");
 	for (int i = 0; i < 3; i++) {Util.wait(1000); System.out.print(".");}
@@ -48,25 +47,18 @@ public class Risk{
 
 	//TEST
 	//game.writeSave();
-
 	
-	
-	//Check for anyone owns continent.
-	//for (int i = 0; i < 42; i++){
-	//    System.out.println(countries[i].getName() + " owned by player " + users[countries[i].getOwnerId()].getName()); //offset by 1 b/c of array.				
-	//}
-
 	Scanner in = new Scanner(System.in);
 	while(game.getPhase() != -1){
-	    System.out.println("Please make your selection:");
-	    System.out.println("e - exit");
-	    System.out.println("o - options (currently non-functional)");
-	    System.out.println("l - load game (currently non-functional)");
-	    System.out.println("s - start game");
 	    
 	    validInput = false;
 	    while (!validInput){
 		try{
+			System.out.println("Please make your selection:");
+			System.out.println("e - exit");
+			System.out.println("o - options");
+			System.out.println("l - load game (currently non-functional)");
+			System.out.println("s - start game");
 		    switch(in.nextLine().substring(0,1)){
 			
 			//"e": exit
@@ -75,6 +67,73 @@ public class Risk{
 			
 			//"o": options
 		    case "o":
+			validInput = false;
+			options:
+			while (!validInput){
+				System.out.println("==Options Menu==");
+				System.out.println("Type in the number of the option to perform.");
+				System.out.println("1. Adjust number of players");
+				System.out.println("2. Adjust distribution method");
+				System.out.println("3. Exit options");
+				String choice = in.nextLine();
+				try {
+					int option = Integer.parseInt(choice);
+					switch (option){
+						case 1:
+						System.out.println("How many players will be playing? (2-6 players only)");
+						boolean validChoice = false;
+						while (!validChoice) {
+							String numPlayerChoice = in.nextLine();
+							if (numPlayerChoice.equals("cancel") || numPlayerChoice.equals("c"))
+								break;
+							try {
+							int tempNum = Integer.parseInt(numPlayerChoice);
+							if (tempNum < 2 || tempNum > 6) {
+								System.out.println("Number of players must be between 2 and 6, inclusive");
+							} else {
+								numPlayers = tempNum;
+								validChoice = true;
+							}
+							}
+							catch (Exception e) {
+							System.out.println("Please enter a valid integer.");
+							}
+						}
+						break;
+						case 2:
+						System.out.println("What method of country distribution do you want?");
+						System.out.println("1. Random (Default)");
+						System.out.println("2. Snake pick (Actually this doesn't work. Sorry!)");
+						validChoice = false;
+						while (!validChoice){
+							choice = in.nextLine();
+							if (choice.equals("cancel") || choice.equals("c"))
+								break;
+							try {
+							int tempNum = Integer.parseInt(choice);
+							if (tempNum < 1 || tempNum > 2) {
+								System.out.println("Not a valid option number.");
+							} else {
+								distributionMethod = tempNum - 1; //curse lack of foresight...
+								validChoice = true;
+							}
+							}
+							catch (Exception e) {
+							System.out.println("Please enter a valid integer.");
+							}
+						}
+						break;
+						case 3:
+						break options;
+						default:
+						System.out.println("Invalid number.");
+						break;
+					}
+				}
+				catch(Exception e){
+					System.out.println("Not a valid choice");
+				}
+			}
 			break;
 			
 			//"s": start game
@@ -86,23 +145,6 @@ public class Risk{
 		
 			//Random distribution of countries. Assume 6 human players. Shuffle, and divide into groups of 7.
 			//Code could be simpler if in Game.java, but we thought assigning countries to players made more sense in driver
-
-			System.out.println("How many players will be playing? (2-6 players only)");
-			validInput = false; //just for clarification/robustness
-			while (!validInput) {
-			    try {
-				numPlayers = Integer.parseInt(in.nextLine());
-				
-				if (numPlayers < 2 || numPlayers > 6) {
-				    System.out.println("Number of players must be between 2 and 6, inclusive");
-				} else {
-				    validInput = true;
-				}
-			    }
-			    catch (Exception e) {
-				System.out.println("Please enter a valid integer.");
-			    }
-			}
 			
 			//assign countries
 			switch(distributionMethod){
@@ -111,30 +153,15 @@ public class Risk{
 			case 0:	//random
 			default:
 			    Util.shuffle(game.countries);
-			    for (int i = 6; i > numPlayers; i--) {
-				game.removeUser(game.getUsers().get(i-1)); //removes users from the right to match players required	
-			    }
-			    			    			    
+			    for (int i = 6; i > numPlayers; i--) 
+				game.getUsers().remove(i-1); //removes users from the right to match players required			    			    
 			    for (int i = 0; i < game.getUsers().size(); i++) {
-				for (int j = 0; j < (42/numPlayers); j++){
-				    game.countries[i * (42/numPlayers) + j].setOwnerId(i);
-				    game.countries[i * (42/numPlayers) + j].addTroops(1);
-				    game.getUsers().get(i).add(game.countries[i*(42/numPlayers)+j]);
+				for (int j = (int)((i) * 42.0/numPlayers); j < (i+1) * 42.0/numPlayers; j++){
+				    game.countries[j].setOwnerId(i);
+				    game.countries[j].addTroops(1);
+				    game.getUsers().get(i).add(game.countries[j]);
 				}
 			    }
-
-			    for (int i = 0; i < game.getUsers().size(); i++) {
-				
-				int myCountries = 0;
-				for (Country c : game.getCountries()) {
-				    if (c.getOwnerId() == game.getUsers().get(i).getId()) {
-					myCountries++;
-				    }
-				}
-				System.out.println(game.getUsers().get(i).getName() + " owns " + myCountries + " countries");
-				
-			    }
-			    
 			}
 		
 			/**************************************SET NAMES************************************/
@@ -724,6 +751,7 @@ public class Risk{
 		}
 		catch(Exception e){
 		    System.out.println("I don't understand");
+			e.printStackTrace();
 		}
 	    }
 
