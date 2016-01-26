@@ -42,6 +42,16 @@ public class User{
 	return cards;
     }
 	
+	//NO WILDCARDS
+	public Card getCard(String name){
+		name = name.toLowerCase().trim();
+		for (Card c: cards){
+			if (c.getCountry().toString().toLowerCase().equals(name))
+				return c;
+		}
+		return null;
+	}
+	
     public void add(Country c){ //Add in order so that we can check continent ownership easier
 	for (int i = 0; i < countriesOwned.size(); i++)
 	    if (c.compareTo(countriesOwned.get(i)) < 0){
@@ -62,13 +72,19 @@ public class User{
 	return n;
     }
   
-    public boolean owns(int id){//check if own a certain country.
+    public boolean owns(Country c){//check if own a certain country.
+	return c.getOwnerId() == id;
+	}
+
+	//inefficient but mad work to fix :(
+	
+	public boolean owns(int id){//check if own a certain country.
 	for (Country c: countriesOwned)
 	    if (c.getId() == id)
 		return true;
 	return false;
     }
-
+	
     public int calcReinforcements(){//aw, who needs .contains anyways...
 	//calculate number of continents owned
 	int continentBonus = 0;

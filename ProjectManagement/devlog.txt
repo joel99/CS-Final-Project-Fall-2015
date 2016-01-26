@@ -50,4 +50,5 @@
 
 === 1/25/16 ===
 > Project Completion Date
-> Note: no saving.
+> Note: no saving. No wildcards
+

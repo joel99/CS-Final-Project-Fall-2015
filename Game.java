@@ -267,14 +267,6 @@ public class Game{
 	}
 	return null; //if no country exists with str as name
     }
-	public Card cardIdentify(Country c){
-		for (Card card: getCurrentUser().getCards())
-			if (card.toString().equals(c.toString()))
-				return card;
-		return null;
-	}
-	
-	
     
     public boolean conqueredAny(){
 	return conqueredAny;
@@ -336,7 +328,7 @@ public class Game{
 	case "cards":
 		System.out.println("");
 		for (int i = 0; i < getCurrentUser().getCards().size(); i++)
-			System.out.println(cards.get(i));
+			System.out.println(getCurrentUser().getCards().get(i));
 		ret = "Printed cards. \n";
 		break;
 	case "trade": case "t":
@@ -441,20 +433,19 @@ public class Game{
 	return ret;
     }	
 
-	
+	//seems to always get alberta and alaska... idk
     //ADDS RANDOM CARD OF DECK TO CURRENT USER. IMPLEMENT.
     //cards stores bank cards. Assume only need to add card to given user.
     public void addCard(){
-	int index = (int) (Math.random() * cards.size());
-	getCurrentUser().add(cards.get(index));
-	cards.remove(index);
+	Card c = cards.get((int) (Math.random() * cards.size()));
+	//System.out.println("index is " + index);
+	getCurrentUser().add(c);
+	c.setOwnerId(getCurrentUser().getId());
+	cards.remove(c);
     }
-	
-	public boolean ownsCard(Country c, User u){
-		for (int i = 0; i < u.getCards().size(); i++)
-			if (u.getCards().get(i).toString().equals(c.toString()))
-				return true;
-		return false;
+
+	public ArrayList<Card> getCards(){
+		return cards;
 	}
 	
 	public void trade(Card[] gameCards){

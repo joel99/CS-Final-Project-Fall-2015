@@ -30,5 +30,4 @@ public class Card //implements Ownable
     public void setOwnerId(int newId){
 	ownerId = newId;
     }
-
 } 

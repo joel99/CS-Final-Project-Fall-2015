@@ -264,6 +264,7 @@ public class Risk{
 					String parsed = game.parse(input);
 					if (parsed.equals("Trading...")){
 						boolean validCards = false;
+						trading:
 					    while (!validCards){
 						try{
 						    String countries = in.nextLine();
@@ -275,16 +276,18 @@ public class Risk{
 						    if (inputs.length != 3)
 							System.out.println("Bad number of inputs");
 						    else {
-							Country inputCountries[] = new Country[3];
+								for (String s: inputs)
+								s = s.trim().toLowerCase();
 							Card inputCards[] = new Card[3];
 							for (int i = 0; i < 3; i++){
-							    inputCountries[i] = game.countryIdentify(inputs[i]);
-							    if (!game.ownsCard(inputCountries[i], game.getCurrentUser())){
-								System.out.println("You don't own " + inputCountries[i] + ".");
-								break;
+								//given a country. identify card (if owned). - return card.
+								Card temp = game.getCurrentUser().getCard(inputs[i]);
+							    if (temp == null){//cardIdentify
+								System.out.println("You don't own " + inputs[i] + ", cancelling all.");
+								break trading;
 							    }
 							    else {
-								inputCards[i] = game.cardIdentify(inputCountries[i]);
+								inputCards[i] = temp;
 							    }
 							}
 							if (Util.validTrade(inputCards)){
@@ -298,13 +301,14 @@ public class Risk{
 						}
 						catch(Exception e){
 						    System.out.println("I don't understand");
+							e.printStackTrace();
 						}
 					    }
 					}
 					else if (parsed.equals(input.toLowerCase())){ //this if checks if command is nongeneric.
 					    try{
 						c = game.countryIdentify(input);
-						if (game.getCurrentUser().owns(c.getId())){
+						if (game.getCurrentUser().owns(c)){
 						    validInput = true;
 						}
 						else
@@ -397,7 +401,7 @@ public class Risk{
 						    break attack;
 						
 						cFrom = game.countryIdentify(input);
-						if (!game.getCurrentUser().owns(cFrom.getId()))
+						if (!game.getCurrentUser().owns(cFrom))
 						    System.out.println("You do not own " + cFrom + ".\n");
 						else if(cFrom.getTroops() == 1)
 						    System.out.println("Not enough troops to attack from " + cFrom + ".\n");
@@ -434,7 +438,7 @@ public class Risk{
 							
 						cTo = game.countryIdentify(input);
 								
-						if (game.getCurrentUser().owns(cTo.getId()))
+						if (game.getCurrentUser().owns(cTo))
 						    System.out.println("You cannot attack " + cTo + ". (You own it)\n");
 						else if(!Util.contains(cFrom.getBorders(),cTo.getId()))
 						    System.out.println(cTo + " is not connected to " + cFrom + ".\n");
@@ -565,15 +569,15 @@ public class Risk{
 									game.update(cFrom);
 									//CHECK FOR DEFEAT! (HERE)
 									boolean defeat = false;
-									User loser = game.getUsers().get(cTo.getOwnerId());
-									loser.getCountries().remove(cTo);
-									if (loser.getCountries().size() == 0){
+									//dun work??? hmm
+									//User loser = game.getUsers().get(cTo.getOwnerId());
+									game.getUsers().get(cTo.getOwnerId()).getCountries().remove(cTo);
+									if (game.getUsers().get(cTo.getOwnerId()).getCountries().size() == 0){
 									    defeat = true;
-									    ArrayList<Card> lostCards = loser.getCards();
-									    while (lostCards.size() > 0){
-										game.getCurrentUser().add(lostCards.get(0));
-										loser.getCards().remove(0);
-										game.removeUser(loser);
+									    while (game.getUsers().get(cTo.getOwnerId()).getCards().size() > 0){
+										game.getCurrentUser().add(game.getUsers().get(cTo.getOwnerId()).getCards().get(0));
+										game.getUsers().get(cTo.getOwnerId()).getCards().remove(0);
+										game.removeUser(game.getUsers().get(cTo.getOwnerId()));
 									    }
 									}
 								
@@ -583,7 +587,7 @@ public class Risk{
 									System.out.println("Troops transfered.");
 								
 									if (defeat){
-									    System.out.println("Player " + loser + " has been defeated!");
+									    System.out.println("Player " + game.getUsers().get(cTo.getOwnerId()) + " has been defeated!");
 									    System.out.println("Cards transferred to player " + game.getCurrentUser() + ".");
 									    if (game.getCurrentUser().getCards().size() >= 6){
 										System.out.println("You must trade in cards! Reverting to reinforcements phase.");
@@ -653,7 +657,7 @@ public class Risk{
 						    break fortify;
 						
 						cFrom = game.countryIdentify(input);
-						if (!game.getCurrentUser().owns(cFrom.getId()))
+						if (!game.getCurrentUser().owns(cFrom))
 						    System.out.println("You do not own " + cFrom + ".");
 						else if(cFrom.getTroops() == 1)
 						    System.out.println("Not enough troops to fortify from " + cFrom + ".");
@@ -690,7 +694,7 @@ public class Risk{
 							
 						cTo = game.countryIdentify(input);
 								
-						if (!game.getCurrentUser().owns(cTo.getId()))
+						if (!game.getCurrentUser().owns(cTo))
 						    System.out.println("You do not own " + cTo + ".");
 						else if(!Util.contains(cFrom.getBorders(),cTo.getId()))
 						    System.out.println(cTo + " is not connected to " + cFrom + ".");
@@ -748,7 +752,7 @@ public class Risk{
 			
 				if (game.conqueredAny()){
 				    game.addCard();
-				    System.out.println("Card awarded for conquering a territory. (not sure if cards work :/)");
+				    System.out.println("Card awarded for conquering a territory.");
 				    game.setConquered(false);
 				}
 				game.nextTurnState();
