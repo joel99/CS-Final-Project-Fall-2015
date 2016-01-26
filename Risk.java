@@ -74,7 +74,7 @@ public class Risk{
 				System.out.println("\n=== Options Menu ===");
 				System.out.println("Type in the number of the option to perform.");
 				System.out.println("1. Adjust number of players (default 6)");
-				System.out.println("2. Adjust distribution method (nonfunctional ;-;)");
+				System.out.println("2. Adjust distribution method (not functional yet, sorry!)");
 				System.out.println("3. Exit options");
 				String choice = in.nextLine();
 				try {
