@@ -177,7 +177,7 @@ public class Game{
 	String stat = c.status();
 	//REMEMBER TO UPDATE w/ NICKNAME!!!
 	String name = users.get(Integer.parseInt(stat.substring(0,1))).getName();
-	for (int i = 0; i < name.length(); i++)
+	for (int i = 0; i < (Math.min(3,name.length())); i++)
 		map.set(x++, y, name.charAt(i));
 	map.set(x++,y, '-'); 
 	for (int i = 1; i < stat.length(); i++)
@@ -259,7 +259,7 @@ public class Game{
 	
     
     public Country countryIdentify(String str){
-	str = str.toLowerCase();
+	str = str.toLowerCase().trim();
 	for (Country c : countries) { //for every country in country array
 	    if (c.getName().toLowerCase().equals(str)) { //linear search
 		return c; 
@@ -286,6 +286,7 @@ public class Game{
 
     //checks for generic commands
     public String parse(String str){//takes actions, but returns String for explicit commands
+	str = str.trim().toLowerCase();
 	String ret = "";
 	boolean success = false;
 	switch(str){
@@ -400,15 +401,12 @@ public class Game{
 	default:
 	    if ((str.length() >= 5) && (str.substring(0,5).equals("zoom "))) {
 		String zoomArg = str.substring(5,str.length());
-		System.out.println("zoomarg is " + zoomArg);
-		//test if arg is recognized
 		if (zoomArg.equals("in")) {
 		    map.zoom(1);
 		    System.out.println(map);
 		    ret = "Zoomed In.\n";
 		    success = true;
 		} else if (zoomArg.equals("out")) {
-			System.out.println("out detected");
 		    map.zoom(-1);
 		    System.out.println(map);
 		    ret = "Zoomed Out.\n";
@@ -417,21 +415,10 @@ public class Game{
 
 		if (!success) {
 		    for (Country c : countries) {
-			if (c.getName().equals(zoomArg)) {
+			if (c.getName().toLowerCase().equals(zoomArg.trim())) {
 			    map.zoom(c,1);
 			    System.out.println(map);
 			    ret = "Zoomed into " + c.getName() + ".\n";
-			    success = true;
-			    break;
-			}
-		    }
-		}
-
-		if (!success) {
-		    for (Continent co : Util.continents) {
-			if (co.toString().equals(zoomArg)) {
-			    //map.zoom(co,2);
-			    ret = "Continent zoom to be implemented...\n";
 			    success = true;
 			    break;
 			}

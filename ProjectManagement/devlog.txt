@@ -47,3 +47,7 @@
 > Finished accomodations for less than 6 players (William)
 > Implemented world borders for panning (William)
 > Deleted the py file that's been causing Github to think this was a Python project for this entire time (William's crowning achievement)
+
+=== 1/25/16 ===
+> Project Completion Date
+> Note: no saving.

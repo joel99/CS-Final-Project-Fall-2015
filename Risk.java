@@ -55,7 +55,7 @@ public class Risk{
 		try{
 			System.out.println("\nPlease make your selection:");
 			System.out.println("e - Exit game");
-			System.out.println("o - Change game options");
+			System.out.println("o - Change game options - first-timers should check this out.");
 			System.out.println("l - Load game (currently non-functional)");
 			System.out.println("s - Start new game");
 		    switch(in.nextLine().substring(0,1)){
@@ -170,16 +170,22 @@ public class Risk{
 			    validInput = false;
 			    while (!validInput){
 				System.out.println("\nPlayer " + (i + 1) + ", please choose an alphanumeric name, max of 7 chars.");
+				System.out.println("First 3 letters will be nickname on map.");
 				try{
 				    String newName = in.nextLine();
+					String newNicName = newName.substring(0, Math.min(3,newName.length())).toLowerCase();
 				    if (newName.length() > 7)
 					System.out.println("Name is too long");
+					else if (newName.length() == 0)
+						System.out.println("No null, thank you for your cooperation.");
 				    else{
 					boolean validName = true;
+					//compare nicknames -> will disqualify any equivalent names anyways.
 					for (int k = 0; k < i; k++){
 					    String otherName = game.getUsers().get(k).getName();
-					    if (otherName.toLowerCase().equals(newName.toLowerCase())) {
-						System.out.println("Input name already chosen.");
+						String otherNicName = otherName.substring(0,Math.min(3,otherName.length())).toLowerCase();
+					    if (otherNicName.equals(newNicName)) {
+						System.out.println("Input (nick)name already chosen.");
 						validName = false;
 						break;
 					    }
@@ -257,7 +263,7 @@ public class Risk{
 					String input = in.nextLine();
 					String parsed = game.parse(input);
 					if (parsed.equals("Trading...")){
-					    boolean validCards = false;
+						boolean validCards = false;
 					    while (!validCards){
 						try{
 						    String countries = in.nextLine();
@@ -295,7 +301,7 @@ public class Risk{
 						}
 					    }
 					}
-					else if (parsed.equals(input)){ //this if checks if command is nongeneric.
+					else if (parsed.equals(input.toLowerCase())){ //this if checks if command is nongeneric.
 					    try{
 						c = game.countryIdentify(input);
 						if (game.getCurrentUser().owns(c.getId())){
@@ -319,8 +325,17 @@ public class Risk{
 				    validInput = false;
 					
 				    while (!validInput){ //validInput condition: input is a number <= reinforcements.
+						if (game.getReinforcements() == 0){
+							System.out.println("No troops to reinforce with! Trade in your cards!");
+							System.out.println("Type 'cancel'.");
+						}
+					String input = in.nextLine();
+					if (input.toLowerCase().equals("cancel") || input.toLowerCase().equals("c")){
+						validInput = true;
+						break;
+					}
 					try{//consider breaking in a do/while loop??? I unno how to use that.
-					    int num = Integer.parseInt(in.nextLine());
+					    int num = Integer.parseInt(input);
 					    if (num > game.getReinforcements())
 						System.out.println("The amount specified is more than you have.\n");
 					    else if (num <= 0)
@@ -376,9 +391,9 @@ public class Risk{
 					cFrom = game.countries[0];
 				    while (!from || !validInput){	//validInput condition: country owned. While I can't understand where to go from
 					String input = in.nextLine();
-					if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					if (game.parse(input).equals(input.toLowerCase())){ //this if checks if command is nongeneric.
 					    try{
-						if (input.equals("end") || input.equals("e"))
+						if (input.toLowerCase().equals("end") || input.toLowerCase().equals("e"))
 						    break attack;
 						
 						cFrom = game.countryIdentify(input);
@@ -408,9 +423,9 @@ public class Risk{
 				    validInput = false;
 				    while (!to || !validInput){	//validInput condition: input country is neighbor to og, is enemy's
 					String input = in.nextLine();
-					if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					if (game.parse(input).equals(input.toLowerCase())){ //this if checks if command is nongeneric.
 					    try{
-						if (input.equals("c") || input.equals("cancel")){
+						if (input.toLowerCase().equals("c") || input.toLowerCase().equals("cancel")){
 						    System.out.println("Selection canceled.\n");
 						    game.getMap().resetBoundaries();
 						    from = false;
@@ -447,7 +462,7 @@ public class Risk{
 					    System.out.println("Roll? (Y/N) \nIf you don't roll, you must retreat.");
 					    String input = in.nextLine();
 					    try{
-						if (input.equals("Y") || input.equals("yes")){
+						if (input.toLowerCase().equals("y") || input.toLowerCase().equals("yes")){
 						    int attackDiceNum = 0; int defendDiceNum = 0;
 						    //there's no breaking now!!!
 						    attack = false;
@@ -472,7 +487,7 @@ public class Risk{
 							try{
 							    defendDiceNum = Integer.parseInt(in.nextLine());
 							    if (defendDiceNum > cTo.getTroops())
-								System.out.println(cTo + " does not have sufficiently many troops (must be number of troops or less.\n");
+								System.out.println(cTo + " does not have sufficiently many troops (must be number of troops or less).\n");
 							    else if (defendDiceNum > 2 || defendDiceNum <= 0)
 								System.out.println("You can only roll 1 or 2 dice.\n");
 							    else
@@ -594,7 +609,7 @@ public class Risk{
 						    //note, game rules don't allow for some sort of troop count paradox, so don't worry about that (if's are mutually exclusive)
 						}
 
-						else if (input.equals("N") || input.equals("no")){
+						else if (input.toLowerCase().equals("n") || input.toLowerCase().equals("no")){
 						    System.out.println("Retreating.");
 						    from = false;
 						    to = false;
@@ -632,9 +647,9 @@ public class Risk{
 				
 				    while (!from || !validInput){	//validInput condition: country owned. While I can't understand where to go from
 					String input = in.nextLine();
-					if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					if (game.parse(input).equals(input.toLowerCase())){ //this if checks if command is nongeneric.
 					    try{
-						if (input.equals("end") || input.equals("e"))
+						if (input.toLowerCase().equals("end") || input.toLowerCase().equals("e"))
 						    break fortify;
 						
 						cFrom = game.countryIdentify(input);
@@ -664,9 +679,9 @@ public class Risk{
 				    validInput = false;
 				    while (!to || !validInput){	//validInput condition: input country is neighbor to og, is also yours
 					String input = in.nextLine();
-					if (game.parse(input).equals(input)){ //this if checks if command is nongeneric.
+					if (game.parse(input).equals(input.toLowerCase())){ //this if checks if command is nongeneric.
 					    try{
-						if (input.equals("c") || input.equals("cancel")){
+						if (input.toLowerCase().equals("c") || input.toLowerCase().equals("cancel")){
 						    System.out.println("Selection canceled.");
 						    game.getMap().resetBoundaries();
 						    from = false;
@@ -701,7 +716,7 @@ public class Risk{
 					while (!validInput){
 					    String input = in.nextLine();
 						
-					    if (input.equals("c") || input.equals("cancel")){
+					    if (input.toLowerCase().equals("c") || input.toLowerCase().equals("cancel")){
 						System.out.println("Selection canceled.");
 						to = false;
 						break;

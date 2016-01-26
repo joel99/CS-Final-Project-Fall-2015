@@ -107,8 +107,8 @@ public class Map{
     
     //zoom in, out. adjusts boundaries. in = + or -1. + (zoom in) - (zoom out)
     public void zoom(int in){
-	if ((in == 1 && (boundaries[3] - boundaries[1] <= 10 || boundaries[2] - boundaries[0] <= 10))
-		|| (in == -1 && (boundaries[3] - boundaries[1] >= 90 || boundaries[2] - boundaries[0] >= 160)))
+	if ((in == 1 && (boundaries[3] - boundaries[1] <= 20 || boundaries[2] - boundaries[0] <= 30))
+		|| (in == -1 && (boundaries[3] - boundaries[1] >= 90 || boundaries[2] - boundaries[0] >= 2400)))
 		System.out.println("Bounds exceeded");
 		
 	else{
@@ -143,10 +143,8 @@ public class Map{
 	    boundaries[1] -= (boundaries[3] - boundaries[1]) + 1;
 
 	    validPan = boundaries[3] > 0;
-	    if (!validPan) {
+	    if (!validPan) 
 		resetBoundaries();
-	    }
-	
 	    break;
 	case -1: //LEFT(j) same as case 2 for x.
 	    boundaries[2] = (boundaries[0] + boundaries[2]) / 2;
